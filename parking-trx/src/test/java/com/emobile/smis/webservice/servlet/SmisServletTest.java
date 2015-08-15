@@ -1,0 +1,204 @@
+package com.emobile.smis.webservice.servlet;
+
+import java.util.Random;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.PoolingClientConnectionManager;
+import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+@RunWith(MockitoJUnitRunner.class)
+public class SmisServletTest {
+	private static final Logger LOG = LoggerFactory.getLogger(SmisServletTest.class);
+
+	private final String baseHostUrl = "http://192.168.0.78:8080/smis-web-service/findUserDataByUserCode";
+	//private final String baseHostUrl = "http://192.168.0.76:8089/nusapro-wallet/wallet";
+	private ObjectMapper mapper = new ObjectMapper();
+	
+	/*private WalletTrxRequest createWalletTrxRequest(String customerCode, String requestId) {
+		WalletTrxRequest trxRequest = new WalletTrxRequest();
+		trxRequest.setRequestId(requestId);
+		trxRequest.setCustomerCode(customerCode);  // code of AR
+		trxRequest.setClientPhone("085601234567");  // phone to be transferred, in form 08xxx
+		trxRequest.setTrxCode("DSV");  // DSV / SDS
+		
+		WalletTrxDetailRequest detail = new WalletTrxDetailRequest();
+		detail.setDetailId(requestId + "001");
+		detail.setProductCode("V05");
+		detail.setProductQty(10);
+		detail.setProductValueEach(4900);
+		detail.setProductType("R");
+		trxRequest.getListDetail().add(detail);
+		
+		WalletTrxDetailRequest detail2 = new WalletTrxDetailRequest();
+		detail2.setDetailId(requestId + "002");
+		detail2.setProductCode("V25");
+		detail2.setProductQty(50);
+		detail2.setProductValueEach(23000);
+		detail2.setProductType("P");
+		trxRequest.getListDetail().add(detail2);
+		
+		return trxRequest;
+	}*/
+	
+	/*@Test
+	public void testFindUserDataByUserCode() {
+		String url = baseHostUrl + ExchangeConstant.WALLET_PATH_SETTLE;
+		long startTime = System.currentTimeMillis();
+		HttpClient client = new DefaultHttpClient();
+		try {
+			WalletTrxRequest trxReq = createWalletTrxRequest("01001040", "123456");
+			String s = mapper.writeValueAsString(trxReq);
+			LOG.debug("Request: " + s);
+            StringEntity entity = new StringEntity(s);
+			
+			HttpPost post = new HttpPost(url);
+			post.setHeader("Content-Type", "application/json");
+			post.setEntity(entity);
+			
+			// Execute HTTP request
+			LOG.debug("Executing request: " + post.getURI());
+            HttpResponse response = client.execute(post);
+            
+            // Get hold of the response entity
+            StatusLine sl = response.getStatusLine();
+            LOG.debug("StatusCode: " + sl.getStatusCode());
+            Assert.assertEquals(200, sl.getStatusCode());
+
+            HttpEntity respEntity = response.getEntity();
+            String respString = EntityUtils.toString(respEntity);
+            LOG.debug("Response: " + respString);
+            
+            WalletTrxResponse trxResp = mapper.
+            		readValue(respString, WalletTrxResponse.class);
+            Assert.assertEquals(trxReq.getRequestId(), trxResp.getRequestId());
+            
+            int delta = (int) (System.currentTimeMillis() - startTime);
+            LOG.info("Finish running one thread in {}ms", 
+            		new String[] { CommonUtil.displayNumberNoDecimal(delta) } );
+		} catch (Exception e) {
+			LOG.warn("Unexpected Exception", e);
+		} finally {
+            // When HttpClient instance is no longer needed,
+            // shut down the connection manager to ensure
+            // immediate deallocation of all system resources
+            client.getConnectionManager().shutdown();
+        }  // end try finally
+	}*/
+	
+	/*@Test
+	public void testReversalFirst() {
+		String url = baseHostUrl + ExchangeConstant.WALLET_PATH_REVERSAL;
+		long startTime = System.currentTimeMillis();
+		HttpClient client = new DefaultHttpClient();
+		try {
+			WalletTrxRequest trxReq = createWalletTrxRequest("01001040", "123456");
+			String s = mapper.writeValueAsString(trxReq);
+			LOG.debug("Request: " + s);
+            StringEntity entity = new StringEntity(s);
+			
+			HttpPost post = new HttpPost(url);
+			post.setHeader("Content-Type", "application/json");
+			post.setEntity(entity);
+			
+			// Execute HTTP request
+			LOG.debug("Executing request: " + post.getURI());
+            HttpResponse response = client.execute(post);
+            
+            // Get hold of the response entity
+            StatusLine sl = response.getStatusLine();
+            LOG.debug("StatusCode: " + sl.getStatusCode());
+            Assert.assertEquals(200, sl.getStatusCode());
+
+            HttpEntity respEntity = response.getEntity();
+            String respString = EntityUtils.toString(respEntity);
+            LOG.debug("Response: " + respString);
+            
+            WalletTrxResponse trxResp = mapper.
+            		readValue(respString, WalletTrxResponse.class);
+            Assert.assertEquals(trxReq.getRequestId(), trxResp.getRequestId());
+            
+            int delta = (int) (System.currentTimeMillis() - startTime);
+            LOG.info("Finish running one thread in {}ms", 
+            		new String[] { CommonUtil.displayNumberNoDecimal(delta) } );
+		} catch (Exception e) {
+			LOG.warn("Unexpected Exception", e);
+		} finally {
+            // When HttpClient instance is no longer needed,
+            // shut down the connection manager to ensure
+            // immediate deallocation of all system resources
+            client.getConnectionManager().shutdown();
+        }  // end try finally
+	}*/
+	
+	/*@Test
+	public void testSettleMultiThread() {
+		String url = baseHostUrl + ExchangeConstant.WALLET_PATH_SETTLE;
+		
+		Random r = new Random();
+		String[] listCustCode = {
+				"01001040", "01001041", "01001042",
+				"01001043", "01001044", "01001045",
+				"01001046", "01001047", "01001048"				
+		};
+		long startTime = System.currentTimeMillis();
+		// Create an HttpClient with the ThreadSafeClientConnManager.
+        // This connection manager must be used if more than one thread will
+        // be using the HttpClient.
+        PoolingClientConnectionManager cm = new PoolingClientConnectionManager();
+        cm.setMaxTotal(100);
+        
+        HttpClient httpclient = new DefaultHttpClient(cm);
+        try {
+            // create a thread for each URI
+            SmisHttpPostThread[] threads = new SmisHttpPostThread[10];
+            for (int i = 0; i < threads.length; i++) {
+            	String reqId = CommonUtil.padLeft("" + (i + 1), '0', 4);
+            	int idx = r.nextInt(listCustCode.length);
+            	WalletTrxRequest trxReq = createWalletTrxRequest(listCustCode[idx], reqId);
+            	
+            	String request = mapper.writeValueAsString(trxReq);
+                threads[i] = new SmisHttpPostThread(httpclient, url, i + 1, request, mapper);
+            }
+
+            // start the threads
+            for (int j = 0; j < threads.length; j++) {
+                threads[j].start();
+                try {
+                	Thread.sleep(20);
+                	Thread.yield();
+                } catch (InterruptedException ie) {}
+            }
+
+            // join the threads
+            for (int j = 0; j < threads.length; j++) {
+                threads[j].join();
+            }
+            
+            int delta = (int) (System.currentTimeMillis() - startTime);
+            LOG.info("Finish running all thread in {}ms", 
+            		new String[] { CommonUtil.displayNumberNoDecimal(delta) } );
+        } catch (Exception e) {
+			LOG.warn("Unexpected Error", e);
+		} finally {
+            // When HttpClient instance is no longer needed,
+            // shut down the connection manager to ensure
+            // immediate deallocation of all system resources
+            httpclient.getConnectionManager().shutdown();
+        }
+	}*/
+	
+}
