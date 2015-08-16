@@ -1,4 +1,4 @@
-package com.emobile.smis.web.mapper;
+package com.myproject.parking.lib.mapper;
 
 import java.util.Date;
 

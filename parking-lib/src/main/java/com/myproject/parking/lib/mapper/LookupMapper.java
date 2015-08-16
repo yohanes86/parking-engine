@@ -1,8 +1,8 @@
-package com.emobile.smis.web.mapper;
+package com.myproject.parking.lib.mapper;
 
 import java.util.List;
 
-import com.emobile.smis.web.entity.Lookup;
+import com.myproject.parking.lib.entity.Lookup;
 
 public interface LookupMapper {
 	

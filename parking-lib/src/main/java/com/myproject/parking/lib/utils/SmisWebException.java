@@ -1,4 +1,4 @@
-package com.emobile.smis.web.utils;
+package com.myproject.parking.lib.utils;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package com.emobile.smis.web.data;
+package com.myproject.parking.lib.data;
 /**
  * Historical Changes:
  * 0.0.1 - 2012-11-28, Hariyanto

@@ -1,4 +1,4 @@
-package com.emobile.smis.web.data.param;
+package com.myproject.parking.lib.data;
 
 public class ParamOrderVO implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;

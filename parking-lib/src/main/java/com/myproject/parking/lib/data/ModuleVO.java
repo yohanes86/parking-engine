@@ -1,4 +1,4 @@
-package com.emobile.smis.web.data;
+package com.myproject.parking.lib.data;
 
 import java.util.ArrayList;
 import java.util.List;

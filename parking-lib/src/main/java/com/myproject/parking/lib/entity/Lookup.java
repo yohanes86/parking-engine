@@ -1,4 +1,4 @@
-package com.emobile.smis.web.entity;
+package com.myproject.parking.lib.entity;
 
 
 public class Lookup implements java.io.Serializable{

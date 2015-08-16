@@ -1,4 +1,4 @@
-package com.emobile.smis.web.data.service;
+package com.myproject.parking.lib.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.emobile.smis.web.mapper.MiscMapper;
+import com.myproject.parking.lib.mapper.MiscMapper;
 
 @Service
 public class AppsTimeService {

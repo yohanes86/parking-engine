@@ -1,4 +1,4 @@
-package com.emobile.smis.web.utils;
+package com.myproject.parking.lib.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,8 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.emobile.smis.web.utils.SmisWebException;
 
 public class SmisFileUtils {
 	

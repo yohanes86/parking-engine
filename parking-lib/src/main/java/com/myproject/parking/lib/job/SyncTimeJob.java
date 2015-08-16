@@ -1,8 +1,8 @@
-package com.emobile.smis.web.data.job;
+package com.myproject.parking.lib.job;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.emobile.smis.web.data.service.AppsTimeService;
+import com.myproject.parking.lib.service.AppsTimeService;
 
 public class SyncTimeJob {
 	
