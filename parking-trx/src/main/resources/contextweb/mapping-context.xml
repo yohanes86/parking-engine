@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 	
-	<!-- Assignment BM 
-	<bean id="findDealerByBranchCode" class="com.emobile.smis.webservice.logic.assignment.module.FindDealerByBranchCode"/> -->
 	<bean id="loginUser" class="com.myproject.parking.trx.logic.security.LoginUserModule"/>
+	<bean id="paymentCC" class="com.myproject.parking.trx.payment.PaymentWithCreditCard"/>
+	
 </beans>

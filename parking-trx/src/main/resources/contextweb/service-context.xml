@@ -27,18 +27,21 @@
 		    <map>
 		        <!-- Security Module  -->
 		        <entry key="/loginUser" value-ref="loginUser"></entry>
+		        <!-- Payment Module -->
+		        <entry key="/paymentCC" value-ref="paymentCC"></entry>
 		    </map>
 		</property>
 	</bean>
 	
 	<!-- ========================= SCHEDULER ========================= -->
-	<bean id="syncTimeJob" class="com.myproject.parking.lib.job.SyncTimeJob" 
+	<!--  <bean id="syncTimeJob" class="com.myproject.parking.lib.job.SyncTimeJob" 
 		init-method="syncTime" />
-
-	<task:scheduled-tasks scheduler="systemScheduler">
+	-->
+	<!-- <task:scheduled-tasks scheduler="systemScheduler"> -->
 		 <!-- run every 1 hour -->
-	    <task:scheduled ref="syncTimeJob" method="syncTime" cron="0 0 * * * ?"/>
-	</task:scheduled-tasks>
+	<!-- <task:scheduled ref="syncTimeJob" method="syncTime" cron="0 0 * * * ?"/>
+		 </task:scheduled-tasks>
 	
 	<task:scheduler id="systemScheduler" pool-size="1" />
+	-->
 </beans>

@@ -27,7 +27,8 @@ import com.myproject.parking.lib.utils.CommonUtil;
 public class SmisServletTest {
 	private static final Logger LOG = LoggerFactory.getLogger(SmisServletTest.class);
 
-	private final String baseHostUrl = "http://localhost:8080/parking-trx/trx/loginUser";
+//	private final String baseHostUrl = "http://localhost:8080/parking-trx/trx/loginUser";
+	private final String testingPaymentWithCC = "http://localhost:8080/parking-trx/trx/paymentCC";
 //	private final String baseHostUrl = "http://192.168.0.78:8080/smis-web-service/findUserDataByUserCode";
 	//private final String baseHostUrl = "http://192.168.0.76:8089/nusapro-wallet/wallet";
 	private ObjectMapper mapper = new ObjectMapper();
@@ -35,7 +36,7 @@ public class SmisServletTest {
 	
 	@Test
 	public void testFindUserDataByUserCode() {
-		String url = baseHostUrl;
+		String url = testingPaymentWithCC;
 		long startTime = System.currentTimeMillis();
 		HttpClient client = new DefaultHttpClient();
 		try {

@@ -2,6 +2,7 @@ package com.myproject.parking.trx.servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Properties;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -14,11 +15,16 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.myproject.parking.lib.utils.CommonUtil;
 import com.myproject.parking.trx.logic.BaseQueryLogic;
 import com.myproject.parking.trx.logic.LogicFactory;
+import com.paypal.base.rest.PayPalRESTException;
+import com.paypal.base.rest.PayPalResource;
 
 public class ParkingServiceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -39,14 +45,21 @@ public class ParkingServiceServlet extends HttpServlet {
 		// faster this way, not default
 //		mapper.configure(SerializationConfig.Feature.USE_STATIC_TYPING, true); 
 		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		
+		try {
+			Resource resource = new ClassPathResource("sdk_config.properties");
+			Properties props = PropertiesLoaderUtils.loadProperties(resource);
+			PayPalResource.initConfig(props);
+		} catch (IOException e) {
+			LOG.error(e.getMessage());
+		}
 		LOG.debug("Servlet Initialized");
 	}
 	  
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+//		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+		doPost(request, response);
 	}
 	
 	@Override
