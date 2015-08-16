@@ -12,5 +12,5 @@
 	
 	<!-- Assignment BM 
 	<bean id="findDealerByBranchCode" class="com.emobile.smis.webservice.logic.assignment.module.FindDealerByBranchCode"/> -->
-	<bean id="loginUser" class="com.myproject.parking.trx.logic.security.LoginUser"/>
+	<bean id="loginUser" class="com.myproject.parking.trx.logic.security.LoginUserModule"/>
 </beans>

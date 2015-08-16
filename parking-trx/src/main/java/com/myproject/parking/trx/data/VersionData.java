@@ -1,4 +1,4 @@
-package com.emobile.smis.webservice.data;
+package com.myproject.parking.trx.data;
 /**
  * Historical Changes:
  * 1.0.0 - 2012-12-06, 16:00
@@ -26,7 +26,7 @@ public class VersionData {
 	private SimpleDateFormat sdf;
 	
 	public VersionData() {
-		appsName = "Nusapro Wallet";
+		appsName = "Parking ";
 		version = "1.0.0";
 		sdf = new SimpleDateFormat("dd MMMM yyyy, HH:mm");
 		
@@ -38,7 +38,7 @@ public class VersionData {
 				Manifest manifest = new Manifest(resources.nextElement().openStream());
 				Attributes attrib = manifest.getMainAttributes();
 				String vendorId = attrib.getValue("Implementation-Vendor-Id");
-				if ("com.emobile".equals(vendorId)) {
+				if ("com.myproject".equals(vendorId)) {
 					buildNumber = attrib.getValue("Implementation-Build");
 					String timestamp = attrib.getValue("Implementation-Timestamp");
 					if (timestamp != null && !timestamp.equals("")) {

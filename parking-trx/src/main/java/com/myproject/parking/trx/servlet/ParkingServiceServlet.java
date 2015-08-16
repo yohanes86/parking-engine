@@ -1,4 +1,4 @@
-package com.emobile.smis.webservice.servlet;
+package com.myproject.parking.trx.servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,20 +16,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.emobile.smis.web.utils.CommonUtil;
-import com.emobile.smis.webservice.logic.SmisBaseQueryLogic;
-import com.emobile.smis.webservice.logic.SmisLogicFactory;
+import com.myproject.parking.lib.utils.CommonUtil;
+import com.myproject.parking.trx.logic.BaseQueryLogic;
+import com.myproject.parking.trx.logic.LogicFactory;
 
-public class SmisWebServiceServlet extends HttpServlet {
+public class ParkingServiceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private static final Logger LOG = LoggerFactory.getLogger(SmisWebServiceServlet.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ParkingServiceServlet.class);
 
 	private ObjectMapper mapper;
 	
 	@Autowired
-	private SmisLogicFactory logicFactory;
-
+	private LogicFactory logicFactory;
+	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
@@ -52,12 +52,14 @@ public class SmisWebServiceServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		long startTime = System.currentTimeMillis();
-	
+		long startTime = (int)System.currentTimeMillis();
+		
 		String pathInfo = request.getPathInfo();
+		LOG.info("{} START in {}ms", new String[] {pathInfo, 
+				CommonUtil.displayNumberNoDecimal(startTime) });
 		LOG.debug("POST PathInfo: {}", new String[] {pathInfo});
 		
-		SmisBaseQueryLogic logic = logicFactory.getLogic().get(pathInfo);
+		BaseQueryLogic logic = logicFactory.getLogic().get(pathInfo);
 		if(logic == null){
 			LOG.warn("PathInfo {} is not supported.", new String[] {pathInfo});
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -74,7 +76,8 @@ public class SmisWebServiceServlet extends HttpServlet {
 		reader.close();
 		String data = sb.toString();
 
-		LOG.debug("RequestData: {}", new String[] { data });	    
+		LOG.debug("RequestData: {}", new String[] { data });	
+	
 		String respData = logic.process(data, mapper, pathInfo);
 		
 		if (respData == null) {

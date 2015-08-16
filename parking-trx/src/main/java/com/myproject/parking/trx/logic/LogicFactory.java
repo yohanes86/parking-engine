@@ -1,21 +1,21 @@
-package com.emobile.smis.webservice.logic;
+package com.myproject.parking.trx.logic;
 
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SmisLogicFactory {
-	private static final Logger LOG = LoggerFactory.getLogger(SmisLogicFactory.class);
+public class LogicFactory {
+	private static final Logger LOG = LoggerFactory.getLogger(LogicFactory.class);
 	
-	private Map<String, SmisBaseQueryLogic> logic;
+	private Map<String, BaseQueryLogic> logic;
 
 	
-	public Map<String, SmisBaseQueryLogic> getLogic() {
+	public Map<String, BaseQueryLogic> getLogic() {
 		return logic;
 	}
 
-	public void setLogic(Map<String, SmisBaseQueryLogic> logic) {
+	public void setLogic(Map<String, BaseQueryLogic> logic) {
 		this.logic = logic;
 		LOG.info("logic :"+ logic);
 	}

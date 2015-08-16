@@ -22,9 +22,6 @@
 		p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}"
 		p:username="${jdbc.username}" p:password="${jdbc.password}" />
 	
-		<!-- p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}"
-		p:username="${jdbc.username}" p:password="${jdbc.password}" /> -->
-
 	<!-- JNDI DataSource for JEE environments -->
 
 	<!-- SqlSessionFactory for MyBATIS -->
@@ -36,17 +33,17 @@
 			</list>
 		</property> 
 		<property name="configLocation" value="classpath:mybatis-config.xml" />
-		<property name="configurationProperties">
+		<!-- <property name="configurationProperties">
 			<props>
 				<prop key="schemaDbMA">bca_finance.dbo</prop>
 			</props>
-		</property>
+		</property> -->
 	</bean>
 	
 	<!-- scan for mappers and let them be autowired -->
 	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-		<property name="basePackage" value="com.emobile.smis.web.mapper" />
+		<property name="basePackage" value="com.myproject.parking.lib.mapper" />
 	</bean>
 	
 	<!--
