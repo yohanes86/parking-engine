@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.myproject.parking.lib.entity.Profile;
-import com.myproject.parking.lib.utils.SmisConstants;
+import com.myproject.parking.lib.utils.Constants;
 import com.myproject.parking.trx.logic.BaseQueryLogic;
 
 public class LoginUserModule implements BaseQueryLogic {
@@ -23,7 +23,7 @@ public class LoginUserModule implements BaseQueryLogic {
 			Profile profile = mapper.readValue(data, Profile.class);
 			LOG.debug("Profile: [{}]", profile);
 //			userRoleMapper.deleteRoleModule(userRoleId);
-			return mapper.writeValueAsString(SmisConstants.SUCCESS_CODE);
+			return mapper.writeValueAsString(Constants.SUCCESS_CODE);
 		} catch (Exception e) {
 			// TODO: handle exception
 			LOG.warn("Unexpected exception when processing " + pathInfo, e);
