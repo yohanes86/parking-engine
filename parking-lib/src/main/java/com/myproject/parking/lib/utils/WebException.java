@@ -2,7 +2,7 @@ package com.myproject.parking.lib.utils;
 
 import java.util.Arrays;
 
-public class SmisWebException extends Exception {
+public class WebException extends Exception {
 	private static final long serialVersionUID = 1L;	
 	
 	public static final int NE_UNKNOWN_ERROR			= 99999;
@@ -66,23 +66,23 @@ public class SmisWebException extends Exception {
 	private int errorCode;
 	private String[] info;
 		
-	public SmisWebException() {
+	public WebException() {
 		super("rc." +  NE_UNKNOWN_ERROR);
 		this.errorCode = NE_UNKNOWN_ERROR;
 	}
 	
-	public SmisWebException(int errorCode) {
+	public WebException(int errorCode) {
 		super("rc." + errorCode);
 		this.errorCode = errorCode;
 	}
 	
-	public SmisWebException(int errorCode, String[] info) {
+	public WebException(int errorCode, String[] info) {
 		super("rc." + errorCode + ", info: " + Arrays.toString(info));
 		this.errorCode = errorCode;
 		this.info = info;
 	}
 	
-	public SmisWebException(int errorCode, String info) {
+	public WebException(int errorCode, String info) {
 		super();
 		this.errorCode = errorCode;
 		this.info = new String[] {info};

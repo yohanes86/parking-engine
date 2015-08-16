@@ -1,6 +1,6 @@
 package com.myproject.parking.lib.utils;
 
-public class SmisConstants {
+public class Constants {
 	
 	
 	public static final String NE_SDF_FULL			= "dd-MM-yyyy HH:mm:ss";

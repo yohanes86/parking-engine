@@ -8,12 +8,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SmisFileUtils {
+public class FileUtils {
 	
-	public static List<String> readFile(File file) throws SmisWebException{
+	public static List<String> readFile(File file) throws WebException{
 		
 		if(file == null){
-			throw new SmisWebException(SmisWebException.NE_DATA_NOT_FOUND, new String [] {"File"});
+			throw new WebException(WebException.NE_DATA_NOT_FOUND, new String [] {"File"});
 		}
 		List<String> listContent = new ArrayList<String>();
 		try {
