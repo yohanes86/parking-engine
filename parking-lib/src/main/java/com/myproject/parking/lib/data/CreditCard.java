@@ -8,9 +8,9 @@ public class CreditCard implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Address billingAddress;
-	private String cvv2;
-	private String expireMonth;
-	private String expireYear;
+	private int cvv2;
+	private int expireMonth;
+	private int expireYear;
 	private String firstName;
 	private String lastName;
 	private String number;
@@ -33,27 +33,29 @@ public class CreditCard implements Serializable {
 		this.billingAddress = billingAddress;
 	}
 
-	public String getCvv2() {
+	
+
+	public int getCvv2() {
 		return cvv2;
 	}
 
-	public void setCvv2(String cvv2) {
+	public void setCvv2(int cvv2) {
 		this.cvv2 = cvv2;
 	}
 
-	public String getExpireMonth() {
+	public int getExpireMonth() {
 		return expireMonth;
 	}
 
-	public void setExpireMonth(String expireMonth) {
+	public void setExpireMonth(int expireMonth) {
 		this.expireMonth = expireMonth;
 	}
 
-	public String getExpireYear() {
+	public int getExpireYear() {
 		return expireYear;
 	}
 
-	public void setExpireYear(String expireYear) {
+	public void setExpireYear(int expireYear) {
 		this.expireYear = expireYear;
 	}
 

@@ -18,16 +18,19 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.myproject.parking.lib.data.PaymentVO;
 import com.myproject.parking.lib.entity.Lookup;
 import com.myproject.parking.lib.entity.Profile;
 import com.myproject.parking.lib.utils.CommonUtil;
+import com.paypal.api.payments.Address;
+import com.paypal.api.payments.CreditCard;
 
 
 @RunWith(MockitoJUnitRunner.class)
 public class SmisServletTest {
 	private static final Logger LOG = LoggerFactory.getLogger(SmisServletTest.class);
 
-//	private final String baseHostUrl = "http://localhost:8080/parking-trx/trx/loginUser";
+	private final String baseHostUrl = "http://localhost:8080/parking-trx/trx/loginUser";
 	private final String testingPaymentWithCC = "http://localhost:8080/parking-trx/trx/paymentCC";
 //	private final String baseHostUrl = "http://192.168.0.78:8080/smis-web-service/findUserDataByUserCode";
 	//private final String baseHostUrl = "http://192.168.0.76:8089/nusapro-wallet/wallet";
@@ -36,7 +39,7 @@ public class SmisServletTest {
 	
 	@Test
 	public void testFindUserDataByUserCode() {
-		String url = testingPaymentWithCC;
+		String url = baseHostUrl;
 		long startTime = System.currentTimeMillis();
 		HttpClient client = new DefaultHttpClient();
 		try {
@@ -85,6 +88,72 @@ public class SmisServletTest {
         }  // end try finally
 	}
 	
+	@Test
+	public void testPaymentWithCC() {
+		String url = testingPaymentWithCC;
+		long startTime = System.currentTimeMillis();
+		HttpClient client = new DefaultHttpClient();
+		try {
+
+			com.myproject.parking.lib.data.Address billingAddress = new com.myproject.parking.lib.data.Address();
+			billingAddress.setCity("Johnstown");
+			billingAddress.setCountryCode("US");
+			billingAddress.setLine1("52 N Main ST");
+			billingAddress.setPostalCode("43210");
+			billingAddress.setState("OH");
+			
+			com.myproject.parking.lib.data.CreditCard creditCard = new com.myproject.parking.lib.data.CreditCard();
+			creditCard.setBillingAddress(billingAddress);
+			creditCard.setCvv2(111);
+			creditCard.setExpireMonth(11);
+			creditCard.setExpireYear(2018);
+			creditCard.setFirstName("Joe");
+			creditCard.setLastName("Shopper");
+			creditCard.setNumber("4032038628710679");
+			creditCard.setType("visa");
+			
+			PaymentVO paymentVO = new PaymentVO();
+			paymentVO.setAddress(billingAddress);
+			paymentVO.setCreditCard(creditCard);
+			
+			String s = mapper.writeValueAsString(paymentVO);
+			LOG.debug("Request: " + s);
+            StringEntity entity = new StringEntity(s);
+			
+			HttpPost post = new HttpPost(url);
+			post.setHeader("Content-Type", "application/json");
+			post.setEntity(entity);
+			
+			// Execute HTTP request
+			LOG.debug("Executing request: " + post.getURI());
+            HttpResponse response = client.execute(post);
+            
+            // Get hold of the response entity
+            StatusLine sl = response.getStatusLine();
+            LOG.debug("StatusCode: " + sl.getStatusCode());
+            Assert.assertEquals(200, sl.getStatusCode());
+
+            HttpEntity respEntity = response.getEntity();
+            String respString = EntityUtils.toString(respEntity);
+            LOG.debug("Response: " + respString);
+            
+//            WalletTrxResponse trxResp = mapper.
+//            		readValue(respString, WalletTrxResponse.class);
+//            Assert.assertEquals(trxReq.getRequestId(), trxResp.getRequestId());
+            Assert.assertEquals(true, true);
+            int delta = (int) (System.currentTimeMillis() - startTime);
+            LOG.info("Finish running one thread in {}ms", 
+            		new String[] { CommonUtil.displayNumberNoDecimal(delta) } );
+		}catch (Exception e) {
+		
+			LOG.warn("Unexpected Exception", e);
+		} finally {
+            // When HttpClient instance is no longer needed,
+            // shut down the connection manager to ensure
+            // immediate deallocation of all system resources
+            client.getConnectionManager().shutdown();
+        }  // end try finally
+	}
 	
 	/*private WalletTrxRequest createWalletTrxRequest(String customerCode, String requestId) {
 		WalletTrxRequest trxRequest = new WalletTrxRequest();

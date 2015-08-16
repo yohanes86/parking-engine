@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.myproject.parking.lib.data.PaymentVO;
+import com.myproject.parking.lib.entity.Profile;
 import com.myproject.parking.lib.utils.GenerateAccessToken;
 import com.myproject.parking.trx.logic.BaseQueryLogic;
 import com.paypal.api.payments.Address;
@@ -28,7 +30,8 @@ public class PaymentWithCreditCard implements BaseQueryLogic {
 	public String process(String data, ObjectMapper mapper, String pathInfo) {
 		LOG.debug("Start process Query :"+pathInfo);		
 		try {
-			Payment createdPayment = createPayment();
+			PaymentVO paymentVO = mapper.readValue(data, PaymentVO.class);
+			Payment createdPayment = createPayment(paymentVO);
 			return mapper.writeValueAsString(createdPayment);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -37,7 +40,7 @@ public class PaymentWithCreditCard implements BaseQueryLogic {
 		}
 	}
 	
-	public Payment createPayment() {
+	public Payment createPayment(PaymentVO paymentVO) {
 		// ###Address
 		// Base Address object used as shipping or billing
 		// address in a payment. [Optional]

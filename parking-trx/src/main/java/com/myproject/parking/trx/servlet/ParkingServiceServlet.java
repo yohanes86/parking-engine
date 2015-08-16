@@ -58,8 +58,8 @@ public class ParkingServiceServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		doPost(request, response);
+		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+//		doPost(request, response);
 	}
 	
 	@Override
