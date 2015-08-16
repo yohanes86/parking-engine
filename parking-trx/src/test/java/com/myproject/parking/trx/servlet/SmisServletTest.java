@@ -1,6 +1,6 @@
-package com.emobile.smis.webservice.servlet;
+package com.myproject.parking.trx.servlet;
 
-import java.util.Random;
+import java.lang.reflect.InvocationTargetException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -9,7 +9,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Assert;
@@ -19,14 +18,72 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.myproject.parking.lib.entity.Lookup;
+import com.myproject.parking.lib.entity.Profile;
+import com.myproject.parking.lib.utils.CommonUtil;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class SmisServletTest {
 	private static final Logger LOG = LoggerFactory.getLogger(SmisServletTest.class);
 
-	private final String baseHostUrl = "http://192.168.0.78:8080/smis-web-service/findUserDataByUserCode";
+	private final String baseHostUrl = "http://localhost:8080/parking-trx/trx/loginUser";
+//	private final String baseHostUrl = "http://192.168.0.78:8080/smis-web-service/findUserDataByUserCode";
 	//private final String baseHostUrl = "http://192.168.0.76:8089/nusapro-wallet/wallet";
 	private ObjectMapper mapper = new ObjectMapper();
+	
+	
+	@Test
+	public void testFindUserDataByUserCode() {
+		String url = baseHostUrl;
+		long startTime = System.currentTimeMillis();
+		HttpClient client = new DefaultHttpClient();
+		try {
+
+			Profile profile = new Profile();
+			profile.setEmail("email@yahoo.com");
+			profile.setCcNumber("1234567890123456");
+			profile.setPhoneNo("08182432211");
+			
+			String s = mapper.writeValueAsString(profile);
+			LOG.debug("Request: " + s);
+            StringEntity entity = new StringEntity(s);
+			
+			HttpPost post = new HttpPost(url);
+			post.setHeader("Content-Type", "application/json");
+			post.setEntity(entity);
+			
+			// Execute HTTP request
+			LOG.debug("Executing request: " + post.getURI());
+            HttpResponse response = client.execute(post);
+            
+            // Get hold of the response entity
+            StatusLine sl = response.getStatusLine();
+            LOG.debug("StatusCode: " + sl.getStatusCode());
+            Assert.assertEquals(200, sl.getStatusCode());
+
+            HttpEntity respEntity = response.getEntity();
+            String respString = EntityUtils.toString(respEntity);
+            LOG.debug("Response: " + respString);
+            
+//            WalletTrxResponse trxResp = mapper.
+//            		readValue(respString, WalletTrxResponse.class);
+//            Assert.assertEquals(trxReq.getRequestId(), trxResp.getRequestId());
+            Assert.assertEquals(true, true);
+            int delta = (int) (System.currentTimeMillis() - startTime);
+            LOG.info("Finish running one thread in {}ms", 
+            		new String[] { CommonUtil.displayNumberNoDecimal(delta) } );
+		}catch (Exception e) {
+		
+			LOG.warn("Unexpected Exception", e);
+		} finally {
+            // When HttpClient instance is no longer needed,
+            // shut down the connection manager to ensure
+            // immediate deallocation of all system resources
+            client.getConnectionManager().shutdown();
+        }  // end try finally
+	}
+	
 	
 	/*private WalletTrxRequest createWalletTrxRequest(String customerCode, String requestId) {
 		WalletTrxRequest trxRequest = new WalletTrxRequest();

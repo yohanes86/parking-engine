@@ -1,4 +1,4 @@
-package com.emobile.smis.webservice.servlet;
+package com.myproject.parking.trx.servlet;
 
 import java.io.UnsupportedEncodingException;
 
@@ -16,8 +16,7 @@ import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.emobile.smis.web.entity.UserData;
-import com.emobile.smis.web.utils.CommonUtil;
+import com.myproject.parking.lib.utils.CommonUtil;
 
 public class SmisHttpPostThread extends Thread {
 	private static final Logger LOG = LoggerFactory.getLogger(SmisHttpPostThread.class);
@@ -70,11 +69,12 @@ public class SmisHttpPostThread extends Thread {
                 LOG.debug("[{}] Response: {}", new String[] {
                 		"" + id, respString} );
                 
-                UserData userData = mapper.
-                		readValue(respString, UserData.class);
+//                UserData userData = mapper.
+//                		readValue(respString, UserData.class);
+                
                 
                 LOG.debug("[{}] Response Object: {}", new String[] {
-                		"" + id, userData.toString()} );
+                		"" + id, null} );
             }
             
             int delta = (int) (System.currentTimeMillis() - startTime);
