@@ -6,11 +6,13 @@ import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.myproject.parking.lib.data.PaymentVO;
-import com.myproject.parking.lib.entity.Profile;
+import com.myproject.parking.lib.service.CheckUserService;
+import com.myproject.parking.lib.service.ParkingEngineException;
 import com.myproject.parking.lib.utils.GenerateAccessToken;
+import com.myproject.parking.lib.utils.MessageUtils;
 import com.myproject.parking.trx.logic.BaseQueryLogic;
 import com.paypal.api.payments.Address;
 import com.paypal.api.payments.Amount;
@@ -26,21 +28,33 @@ import com.paypal.base.rest.PayPalRESTException;
 public class PaymentWithCreditCard implements BaseQueryLogic {
 	private static final Logger LOG = LoggerFactory.getLogger(PaymentWithCreditCard.class);
 			
+	@Autowired
+	private CheckUserService checkUserService;
+	
 	@Override
 	public String process(String data, ObjectMapper mapper, String pathInfo) {
 		LOG.debug("Start process Query :"+pathInfo);		
-		try {
+		String result = "";
+		try {			
 			PaymentVO paymentVO = mapper.readValue(data, PaymentVO.class);
-			Payment createdPayment = createPayment(paymentVO);
-			return mapper.writeValueAsString(createdPayment);
+			checkUserService.isValidUser(paymentVO.getEmail(),paymentVO.getSessionId());
+			Payment createdPayment = createPayment(paymentVO);				
+			result = MessageUtils.handleSuccess("Payment ID : " + createdPayment.getId() 
+					+ " Created Date : " + createdPayment.getCreateTime() + " State : " + createdPayment.getState(), mapper);
+		} catch (ParkingEngineException e) {
+			LOG.error("ParkingEngineException when processing " + pathInfo, e);
+			result = MessageUtils.handleException(e, "", mapper);
+		} catch (PayPalRESTException e) {
+			LOG.error("PayPalRESTException when processing " + pathInfo, e);
+			result = MessageUtils.handleException(e, "PayPalRESTException when processing "+ e.getMessage(), mapper);
 		} catch (Exception e) {
-			// TODO: handle exception
-			LOG.warn("Unexpected exception when processing " + pathInfo, e);
-			return null;
+			LOG.error("Unexpected exception when processing " + pathInfo, e);
+			result = MessageUtils.handleException(e, "Unexpected exception when processing "+ e.getMessage(), mapper);
 		}
+		return result;
 	}
 	
-	public Payment createPayment(PaymentVO paymentVO) {
+	private Payment createPayment(PaymentVO paymentVO) throws PayPalRESTException {
 		// ###Address
 		// Base Address object used as shipping or billing
 		// address in a payment. [Optional]
@@ -159,9 +173,7 @@ public class PaymentWithCreditCard implements BaseQueryLogic {
 //			ResultPrinter.addResult(req, resp, "Payment with Credit Card",
 //					Payment.getLastRequest(), Payment.getLastResponse(), null);
 		} catch (PayPalRESTException e) {
-//			ResultPrinter.addResult(req, resp, "Payment with Credit Card",
-//					Payment.getLastRequest(), null, e.getMessage());
-			LOG.error("PayPalRESTException : " + e.getMessage());
+			throw e;
 		}
 		return createdPayment;
 		

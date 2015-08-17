@@ -2,34 +2,33 @@ package com.myproject.parking.lib.data;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
 public class LoginData implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	private String userCode;
-	private String password;
-	private String positionName;
-	
-	public String getPositionName() {
-		return positionName;
+
+	private String email;
+	private String sessionId;
+
+	public String getEmail() {
+		return email;
 	}
-	public void setPositionName(String positionName) {
-		this.positionName = positionName;
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	public String getUserCode() {
-		return userCode;
+
+	public String getSessionId() {
+		return sessionId;
 	}
-	public void setUserCode(String userCode) {
-		this.userCode = userCode;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
 	
+	@Override
 	public String toString() {
-		return "[userCode=" + userCode + "," + 
-			"password=***]";
+		return ReflectionToStringBuilder.toString(this);
 	}
+
 }

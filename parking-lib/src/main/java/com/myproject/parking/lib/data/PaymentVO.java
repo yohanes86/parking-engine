@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-public class PaymentVO implements Serializable {
+public class PaymentVO extends LoginData implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Address address;

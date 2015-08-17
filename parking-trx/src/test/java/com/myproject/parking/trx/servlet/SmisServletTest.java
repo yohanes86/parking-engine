@@ -37,7 +37,7 @@ public class SmisServletTest {
 	private ObjectMapper mapper = new ObjectMapper();
 	
 	
-	@Test
+//	@Test
 	public void testFindUserDataByUserCode() {
 		String url = baseHostUrl;
 		long startTime = System.currentTimeMillis();
