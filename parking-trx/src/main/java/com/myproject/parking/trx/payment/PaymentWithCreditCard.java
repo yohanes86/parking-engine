@@ -6,12 +6,15 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.myproject.parking.lib.data.PaymentVO;
+import com.myproject.parking.lib.entity.TrxPayment;
+import com.myproject.parking.lib.service.AppsTimeService;
 import com.myproject.parking.lib.service.CheckUserService;
 import com.myproject.parking.lib.service.ParkingEngineException;
 import com.myproject.parking.lib.utils.CipherUtil;
@@ -34,6 +37,9 @@ public class PaymentWithCreditCard implements BaseQueryLogic {
 			
 	@Autowired
 	private CheckUserService checkUserService;
+	
+	@Autowired
+	private AppsTimeService timeServer;
 	
 	@Override
 	public String process(HttpServletRequest request,HttpServletResponse response,String data, ObjectMapper mapper, String pathInfo) {
@@ -58,7 +64,27 @@ public class PaymentWithCreditCard implements BaseQueryLogic {
 		return result;
 	}
 	
-	private Payment createPayment(PaymentVO paymentVO) throws PayPalRESTException {
+	private void savePayment(Payment payment) throws ParkingEngineException {
+		TrxPayment trxPayment = new TrxPayment();
+		if(!StringUtils.isEmpty(payment.getId())){
+			trxPayment.setPaymentId(payment.getId());	
+		}
+		trxPayment.setCreateTime(timeServer.getCurrentTime());
+		trxPayment.setUpdateTime(timeServer.getCurrentTime());
+		if(!StringUtils.isEmpty(payment.getPayer().getPaymentMethod())){
+			trxPayment.setPaymentMethod(payment.getPayer().getPaymentMethod());
+		}
+		
+		// belum selesai
+		
+	}
+	
+	private void updatePayment(Payment payment) throws ParkingEngineException {
+		// cari trxPayment dari payment id
+		// update state,updateTime
+	}
+	
+	private Payment createPayment(PaymentVO paymentVO) throws PayPalRESTException,ParkingEngineException {
 		// ###Address
 		// Base Address object used as shipping or billing
 		// address in a payment. [Optional]
@@ -170,13 +196,17 @@ public class PaymentWithCreditCard implements BaseQueryLogic {
 			// Create a payment by posting to the APIService
 			// using a valid AccessToken
 			// The return object contains the status;
+			
+			savePayment(payment);
 			createdPayment = payment.create(apiContext);
-
+			updatePayment(createdPayment);
 			LOG.info("Created payment with id = " + createdPayment.getId()
 					+ " and status = " + createdPayment.getState());
 //			ResultPrinter.addResult(req, resp, "Payment with Credit Card",
 //					Payment.getLastRequest(), Payment.getLastResponse(), null);
 		} catch (PayPalRESTException e) {
+			throw e;
+		} catch (ParkingEngineException e) {
 			throw e;
 		}
 		return createdPayment;
