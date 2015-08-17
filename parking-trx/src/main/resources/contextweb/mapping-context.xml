@@ -12,5 +12,6 @@
 	
 	<bean id="loginUser" class="com.myproject.parking.trx.logic.security.LoginUserModule"/>
 	<bean id="paymentCC" class="com.myproject.parking.trx.payment.PaymentWithCreditCard"/>
+	<bean id="paymentPayPal" class="com.myproject.parking.trx.payment.PaymentWithPayPal"/>
 	
 </beans>

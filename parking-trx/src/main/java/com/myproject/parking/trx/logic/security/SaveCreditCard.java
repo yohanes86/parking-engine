@@ -9,6 +9,9 @@
 // API used: POST /v1/vault/credit-card
 package com.myproject.parking.trx.logic.security;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +28,7 @@ public class SaveCreditCard implements BaseQueryLogic {
 	private static final Logger LOG = LoggerFactory.getLogger(SaveCreditCard.class);
 
 	@Override
-	public String process(String data, ObjectMapper mapper, String pathInfo) {
+	public String process(HttpServletRequest request,HttpServletResponse response,String data, ObjectMapper mapper, String pathInfo) {
 		LOG.debug("Start process Query :" + pathInfo);
 		String result = "";
 		try {
@@ -87,4 +90,5 @@ public class SaveCreditCard implements BaseQueryLogic {
 					throw e;
 				}
 	}
+
 }

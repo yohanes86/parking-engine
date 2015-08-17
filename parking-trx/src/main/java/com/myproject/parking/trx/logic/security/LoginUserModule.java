@@ -1,5 +1,8 @@
 package com.myproject.parking.trx.logic.security;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +20,7 @@ public class LoginUserModule implements BaseQueryLogic {
 		
 	@Override
 	@Transactional(rollbackFor=Exception.class)
-	public String process(String data, ObjectMapper mapper, String pathInfo) {
+	public String process(HttpServletRequest request,HttpServletResponse response,String data, ObjectMapper mapper, String pathInfo) {
 		LOG.debug("Start process Query :"+pathInfo);		
 		try {
 			Profile profile = mapper.readValue(data, Profile.class);

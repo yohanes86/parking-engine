@@ -58,8 +58,8 @@ public class ParkingServiceServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-//		doPost(request, response);
+//		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+		doPost(request, response);
 	}
 	
 	@Override
@@ -91,7 +91,7 @@ public class ParkingServiceServlet extends HttpServlet {
 
 		LOG.debug("RequestData: {}", new String[] { data });	
 	
-		String respData = logic.process(data, mapper, pathInfo);
+		String respData = logic.process(request,response,data, mapper, pathInfo);
 		
 		if (respData == null) {
 			LOG.warn("PathInfo {} is not supported.", new String[] {pathInfo});

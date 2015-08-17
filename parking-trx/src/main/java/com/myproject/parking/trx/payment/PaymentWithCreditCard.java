@@ -3,6 +3,9 @@ package com.myproject.parking.trx.payment;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +35,7 @@ public class PaymentWithCreditCard implements BaseQueryLogic {
 	private CheckUserService checkUserService;
 	
 	@Override
-	public String process(String data, ObjectMapper mapper, String pathInfo) {
+	public String process(HttpServletRequest request,HttpServletResponse response,String data, ObjectMapper mapper, String pathInfo) {
 		LOG.debug("Start process Query :"+pathInfo);		
 		String result = "";
 		try {			
