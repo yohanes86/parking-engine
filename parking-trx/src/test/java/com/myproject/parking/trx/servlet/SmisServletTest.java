@@ -2,6 +2,8 @@ package com.myproject.parking.trx.servlet;
 
 import java.lang.reflect.InvocationTargetException;
 
+import javax.crypto.Cipher;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -21,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import com.myproject.parking.lib.data.PaymentVO;
 import com.myproject.parking.lib.entity.Lookup;
 import com.myproject.parking.lib.entity.Profile;
+import com.myproject.parking.lib.utils.CipherUtil;
 import com.myproject.parking.lib.utils.CommonUtil;
 import com.paypal.api.payments.Address;
 import com.paypal.api.payments.CreditCard;
@@ -89,7 +92,7 @@ public class SmisServletTest {
         }  // end try finally
 	}
 	
-//	@Test
+	@Test
 	public void testPaymentWithCC() {
 		String url = testingPaymentWithCC;
 		long startTime = System.currentTimeMillis();
@@ -97,19 +100,19 @@ public class SmisServletTest {
 		try {
 
 			com.myproject.parking.lib.data.Address billingAddress = new com.myproject.parking.lib.data.Address();
-			billingAddress.setCity("Johnstown");
-			billingAddress.setCountryCode("US");
-			billingAddress.setLine1("52 N Main ST");
-			billingAddress.setPostalCode("43210");
-			billingAddress.setState("OH");
+			billingAddress.setCity("Jakarta Barat");
+			billingAddress.setCountryCode("ID");
+			billingAddress.setLine1("Duta Bandara Permai Blok ZS 4 no 31");
+			billingAddress.setPostalCode("15211");
+			billingAddress.setState("Banten");
 			
 			com.myproject.parking.lib.data.CreditCard creditCard = new com.myproject.parking.lib.data.CreditCard();
 			creditCard.setBillingAddress(billingAddress);
 			creditCard.setCvv2(111);
 			creditCard.setExpireMonth(11);
 			creditCard.setExpireYear(2018);
-			creditCard.setFirstName("Joe");
-			creditCard.setLastName("Shopper");
+			creditCard.setFirstName("Agus");
+			creditCard.setLastName("Darma Kusuma Buyer");
 			creditCard.setNumber("4032038628710679");
 			creditCard.setType("visa");
 			
@@ -118,6 +121,7 @@ public class SmisServletTest {
 			paymentVO.setCreditCard(creditCard);
 			
 			String s = mapper.writeValueAsString(paymentVO);
+			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
 			LOG.debug("Request: " + s);
             StringEntity entity = new StringEntity(s);
 			
@@ -156,7 +160,7 @@ public class SmisServletTest {
         }  // end try finally
 	}
 	
-	@Test
+//	@Test
 	public void testPaymentWithPaypal() {
 		String url = testingPaymentWithPayPal;
 		long startTime = System.currentTimeMillis();

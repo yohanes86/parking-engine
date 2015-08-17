@@ -20,6 +20,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import com.myproject.parking.lib.utils.CipherUtil;
 import com.myproject.parking.lib.utils.CommonUtil;
 import com.myproject.parking.trx.logic.BaseQueryLogic;
 import com.myproject.parking.trx.logic.LogicFactory;
@@ -88,7 +89,7 @@ public class ParkingServiceServlet extends HttpServlet {
 		}
 		reader.close();
 		String data = sb.toString();
-
+		data = CipherUtil.decryptTripleDES(data, CipherUtil.PASSWORD);
 		LOG.debug("RequestData: {}", new String[] { data });	
 	
 		String respData = logic.process(request,response,data, mapper, pathInfo);

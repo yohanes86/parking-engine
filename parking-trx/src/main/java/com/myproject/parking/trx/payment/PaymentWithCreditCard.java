@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.myproject.parking.lib.data.PaymentVO;
 import com.myproject.parking.lib.service.CheckUserService;
 import com.myproject.parking.lib.service.ParkingEngineException;
+import com.myproject.parking.lib.utils.CipherUtil;
 import com.myproject.parking.lib.utils.GenerateAccessToken;
 import com.myproject.parking.lib.utils.MessageUtils;
 import com.myproject.parking.trx.logic.BaseQueryLogic;
@@ -38,7 +39,7 @@ public class PaymentWithCreditCard implements BaseQueryLogic {
 	public String process(HttpServletRequest request,HttpServletResponse response,String data, ObjectMapper mapper, String pathInfo) {
 		LOG.debug("Start process Query :"+pathInfo);		
 		String result = "";
-		try {			
+		try {						
 			PaymentVO paymentVO = mapper.readValue(data, PaymentVO.class);
 			checkUserService.isValidUser(paymentVO.getEmail(),paymentVO.getSessionId());
 			Payment createdPayment = createPayment(paymentVO);				
@@ -62,24 +63,24 @@ public class PaymentWithCreditCard implements BaseQueryLogic {
 		// Base Address object used as shipping or billing
 		// address in a payment. [Optional]
 		Address billingAddress = new Address();
-		billingAddress.setCity("Johnstown");
-		billingAddress.setCountryCode("US");
-		billingAddress.setLine1("52 N Main ST");
-		billingAddress.setPostalCode("43210");
-		billingAddress.setState("OH");
+		billingAddress.setCity(paymentVO.getAddress().getCity());
+		billingAddress.setCountryCode(paymentVO.getAddress().getCountryCode());
+		billingAddress.setLine1(paymentVO.getAddress().getLine1());
+		billingAddress.setPostalCode(paymentVO.getAddress().getPostalCode());
+		billingAddress.setState(paymentVO.getAddress().getState());
 
 		// ###CreditCard
 		// A resource representing a credit card that can be
 		// used to fund a payment.
 		CreditCard creditCard = new CreditCard();
 		creditCard.setBillingAddress(billingAddress);
-		creditCard.setCvv2(111);
-		creditCard.setExpireMonth(11);
-		creditCard.setExpireYear(2018);
-		creditCard.setFirstName("Joe");
-		creditCard.setLastName("Shopper");
-		creditCard.setNumber("4032038628710679");
-		creditCard.setType("visa");
+		creditCard.setCvv2(paymentVO.getCreditCard().getCvv2());
+		creditCard.setExpireMonth(paymentVO.getCreditCard().getExpireMonth());
+		creditCard.setExpireYear(paymentVO.getCreditCard().getExpireYear());
+		creditCard.setFirstName(paymentVO.getCreditCard().getFirstName());
+		creditCard.setLastName(paymentVO.getCreditCard().getLastName());
+		creditCard.setNumber(paymentVO.getCreditCard().getNumber());
+		creditCard.setType(paymentVO.getCreditCard().getType());
 
 		// ###Details
 		// Let's you specify details of a payment amount.
