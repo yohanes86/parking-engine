@@ -32,14 +32,14 @@ public class ForgetPasswordService {
 			LOG.error("Can't find User");
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_FOUND);
 		}
-		if(Constants.ACTIVE == user.getStatus()){
-			LOG.error("User already activated");
-			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_ALREADY_ACTIVATED);
-		}
 		if(Constants.BLOCKED == user.getStatus()){
 			LOG.error("User already blocked");
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_BLOCKED);
 		}
+		if(Constants.PENDING == user.getStatus()){
+			LOG.error("User not active");
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_ACTIVE);
+		}		
 		// update password user
 		// update updated on	
 		// kirim ke email		
