@@ -36,9 +36,10 @@ public class SmisServletTest {
 	private ObjectMapper mapper = new ObjectMapper();
 	
 	private final String testingActivateService = "http://localhost:8080/parking-trx/trx/userActivate?actKey=dadadada&email=a@yahoo.com&noHp=085693938630";
+	private final String testingForget = "http://localhost:8080/parking-trx/trx/forgetPassword";
 	
 	
-	@Test
+//	@Test
 	public void testRegistrationUser() {
 		String url = testingUserRegistration;
 		long startTime = System.currentTimeMillis();
@@ -229,13 +230,13 @@ public class SmisServletTest {
 	
 	@Test
 	public void testForgetPassword() {
-		String url = testingUserRegistration;
+		String url = testingForget;
 		long startTime = System.currentTimeMillis();
 		HttpClient client = new DefaultHttpClient();
 		try {
 			
 			ForgetPasswordVO forgetPasswordVO = new ForgetPasswordVO();
-			forgetPasswordVO.setEmail("testing@yahoo.com");
+			forgetPasswordVO.setEmail("agusdk2011@gmail.com");
 			
 			String s = mapper.writeValueAsString(forgetPasswordVO);
 			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
