@@ -22,6 +22,17 @@
 	<bean id="versionData" class="com.myproject.parking.trx.data.VersionData" 
 			init-method="printInfo" />
 	
+	<bean id="notifEmailSender" class="com.myproject.parking.lib.utils.EmailSender">
+		<property name="smtpHost" value="smtp-mnet.biz.net.id" /> 
+		<property name="smtpPort" value="25" />
+		<property name="smtpUserName" value="" />
+		<property name="smtpPassword" value="" />
+		<property name="useTLS" value="false" />
+		<property name="useSSL" value="false" />
+		<property name="defaultFrom" value="yohanes@emobile.com.sg" />
+		<!-- <property name="htmlTemplate" value="${htmlTemplate.data}" /> -->
+	</bean>
+	
 	<bean id="logicFactory" class="com.myproject.parking.trx.logic.LogicFactory">
 		<property name="logic" >
 		    <map>

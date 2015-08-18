@@ -13,6 +13,7 @@ import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.service.AppsTimeService;
 import com.myproject.parking.lib.service.ParkingEngineException;
 import com.myproject.parking.lib.service.UserDataService;
+import com.myproject.parking.lib.utils.CipherUtil;
 import com.myproject.parking.lib.utils.CommonUtil;
 import com.myproject.parking.lib.utils.Constants;
 import com.myproject.parking.lib.utils.MessageUtils;
@@ -33,6 +34,7 @@ public class UserRegistration implements BaseQueryLogic {
 		String result = "";
 		try {
 			UserData user = mapper.readValue(data, UserData.class);
+			user.setPassword(CipherUtil.passwordDigest(user.getEmail(), user.getPassword()));
 			user.setPhoneNo(CommonUtil.normalizePhoneNo(user.getPhoneNo()));
 			user.setCreatedBy(Constants.SYSTEM);
 			user.setCreatedOn(timeService.getCurrentTime());
