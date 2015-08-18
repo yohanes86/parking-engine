@@ -38,6 +38,17 @@
          	and phone_no = #{phoneNo}
      </select>
      
+     <select id="findUserDataByEmail" parameterType="java.util.Map" resultType="UserData">
+         select 
+         	id, 
+         	name, 
+         	phone_no as phoneNo,
+         	email,
+         	license_no as licenseNo
+         	from userdata 
+         	where email = #{email}      
+     </select>
+     
      <select id="findUserByEmailAndPhoneNoAndActKey" parameterType="java.util.Map" resultType="UserData">
          select 
          	id, 
@@ -50,4 +61,12 @@
          	and phone_no = #{phoneNo}
          	and activate_key = #{actKey}
      </select>
+     
+     <update id="updateStatusUser" parameterType="java.util.Map" >
+    	UPDATE userdata SET status = #{status} ,updated_on = #{updatedOn} WHERE email = #{email} 	
+     </update>
+     
+     <update id="updatePasswordUser" parameterType="java.util.Map" >
+    	UPDATE userdata SET password = #{password} ,updated_on = #{updatedOn} WHERE email = #{email} 	
+     </update>
 </mapper>

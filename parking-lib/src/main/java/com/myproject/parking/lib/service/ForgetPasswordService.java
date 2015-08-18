@@ -10,8 +10,8 @@ import com.myproject.parking.lib.mapper.UserDataMapper;
 import com.myproject.parking.lib.utils.Constants;
 
 @Service
-public class ActivateUserService {
-	private static final Logger LOG = LoggerFactory.getLogger(ActivateUserService.class);
+public class ForgetPasswordService {
+	private static final Logger LOG = LoggerFactory.getLogger(ForgetPasswordService.class);
 	
 	@Autowired
 	private UserDataMapper userDataMapper;
@@ -19,9 +19,9 @@ public class ActivateUserService {
 	@Autowired
 	private AppsTimeService timeService;
 	
-	public void activateUser(String actKey,String email,String noHp) throws ParkingEngineException {
-		LOG.info("activateUser with param : " + "ACT KEY : " + actKey + " EMAIL: " + email + " NO HP : " + noHp);	
-		UserData user = userDataMapper.findUserByEmailAndPhoneNoAndActKey(email, noHp,actKey);
+	public void forgetPassword(String email) throws ParkingEngineException {
+		LOG.info("forgetPassword with param : " + " EMAIL: " + email );	
+		UserData user = userDataMapper.findUserDataByEmail(email);
 		if(user == null){
 			LOG.error("Can't find User");
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_FOUND);
@@ -34,9 +34,13 @@ public class ActivateUserService {
 			LOG.error("User already blocked");
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_BLOCKED);
 		}
-		// update status user menjadi active
-		// update updated on		
-		userDataMapper.updateStatusUser(email, Constants.ACTIVE, timeService.getCurrentTime());
-		LOG.info("activateUser done with param : " + "ACT KEY : " + actKey + " EMAIL: " + email + " NO HP : " + noHp);
+		// update password user
+		// update updated on	
+		// kirim ke email
+		String password = null;
+		userDataMapper.updatePasswordUser(email, password, timeService.getCurrentTime());
+		// kirim ke email user
+		
+		LOG.info("forgetPassword done with param : " + " EMAIL: " + email);
 	}
 }
