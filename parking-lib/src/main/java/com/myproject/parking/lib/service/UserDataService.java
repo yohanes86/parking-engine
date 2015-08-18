@@ -42,7 +42,7 @@ public class UserDataService {
 	}
 	
 	private void composeEmailMsg(UserData user){
-		String emailTo= "agusdk2011@gmail.com";
+		String emailTo= user.getEmail();
 		String emailSubject= "PARKING ONLINE : Register Account";
 		String message= "";
 		
