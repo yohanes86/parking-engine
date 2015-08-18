@@ -1,6 +1,6 @@
 @echo off 
 
-set PATH_COMPILE=D:\Project\internal-project\parking-engine
+set PATH_COMPILE=D:\Personal\Project\parking-engine
 echo Compile %1 using path %PATH_COMPILE%
 if not "%2"=="" echo Additional Param: client=%2
 

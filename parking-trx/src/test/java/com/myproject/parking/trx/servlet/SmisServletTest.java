@@ -34,6 +34,8 @@ public class SmisServletTest {
 	//private final String baseHostUrl = "http://192.168.0.76:8089/nusapro-wallet/wallet";
 	private ObjectMapper mapper = new ObjectMapper();
 	
+	private final String testingActivateService = "http://localhost:8080/parking-trx/trx/userActivate?actKey=dadadada&email=a@yahoo.com&noHp=085693938630";
+	
 	
 //	@Test
 	public void testRegistrationUser() {
