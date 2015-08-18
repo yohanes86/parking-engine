@@ -6,11 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ch.qos.logback.core.db.dialect.MsSQLDialect;
-
 import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.mapper.UserDataMapper;
-import com.myproject.parking.lib.utils.CipherUtil;
 import com.myproject.parking.lib.utils.Constants;
 import com.myproject.parking.lib.utils.EmailSender;
 
