@@ -24,7 +24,7 @@ public class VersionData {
 	private String buildDate;
 	
 	public VersionData() {
-		appsName = "SMIS Web Apps";
+		appsName = "Parking Engine Apps";
 		version = "0.0.1";
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, HH:mm");
 		

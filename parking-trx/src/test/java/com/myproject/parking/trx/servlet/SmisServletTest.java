@@ -1,5 +1,7 @@
 package com.myproject.parking.trx.servlet;
 
+import javax.crypto.Cipher;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -18,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.myproject.parking.lib.data.PaymentVO;
 import com.myproject.parking.lib.entity.UserData;
+import com.myproject.parking.lib.utils.CipherUtil;
 import com.myproject.parking.lib.utils.CommonUtil;
 
 
@@ -27,11 +30,12 @@ public class SmisServletTest {
 
 	private final String testingUserRegistration = "http://localhost:8080/parking-trx/trx/userRegistration";
 	private final String testingPaymentWithCC = "http://localhost:8080/parking-trx/trx/paymentCC";
-	
+	private final String testingPaymentWithPayPal = "http://localhost:8080/parking-trx/trx/paymentPayPal";
+	//private final String baseHostUrl = "http://192.168.0.76:8089/nusapro-wallet/wallet";
 	private ObjectMapper mapper = new ObjectMapper();
 	
 	
-	@Test
+//	@Test
 	public void testRegistrationUser() {
 		String url = testingUserRegistration;
 		long startTime = System.currentTimeMillis();
@@ -87,6 +91,74 @@ public class SmisServletTest {
 //	@Test
 	public void testPaymentWithCC() {
 		String url = testingPaymentWithCC;
+		long startTime = System.currentTimeMillis();
+		HttpClient client = new DefaultHttpClient();
+		try {
+
+			com.myproject.parking.lib.data.Address billingAddress = new com.myproject.parking.lib.data.Address();
+			billingAddress.setCity("Jakarta Barat");
+			billingAddress.setCountryCode("ID");
+			billingAddress.setLine1("Duta Bandara Permai Blok ZS 4 no 31");
+			billingAddress.setPostalCode("15211");
+			billingAddress.setState("Banten");
+			
+			com.myproject.parking.lib.data.CreditCard creditCard = new com.myproject.parking.lib.data.CreditCard();
+			creditCard.setBillingAddress(billingAddress);
+			creditCard.setCvv2(111);
+			creditCard.setExpireMonth(11);
+			creditCard.setExpireYear(2018);
+			creditCard.setFirstName("Agus");
+			creditCard.setLastName("Darma Kusuma Buyer");
+			creditCard.setNumber("4032038628710679");
+			creditCard.setType("visa");
+			
+			PaymentVO paymentVO = new PaymentVO();
+			paymentVO.setAddress(billingAddress);
+			paymentVO.setCreditCard(creditCard);
+			
+			String s = mapper.writeValueAsString(paymentVO);
+			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
+			LOG.debug("Request: " + s);
+            StringEntity entity = new StringEntity(s);
+			
+			HttpPost post = new HttpPost(url);
+			post.setHeader("Content-Type", "application/json");
+			post.setEntity(entity);
+			
+			// Execute HTTP request
+			LOG.debug("Executing request: " + post.getURI());
+            HttpResponse response = client.execute(post);
+            
+            // Get hold of the response entity
+            StatusLine sl = response.getStatusLine();
+            LOG.debug("StatusCode: " + sl.getStatusCode());
+            Assert.assertEquals(200, sl.getStatusCode());
+
+            HttpEntity respEntity = response.getEntity();
+            String respString = EntityUtils.toString(respEntity);
+            LOG.debug("Response: " + respString);
+            
+//            WalletTrxResponse trxResp = mapper.
+//            		readValue(respString, WalletTrxResponse.class);
+//            Assert.assertEquals(trxReq.getRequestId(), trxResp.getRequestId());
+            Assert.assertEquals(true, true);
+            int delta = (int) (System.currentTimeMillis() - startTime);
+            LOG.info("Finish running one thread in {}ms", 
+            		new String[] { CommonUtil.displayNumberNoDecimal(delta) } );
+		}catch (Exception e) {
+		
+			LOG.warn("Unexpected Exception", e);
+		} finally {
+            // When HttpClient instance is no longer needed,
+            // shut down the connection manager to ensure
+            // immediate deallocation of all system resources
+            client.getConnectionManager().shutdown();
+        }  // end try finally
+	}
+	
+//	@Test
+	public void testPaymentWithPaypal() {
+		String url = testingPaymentWithPayPal;
 		long startTime = System.currentTimeMillis();
 		HttpClient client = new DefaultHttpClient();
 		try {

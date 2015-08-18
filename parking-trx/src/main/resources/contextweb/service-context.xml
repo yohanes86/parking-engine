@@ -29,6 +29,8 @@
 		        <entry key="/userRegistration" value-ref="userRegistration"></entry>
 		        <!-- Payment Module -->
 		        <entry key="/paymentCC" value-ref="paymentCC"></entry>
+		        <entry key="/paymentPayPal" value-ref="paymentPayPal"></entry>
+		        
 		    </map>
 		</property>
 	</bean>

@@ -1,22 +1,48 @@
 package com.myproject.parking.lib.utils;
 
+import java.security.MessageDigest;
 import java.security.Security;
+import java.util.Arrays;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.bouncycastle.crypto.digests.RIPEMD256Digest;
 import org.bouncycastle.crypto.digests.SHA1Digest;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
 import org.bouncycastle.util.encoders.Hex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CipherUtil {
 	private static final String INTERNAL_PASSWORD_TOKEN = "124A7BDF5C701B69B4BACD05F1538EA2";
+	public static final String PASSWORD = "PARKING_ONLINE124A7BDF5C701B69B4BACD05F1538EA2";
+	private static final int MAX_LENGTH_3DES_KEY_SMARTPHONE = 24;
+	private static final Logger LOG = LoggerFactory.getLogger(CipherUtil.class);
 	
 	static {
 		Security.addProvider(new BouncyCastleProvider());
 	}
-
+	
+	/*
+	 * Convert from HexByte to HexString
+	 */
 	public static String toHexString(byte[] data) {
 		return new String(Hex.encode(data)).toUpperCase();
+	}
+
+	/*
+	 * Convert from HexString to HexByte
+	 */
+	public static byte[] toHexByte(String input) {
+		return Hex.decode(input);
+	}
+
+	public static String toBase64(byte[] data) {
+		return new String(Base64.encode(data));
 	}
 	
 	public static String passwordDigest(String userId, String password) {
@@ -76,6 +102,85 @@ public class CipherUtil {
 		digester.doFinal(resBuf, 0);
 
 		return convertToHex(resBuf);
+	}
+	
+	public static String encryptTripleDES(String message, String password) {
+		return toHexString(encryptDESedeSmartPhone(message.getBytes(),password.getBytes())); 
+	}
+	
+	private static byte[] encryptDESedeSmartPhone(byte[] input, byte[] key) {
+		try {
+			//hash ing
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			md.update(key);
+			byte[] hassPass = md.digest();
+			StringBuffer sb = new StringBuffer();
+			int maxLength = hassPass.length;
+			if (maxLength >= MAX_LENGTH_3DES_KEY_SMARTPHONE)
+				maxLength = MAX_LENGTH_3DES_KEY_SMARTPHONE;
+	        for (int i = 0; i < maxLength; i++) {
+	         sb.append(Integer.toString((hassPass[i] & 0xff) + 0x100, 16).substring(1));
+	        }	        
+	        byte[] hassPassWord = sb.toString().getBytes();
+			byte[] hashPasswordx = new byte[MAX_LENGTH_3DES_KEY_SMARTPHONE];
+			System.arraycopy(hassPassWord, 0, hashPasswordx, 0, MAX_LENGTH_3DES_KEY_SMARTPHONE);
+			final SecretKey secretkey = new SecretKeySpec(hashPasswordx, "DESede");
+		    final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
+		    final Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+		    cipher.init(Cipher.ENCRYPT_MODE, secretkey, iv);
+		    return cipher.doFinal(input);
+			/*standart encryption without hashing
+			final SecretKey secretkey = new SecretKeySpec(key, "DESede");
+		    final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
+		    final Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+		    cipher.init(Cipher.ENCRYPT_MODE, secretkey, iv);
+		    return cipher.doFinal(input);
+		    */
+		} catch (Exception e) {
+			LOG.error("Failed to encrypt DES EDE. Input: " + 
+					", key: " + Arrays.toString(key) +". "  + e);
+			return null;
+		}
+	}
+	
+	public static String decryptTripleDES(String message, String password) {
+		return new String(decryptDESedeSmartPhone(toHexByte(message),password.getBytes())); 
+	}
+	
+	private static byte[] decryptDESedeSmartPhone(byte[] input, byte[] key) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			md.update(key);
+			byte[] hassPass = md.digest();
+			StringBuffer sb = new StringBuffer();
+			int maxLength = hassPass.length;
+			if (maxLength >= MAX_LENGTH_3DES_KEY_SMARTPHONE)
+				maxLength = MAX_LENGTH_3DES_KEY_SMARTPHONE;
+	        for (int i = 0; i < maxLength; i++) {
+	         sb.append(Integer.toString((hassPass[i] & 0xff) + 0x100, 16).substring(1));
+	        }	        
+	        byte[] hassPassWord = sb.toString().getBytes();
+			byte[] hashPasswordx = new byte[MAX_LENGTH_3DES_KEY_SMARTPHONE];
+			System.arraycopy(hassPassWord, 0, hashPasswordx, 0, MAX_LENGTH_3DES_KEY_SMARTPHONE);
+			final SecretKey secretkey = new SecretKeySpec(hashPasswordx, "DESede");
+		    final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
+		    final Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+		    
+		    cipher.init(Cipher.DECRYPT_MODE, secretkey, iv);
+		    return cipher.doFinal(input);
+			/*standart decryption without hashing
+			final SecretKey secretkey = new SecretKeySpec(key, "DESede");
+		    final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
+		    final Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+		    
+		    cipher.init(Cipher.DECRYPT_MODE, secretkey, iv);
+		    return cipher.doFinal(input);
+		    */
+		} catch (Exception e) {
+			LOG.error("Failed to decrypt DES EDE. Input: " + 
+					", key: " + Arrays.toString(key) +". "  + e);
+			return null;
+		}
 	}
 
 }

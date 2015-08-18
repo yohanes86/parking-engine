@@ -3,12 +3,23 @@ package com.myproject.parking.trx.payment;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.myproject.parking.lib.data.PaymentVO;
+import com.myproject.parking.lib.entity.TrxPayment;
+import com.myproject.parking.lib.service.AppsTimeService;
+import com.myproject.parking.lib.service.CheckUserService;
+import com.myproject.parking.lib.service.ParkingEngineException;
+import com.myproject.parking.lib.utils.CipherUtil;
 import com.myproject.parking.lib.utils.GenerateAccessToken;
+import com.myproject.parking.lib.utils.MessageUtils;
 import com.myproject.parking.trx.logic.BaseQueryLogic;
 import com.paypal.api.payments.Address;
 import com.paypal.api.payments.Amount;
@@ -24,43 +35,78 @@ import com.paypal.base.rest.PayPalRESTException;
 public class PaymentWithCreditCard implements BaseQueryLogic {
 	private static final Logger LOG = LoggerFactory.getLogger(PaymentWithCreditCard.class);
 			
+	@Autowired
+	private CheckUserService checkUserService;
+	
+	@Autowired
+	private AppsTimeService timeServer;
+	
 	@Override
-	public String process(String data, ObjectMapper mapper, String pathInfo) {
+	public String process(HttpServletRequest request,HttpServletResponse response,String data, ObjectMapper mapper, String pathInfo) {
 		LOG.debug("Start process Query :"+pathInfo);		
-		try {
+		String result = "";
+		try {						
 			PaymentVO paymentVO = mapper.readValue(data, PaymentVO.class);
-			Payment createdPayment = createPayment(paymentVO);
-			return mapper.writeValueAsString(createdPayment);
+			checkUserService.isValidUser(paymentVO.getEmail(),paymentVO.getSessionId());
+			Payment createdPayment = createPayment(paymentVO);				
+			result = MessageUtils.handleSuccess("Payment ID : " + createdPayment.getId() 
+					+ " Created Date : " + createdPayment.getCreateTime() + " State : " + createdPayment.getState(), mapper);
+		} catch (ParkingEngineException e) {
+			LOG.error("ParkingEngineException when processing " + pathInfo, e);
+			result = MessageUtils.handleException(e, "", mapper);
+		} catch (PayPalRESTException e) {
+			LOG.error("PayPalRESTException when processing " + pathInfo, e);
+			result = MessageUtils.handleException(e, "PayPalRESTException when processing "+ e.getMessage(), mapper);
 		} catch (Exception e) {
-			// TODO: handle exception
-			LOG.warn("Unexpected exception when processing " + pathInfo, e);
-			return null;
+			LOG.error("Unexpected exception when processing " + pathInfo, e);
+			result = MessageUtils.handleException(e, "Unexpected exception when processing "+ e.getMessage(), mapper);
 		}
+		return result;
 	}
 	
-	public Payment createPayment(PaymentVO paymentVO) {
+	private void savePayment(Payment payment) throws ParkingEngineException {
+		TrxPayment trxPayment = new TrxPayment();
+		if(!StringUtils.isEmpty(payment.getId())){
+			trxPayment.setPaymentId(payment.getId());	
+		}
+		trxPayment.setCreateTime(timeServer.getCurrentTime());
+		trxPayment.setUpdateTime(timeServer.getCurrentTime());
+		if(!StringUtils.isEmpty(payment.getPayer().getPaymentMethod())){
+			trxPayment.setPaymentMethod(payment.getPayer().getPaymentMethod());
+		}
+		
+		// belum selesai
+		
+	}
+	
+	private void updatePayment(Payment payment) throws ParkingEngineException {
+		// cari trxPayment dari payment id
+		// update state,updateTime
+	}
+	
+	private Payment createPayment(PaymentVO paymentVO) throws PayPalRESTException,ParkingEngineException {
 		// ###Address
 		// Base Address object used as shipping or billing
 		// address in a payment. [Optional]
 		Address billingAddress = new Address();
-		billingAddress.setCity("Johnstown");
-		billingAddress.setCountryCode("US");
-		billingAddress.setLine1("52 N Main ST");
-		billingAddress.setPostalCode("43210");
-		billingAddress.setState("OH");
+		billingAddress.setCity(paymentVO.getAddress().getCity());
+		billingAddress.setCountryCode(paymentVO.getAddress().getCountryCode());
+		billingAddress.setLine1(paymentVO.getAddress().getLine1());
+		billingAddress.setPostalCode(paymentVO.getAddress().getPostalCode());
+		billingAddress.setState(paymentVO.getAddress().getState());
 
 		// ###CreditCard
 		// A resource representing a credit card that can be
 		// used to fund a payment.
 		CreditCard creditCard = new CreditCard();
 		creditCard.setBillingAddress(billingAddress);
-		creditCard.setCvv2(111);
-		creditCard.setExpireMonth(11);
-		creditCard.setExpireYear(2018);
-		creditCard.setFirstName("Joe");
-		creditCard.setLastName("Shopper");
-		creditCard.setNumber("4032038628710679");
-		creditCard.setType("visa");
+		creditCard.setCvv2(paymentVO.getCreditCard().getCvv2());
+		creditCard.setExpireMonth(paymentVO.getCreditCard().getExpireMonth());
+		creditCard.setExpireYear(paymentVO.getCreditCard().getExpireYear());
+		creditCard.setFirstName(paymentVO.getCreditCard().getFirstName());
+		creditCard.setLastName(paymentVO.getCreditCard().getLastName());
+		creditCard.setNumber(paymentVO.getCreditCard().getNumber());
+		creditCard.setType(paymentVO.getCreditCard().getType());
 
 		// ###Details
 		// Let's you specify details of a payment amount.
@@ -150,16 +196,18 @@ public class PaymentWithCreditCard implements BaseQueryLogic {
 			// Create a payment by posting to the APIService
 			// using a valid AccessToken
 			// The return object contains the status;
+			
+			savePayment(payment);
 			createdPayment = payment.create(apiContext);
-
+			updatePayment(createdPayment);
 			LOG.info("Created payment with id = " + createdPayment.getId()
 					+ " and status = " + createdPayment.getState());
 //			ResultPrinter.addResult(req, resp, "Payment with Credit Card",
 //					Payment.getLastRequest(), Payment.getLastResponse(), null);
 		} catch (PayPalRESTException e) {
-//			ResultPrinter.addResult(req, resp, "Payment with Credit Card",
-//					Payment.getLastRequest(), null, e.getMessage());
-			LOG.error("PayPalRESTException : " + e.getMessage());
+			throw e;
+		} catch (ParkingEngineException e) {
+			throw e;
 		}
 		return createdPayment;
 		
