@@ -8,4 +8,6 @@ public interface UserDataMapper {
 	public void createUserData(UserData userData);
 	public UserData findUserDataByEmailAndPhoneNo(@Param("email") String email, 
 			@Param("phoneNo") String phoneNo);
+	public UserData findUserByEmailAndPhoneNoAndActKey(@Param("email") String email, 
+			@Param("phoneNo") String phoneNo,@Param("actKey") String actKey);
 }

@@ -8,6 +8,8 @@ public class ParkingEngineException extends Exception {
 	public static final int ENGINE_UNKNOWN_ERROR			= 99;
 	public static final int ENGINE_USER_NOT_FOUND			= 10;
 	public static final int ENGINE_SESSION_ID_EXPIRED		= 11;
+	public static final int ENGINE_USER_ALREADY_ACTIVATED	= 12;
+	public static final int ENGINE_USER_BLOCKED				= 13;
 	
 	
 	private int errorCode;
