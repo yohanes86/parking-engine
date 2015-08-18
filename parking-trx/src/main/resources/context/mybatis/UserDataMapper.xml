@@ -62,4 +62,8 @@
      <update id="updatePasswordUser" parameterType="java.util.Map" >
     	UPDATE userdata SET password = #{password} ,updated_on = #{updatedOn} WHERE email = #{email} 	
      </update>
+     
+     <update id="updateSessionKeyUser" parameterType="java.util.Map" >
+    	UPDATE userdata SET time_gen_session_key = #{timeSessionKey} WHERE email = #{email} 	
+     </update>
 </mapper>

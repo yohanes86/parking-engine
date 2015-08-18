@@ -89,7 +89,7 @@ public class PaymentWithPayPal implements BaseQueryLogic {
 				}
 			} else {
 				PaymentVO paymentVO = mapper.readValue(data, PaymentVO.class);
-				checkUserService.isValidUser(paymentVO.getEmail(),paymentVO.getSessionId());
+				checkUserService.isValidUser(paymentVO.getEmail(),paymentVO.getSessionKey());
 				// ###Details
 				// Let's you specify details of a payment amount.
 				Details details = new Details();

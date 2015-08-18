@@ -23,7 +23,7 @@
 			init-method="printInfo" />
 	
 	<bean id="notifEmailSender" class="com.myproject.parking.lib.utils.EmailSender">
-		<property name="smtpHost" value="smtp-mnet.biz.net.id" /> 
+		<property name="smtpHost" value="mail.fast.net.id" /> 
 		<property name="smtpPort" value="25" />
 		<property name="smtpUserName" value="" />
 		<property name="smtpPassword" value="" />
@@ -41,6 +41,7 @@
 		        <entry key="/userActivate" value-ref="userActivate"></entry>
 		        <entry key="/forgetPassword" value-ref="forgetPassword"></entry>
 		        <entry key="/loginUser" value-ref="loginUser"></entry>
+		        <entry key="/changePassword" value-ref="changePassword"></entry>
 		        <!-- Payment Module -->
 		        <entry key="/paymentCC" value-ref="paymentCC"></entry>
 		        <entry key="/paymentPayPal" value-ref="paymentPayPal"></entry>
