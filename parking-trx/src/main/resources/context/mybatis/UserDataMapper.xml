@@ -26,13 +26,14 @@
     			#{timeGenSessionKey}, #{createdOn}, #{createdBy}, #{updatedOn}, #{updatedBy})  	
      </insert>
      
+     <sql id="_sqlUserData">
+    	id, name, phone_no as phoneNo,email,license_no as licenseNo,activate_key as activateKey,session_key as sessionKey,status,time_gen_session_key as timeGenSessionKey,
+    	created_on as createdOn, created_by as createdBy,updated_on as updatedOn, updated_by as updatedBy   	
+    </sql>
+     
      <select id="findUserDataByEmailAndPhoneNo" parameterType="java.util.Map" resultType="UserData">
          select 
-         	id, 
-         	name, 
-         	phone_no as phoneNo,
-         	email,
-         	license_no as licenseNo
+         	<include refid="_sqlUserData"/>
          	from userdata 
          	where email = #{email}
          	and phone_no = #{phoneNo}
@@ -40,22 +41,14 @@
      
      <select id="findUserDataByEmail" parameterType="java.util.Map" resultType="UserData">
          select 
-         	id, 
-         	name, 
-         	phone_no as phoneNo,
-         	email,
-         	license_no as licenseNo
+         	<include refid="_sqlUserData"/>
          	from userdata 
          	where email = #{email}      
      </select>
      
      <select id="findUserByEmailAndPhoneNoAndActKey" parameterType="java.util.Map" resultType="UserData">
-         select 
-         	id, 
-         	name, 
-         	phone_no as phoneNo,
-         	email,
-         	license_no as licenseNo
+         select
+         <include refid="_sqlUserData"/>          
          	from userdata 
          	where email = #{email}
          	and phone_no = #{phoneNo}
