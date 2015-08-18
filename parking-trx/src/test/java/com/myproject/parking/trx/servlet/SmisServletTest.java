@@ -18,6 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.myproject.parking.lib.data.ForgetPasswordVO;
 import com.myproject.parking.lib.data.PaymentVO;
 import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.utils.CipherUtil;
@@ -188,6 +189,56 @@ public class SmisServletTest {
 			paymentVO.setCreditCard(creditCard);
 			
 			String s = mapper.writeValueAsString(paymentVO);
+			LOG.debug("Request: " + s);
+            StringEntity entity = new StringEntity(s);
+			
+			HttpPost post = new HttpPost(url);
+			post.setHeader("Content-Type", "application/json");
+			post.setEntity(entity);
+			
+			// Execute HTTP request
+			LOG.debug("Executing request: " + post.getURI());
+            HttpResponse response = client.execute(post);
+            
+            // Get hold of the response entity
+            StatusLine sl = response.getStatusLine();
+            LOG.debug("StatusCode: " + sl.getStatusCode());
+            Assert.assertEquals(200, sl.getStatusCode());
+
+            HttpEntity respEntity = response.getEntity();
+            String respString = EntityUtils.toString(respEntity);
+            LOG.debug("Response: " + respString);
+            
+//            WalletTrxResponse trxResp = mapper.
+//            		readValue(respString, WalletTrxResponse.class);
+//            Assert.assertEquals(trxReq.getRequestId(), trxResp.getRequestId());
+            Assert.assertEquals(true, true);
+            int delta = (int) (System.currentTimeMillis() - startTime);
+            LOG.info("Finish running one thread in {}ms", 
+            		new String[] { CommonUtil.displayNumberNoDecimal(delta) } );
+		}catch (Exception e) {
+		
+			LOG.warn("Unexpected Exception", e);
+		} finally {
+            // When HttpClient instance is no longer needed,
+            // shut down the connection manager to ensure
+            // immediate deallocation of all system resources
+            client.getConnectionManager().shutdown();
+        }  // end try finally
+	}
+	
+	@Test
+	public void testForgetPassword() {
+		String url = testingUserRegistration;
+		long startTime = System.currentTimeMillis();
+		HttpClient client = new DefaultHttpClient();
+		try {
+			
+			ForgetPasswordVO forgetPasswordVO = new ForgetPasswordVO();
+			forgetPasswordVO.setEmail("testing@yahoo.com");
+			
+			String s = mapper.writeValueAsString(forgetPasswordVO);
+			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
 			LOG.debug("Request: " + s);
             StringEntity entity = new StringEntity(s);
 			
