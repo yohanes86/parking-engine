@@ -20,9 +20,9 @@
 
 <mapper namespace="com.myproject.parking.lib.mapper.UserDataMapper">
      <insert id="createUserData" parameterType="UserData" useGeneratedKeys="true" keyProperty="id">
-    	insert into userdata(name, password, phone_no, email, license_no, session_key, status, 
+    	insert into userdata(name, password, phone_no, email, license_no, activate_key, session_key, status, 
     			time_gen_session_key, created_on, created_by, updated_on, updated_by)
-    		values(#{name}, #{password}, #{phoneNo}, #{email}, #{licenseNo}, #{sessionKey}, #{status},
+    		values(#{name}, #{password}, #{phoneNo}, #{email}, #{licenseNo}, #{activateKey}, #{sessionKey}, #{status},
     			#{timeGenSessionKey}, #{createdOn}, #{createdBy}, #{updatedOn}, #{updatedBy})  	
      </insert>
      

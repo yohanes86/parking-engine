@@ -35,7 +35,7 @@ public class SmisServletTest {
 	private ObjectMapper mapper = new ObjectMapper();
 	
 	
-//	@Test
+	@Test
 	public void testRegistrationUser() {
 		String url = testingUserRegistration;
 		long startTime = System.currentTimeMillis();
@@ -50,6 +50,7 @@ public class SmisServletTest {
 			userData.setLicenseNo("B 1712 SAO");
 			
 			String s = mapper.writeValueAsString(userData);
+			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
 			LOG.debug("Request: " + s);
             StringEntity entity = new StringEntity(s);
 			
