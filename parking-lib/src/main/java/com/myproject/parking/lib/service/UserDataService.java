@@ -6,11 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ch.qos.logback.core.db.dialect.MsSQLDialect;
-
 import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.mapper.UserDataMapper;
-import com.myproject.parking.lib.utils.CipherUtil;
+import com.myproject.parking.lib.utils.Constants;
 import com.myproject.parking.lib.utils.EmailSender;
 
 @Service
@@ -51,7 +49,7 @@ public class UserDataService {
 		sb.append("\n").append("\n");
 		sb.append("Your account has been successfully registered.").append("\n");
 		sb.append("Please click link below to activate your account.").append("\n");
-		sb.append("http://localhost:8080/parking-trx/trx/userActivate?actKey="+ user.getActivateKey() + "&email=" + user.getEmail() + "&noHp=" + user.getPhoneNo()).append("\n");
+		sb.append(Constants.ENVIRONMENT_DEV+"/userActivate?actKey="+ user.getActivateKey() + "&email=" + user.getEmail() + "&noHp=" + user.getPhoneNo()).append("\n");
 		sb.append("Thank you for using our application.").append("\n");
 		sb.append("\n");
 		sb.append("Regards,");
