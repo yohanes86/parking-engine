@@ -30,8 +30,8 @@ public class Constants {
 	public static final int LEVEL_CODE_RM				= 2	;
 	
 	public static final int PENDING						= 0	;
-	public static final int APPROVE						= 1	;
-	public static final int REJECT						= 2	;
+	public static final int ACTIVE						= 1	;
+	public static final int BLOCKED						= 2	;
 	
 	public static final int STATUS_ALL					= -1;
 	public static final int STATUS_NONACTIVE			= 0;
