@@ -6,10 +6,8 @@ import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.myproject.parking.lib.data.PaymentVO;
-import com.myproject.parking.lib.entity.Profile;
 import com.myproject.parking.lib.utils.GenerateAccessToken;
 import com.myproject.parking.trx.logic.BaseQueryLogic;
 import com.paypal.api.payments.Address;

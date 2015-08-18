@@ -26,7 +26,7 @@
 		<property name="logic" >
 		    <map>
 		        <!-- Security Module  -->
-		        <entry key="/loginUser" value-ref="loginUser"></entry>
+		        <entry key="/userRegistration" value-ref="userRegistration"></entry>
 		        <!-- Payment Module -->
 		        <entry key="/paymentCC" value-ref="paymentCC"></entry>
 		    </map>
