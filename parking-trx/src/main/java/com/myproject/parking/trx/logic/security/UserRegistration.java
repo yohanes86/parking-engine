@@ -7,7 +7,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.service.AppsTimeService;
@@ -42,7 +41,6 @@ public class UserRegistration implements BaseQueryLogic {
 			user.setUpdatedOn(timeService.getCurrentTime());
 			user.setStatus(Constants.PENDING);
 			user.setActivateKey(user.getPhoneNo() + CommonUtil.generateAlphaNumeric(10));
-			LOG.debug("UserData: [{}]", user);
 			
 			userDataService.processingRegistrationUser(user);
 			result = MessageUtils.handleSuccess("[Registration User : " + user.getName() + "]"+" [PhoneNo: " + user.getPhoneNo() + "]"+" [Email: " + user.getEmail() + "]"+" Created Date : " + user.getCreatedOn() , mapper);
