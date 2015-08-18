@@ -45,11 +45,11 @@ public class SmisServletTest {
 		try {
 			
 			UserData userData = new UserData();
-			userData.setName("User Testing");
-			userData.setPassword("Ini Password");
-			userData.setEmail("email@yahoo.com");
-			userData.setPhoneNo("0818123456781");
-			userData.setLicenseNo("B 1712 SAO");
+			userData.setName("User Testing2");
+			userData.setPassword("Ini Password2");
+			userData.setEmail("testing@yahoo.com");
+			userData.setPhoneNo("081888843892");
+			userData.setLicenseNo("B 8889 POI");
 			
 			String s = mapper.writeValueAsString(userData);
 			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
