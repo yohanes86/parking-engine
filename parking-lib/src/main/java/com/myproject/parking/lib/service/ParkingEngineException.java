@@ -7,13 +7,15 @@ public class ParkingEngineException extends Exception {
 	
 	public static final int ENGINE_UNKNOWN_ERROR			= 99;
 	public static final int ENGINE_USER_NOT_FOUND			= 10;
-	public static final int ENGINE_SESSION_ID_EXPIRED		= 11;
+	public static final int ENGINE_SESSION_KEY_EXPIRED		= 11;
 	public static final int ENGINE_USER_ALREADY_ACTIVATED	= 12;
 	public static final int ENGINE_USER_BLOCKED				= 13;
 	public static final int ENGINE_USER_HAS_BEEN_REGISTERED	= 14;
 	public static final int ENGINE_USER_NOT_ACTIVE			= 15;
 	public static final int ENGINE_WRONG_EMAIL_OR_PASSWORD	= 16;
-	
+	public static final int ENGINE_USER_NOT_LOGIN			= 17;
+	public static final int ENGINE_SESSION_KEY_DIFFERENT	= 18;
+	public static final int ENGINE_WRONG_OLD_PASSWORD		= 19;
 	
 	private int errorCode;
 	private String[] info;

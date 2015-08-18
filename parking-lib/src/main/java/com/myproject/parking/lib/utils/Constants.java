@@ -4,6 +4,7 @@ public class Constants {
 	
 	public static final String ENVIRONMENT_DEV				= "http://localhost:8080/parking-trx/trx";
 	public static final String ENVIRONMENT_LIVE				= "http://localhost:8080/parking-trx/trx";
+	public static final long TIMEOUT_IN_MINUTES				= 10; // minutes				
 	
 	public static final String NE_SDF_FULL			= "dd-MM-yyyy HH:mm:ss";
 	public static final String NE_SDF_DATE			= "dd-MM-yyyy";
@@ -14,11 +15,6 @@ public class Constants {
 	public static final String NE_FORMAT_MONTH_YEAR_ONLY_JSP = "mm-yy";
 	
 	public static final String SEPARATOR_UPLOAD		= ",";	
-	/*public static final int STATUS_SENT_TO_ENGINE		= 1;
-	public static final int STATUS_HOLD					= 2;
-	public static final int STATUS_REJECT				= 3;
-	public static final int STATUS_FAILED				= 4;
-	public static final int STATUS_FINISH				= 0;*/
 		
 	public static final int MAX_REGULER					= 5;	
 	public static final int PASSWORD_LENGTH				= 8;	

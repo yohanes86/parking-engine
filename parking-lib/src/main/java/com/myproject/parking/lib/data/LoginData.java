@@ -9,7 +9,7 @@ public class LoginData implements Serializable {
 
 	private String email;
 	private String password;
-	private String sessionId;
+	private String sessionKey;
 
 	public String getEmail() {
 		return email;
@@ -19,12 +19,12 @@ public class LoginData implements Serializable {
 		this.email = email;
 	}
 
-	public String getSessionId() {
-		return sessionId;
+	public String getSessionKey() {
+		return sessionKey;
 	}
 
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
+	public void setSessionKey(String sessionKey) {
+		this.sessionKey = sessionKey;
 	}
 	
 	@Override
