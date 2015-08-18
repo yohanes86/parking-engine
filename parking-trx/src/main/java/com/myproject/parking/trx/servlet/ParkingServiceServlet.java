@@ -24,7 +24,7 @@ import com.myproject.parking.lib.utils.CipherUtil;
 import com.myproject.parking.lib.utils.CommonUtil;
 import com.myproject.parking.trx.logic.BaseQueryLogic;
 import com.myproject.parking.trx.logic.LogicFactory;
-import com.paypal.base.rest.PayPalRESTException;
+import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalResource;
 
 public class ParkingServiceServlet extends HttpServlet {
@@ -99,11 +99,16 @@ public class ParkingServiceServlet extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);			
 			return;
 		}
-		
-		response.setContentType("application/json");
-		response.setContentLength(respData.length());
-		response.getWriter().write(respData);
-		response.getWriter().flush();
+		if("/userActivate".equalsIgnoreCase(pathInfo)){
+//			response.setContentType("text/html;charset=UTF-8");	
+		    request.setAttribute("message", respData);
+		    request.getRequestDispatcher("/response_activated.jsp").forward(request, response);
+		}else{
+			response.setContentType("application/json");
+			response.setContentLength(respData.length());
+			response.getWriter().write(respData);
+			response.getWriter().flush();
+		}		
 		int delta = (int) (System.currentTimeMillis() - startTime);
 		LOG.info("{} FINISH in {}ms", new String[] {pathInfo, 
 				CommonUtil.displayNumberNoDecimal(delta) });
