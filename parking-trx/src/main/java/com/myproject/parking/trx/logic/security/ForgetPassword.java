@@ -41,12 +41,12 @@ public class ForgetPassword implements BaseQueryLogic {
 			forgetPasswordService.forgetPassword(forgetPasswordVO.getEmail());
 			result = MessageUtils.handleSuccess("Email : " +  forgetPasswordVO.getEmail() 					
 					+ " has been reseted. Please check your email." , mapper);
-		} catch (ParkingEngineException e) {
-			LOG.error("ParkingEngineException when processing " + pathInfo, e);
+		} catch (ParkingEngineException e) {			
 			result = MessageUtils.handleException(e, "", mapper);
-		} catch (Exception e) {
-			LOG.error("Unexpected exception when processing " + pathInfo, e);
+			LOG.error("ParkingEngineException when processing " + pathInfo + " Error Message " + result, e);
+		} catch (Exception e) {			
 			result = MessageUtils.handleException(e, "Unexpected exception when processing "+ e.getMessage(), mapper);
+			LOG.error("Unexpected exception when processing " + pathInfo + " Error Message " + result, e);
 		}
 		return result;
 	}
