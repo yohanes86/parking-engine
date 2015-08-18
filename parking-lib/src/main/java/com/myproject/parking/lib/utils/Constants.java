@@ -2,6 +2,8 @@ package com.myproject.parking.lib.utils;
 
 public class Constants {
 	
+	public static final String ENVIRONMENT_DEV				= "http://localhost:8080/parking-trx/trx";
+	public static final String ENVIRONMENT_LIVE				= "http://localhost:8080/parking-trx/trx";
 	
 	public static final String NE_SDF_FULL			= "dd-MM-yyyy HH:mm:ss";
 	public static final String NE_SDF_DATE			= "dd-MM-yyyy";

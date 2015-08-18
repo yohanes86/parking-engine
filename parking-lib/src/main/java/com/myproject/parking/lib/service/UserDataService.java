@@ -11,6 +11,7 @@ import ch.qos.logback.core.db.dialect.MsSQLDialect;
 import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.mapper.UserDataMapper;
 import com.myproject.parking.lib.utils.CipherUtil;
+import com.myproject.parking.lib.utils.Constants;
 import com.myproject.parking.lib.utils.EmailSender;
 
 @Service
@@ -42,7 +43,7 @@ public class UserDataService {
 	}
 	
 	private void composeEmailMsg(UserData user){
-		String emailTo= "agusdk2011@gmail.com";
+		String emailTo= user.getEmail();
 		String emailSubject= "PARKING ONLINE : Register Account";
 		String message= "";
 		
@@ -51,7 +52,7 @@ public class UserDataService {
 		sb.append("\n").append("\n");
 		sb.append("Your account has been successfully registered.").append("\n");
 		sb.append("Please click link below to activate your account.").append("\n");
-		sb.append("http://localhost:8080/parking-trx/trx/userActivate?actKey="+ user.getActivateKey() + "&email=" + user.getEmail() + "&noHp=" + user.getPhoneNo()).append("\n");
+		sb.append(Constants.ENVIRONMENT_DEV+"/userActivate?actKey="+ user.getActivateKey() + "&email=" + user.getEmail() + "&noHp=" + user.getPhoneNo()).append("\n");
 		sb.append("Thank you for using our application.").append("\n");
 		sb.append("\n");
 		sb.append("Regards,");
