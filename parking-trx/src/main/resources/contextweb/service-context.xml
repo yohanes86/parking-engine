@@ -23,7 +23,7 @@
 			init-method="printInfo" />
 	
 	<bean id="notifEmailSender" class="com.myproject.parking.lib.utils.EmailSender">
-		<property name="smtpHost" value="mail.fast.net.id" /> 
+		<property name="smtpHost" value="smtp-mnet.biz.net.id" /> 
 		<property name="smtpPort" value="25" />
 		<property name="smtpUserName" value="" />
 		<property name="smtpPassword" value="" />
