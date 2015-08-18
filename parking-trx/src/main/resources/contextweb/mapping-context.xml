@@ -15,5 +15,6 @@
 	<bean id="paymentPayPal" class="com.myproject.parking.trx.payment.PaymentWithPayPal"/>
 	<bean id="userActivate" class="com.myproject.parking.trx.logic.security.ActivateUser"/>
 	<bean id="forgetPassword" class="com.myproject.parking.trx.logic.security.ForgetPassword"/>
+	<bean id="loginUser" class="com.myproject.parking.trx.logic.security.LoginUser"/>
 	
 </beans>
