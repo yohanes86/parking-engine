@@ -10,6 +10,9 @@ public class ParkingEngineException extends Exception {
 	public static final int ENGINE_SESSION_ID_EXPIRED		= 11;
 	
 	
+	public static final int ENGINE_USER_HAS_BEEN_REGISTERED		= 14;
+	
+	
 	private int errorCode;
 	private String[] info;
 	

@@ -13,6 +13,7 @@ public class UserData implements java.io.Serializable {
 	private String phoneNo;
 	private String email;
 	private String licenseNo;
+	private String activateKey;
 	private String sessionKey;
 	private int status;
 	private Date timeGenSessionKey;
@@ -105,5 +106,13 @@ public class UserData implements java.io.Serializable {
 
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
+	}
+
+	public String getActivateKey() {
+		return activateKey;
+	}
+
+	public void setActivateKey(String activateKey) {
+		this.activateKey = activateKey;
 	}
 }
