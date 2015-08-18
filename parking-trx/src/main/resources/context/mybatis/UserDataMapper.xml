@@ -50,4 +50,8 @@
          	and phone_no = #{phoneNo}
          	and activate_key = #{actKey}
      </select>
+     
+     <update id="updateStatusUser" parameterType="java.util.Map" >
+    	UPDATE userdata SET status = #{status} ,updated_on = #{updatedOn} WHERE email = #{email} 	
+     </update>
 </mapper>

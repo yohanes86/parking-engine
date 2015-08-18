@@ -16,6 +16,9 @@ public class ActivateUserService {
 	@Autowired
 	private UserDataMapper userDataMapper;
 	
+	@Autowired
+	private AppsTimeService timeService;
+	
 	public void activateUser(String actKey,String email,String noHp) throws ParkingEngineException {
 		LOG.info("activateUser with param : " + "ACT KEY : " + actKey + " EMAIL: " + email + " NO HP : " + noHp);	
 		UserData user = userDataMapper.findUserByEmailAndPhoneNoAndActKey(email, noHp,actKey);
@@ -32,8 +35,8 @@ public class ActivateUserService {
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_BLOCKED);
 		}
 		// update status user menjadi active
-		// update updated on
-		// 
+		// update updated on		
+		userDataMapper.updateStatusUser(email, Constants.ACTIVE, timeService.getCurrentTime());
 		LOG.info("activateUser done with param : " + "ACT KEY : " + actKey + " EMAIL: " + email + " NO HP : " + noHp);
 	}
 }
