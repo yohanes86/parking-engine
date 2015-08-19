@@ -41,12 +41,12 @@ public class MessageUtils {
 				messageVO.setRc(jme.getErrorCode());
 				messageVO.setMessageRc(props.getProperty("rc."+jme.getErrorCode()));
 				messageVO.setOtherMessage(otherMessage);
-				LOG.warn("MessageVO : ", messageVO);
+				LOG.warn("MessageVO : [{}]", messageVO);
 			} else {
 				messageVO.setRc(ParkingEngineException.ENGINE_UNKNOWN_ERROR);
 				messageVO.setMessageRc(props.getProperty("rc."+ParkingEngineException.ENGINE_UNKNOWN_ERROR));
 				messageVO.setOtherMessage(e.getMessage());
-				LOG.warn("MessageVO : ", messageVO);
+				LOG.warn("MessageVO : [{}]", messageVO);
 			}
 		} catch (IOException ew) {
 			messageVO.setRc(ParkingEngineException.ENGINE_UNKNOWN_ERROR);
@@ -66,12 +66,12 @@ public class MessageUtils {
 				messageVO.setRc(jme.getErrorCode());
 				messageVO.setMessageRc(props.getProperty("rc."+jme.getErrorCode()));
 				messageVO.setOtherMessage(otherMessage);
-				LOG.warn("MessageVO : ", messageVO);
+				LOG.warn("MessageVO : [{}]", messageVO);
 			} else {
 				messageVO.setRc(ParkingEngineException.ENGINE_UNKNOWN_ERROR);
 				messageVO.setMessageRc(props.getProperty("rc."+ParkingEngineException.ENGINE_UNKNOWN_ERROR));
 				messageVO.setOtherMessage(e.getMessage());
-				LOG.warn("MessageVO : ", messageVO);
+				LOG.warn("MessageVO : [{}]", messageVO);
 			}
 		} catch (IOException ew) {
 			messageVO.setRc(ParkingEngineException.ENGINE_UNKNOWN_ERROR);
@@ -89,7 +89,7 @@ public class MessageUtils {
 				messageVO.setRc(0);
 				messageVO.setMessageRc(props.getProperty("rc.0"));
 				messageVO.setOtherMessage(otherMessage);
-				LOG.warn("MessageVO : ", messageVO);
+				LOG.warn("MessageVO : [{}]", messageVO);
 		} catch (IOException ew) {
 			messageVO.setRc(ParkingEngineException.ENGINE_UNKNOWN_ERROR);
 			messageVO.setMessageRc("IOException on handleException");

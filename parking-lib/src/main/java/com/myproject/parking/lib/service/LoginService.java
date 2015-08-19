@@ -22,7 +22,7 @@ public class LoginService {
 	@Autowired
 	private AppsTimeService timeService;
 	
-	public void login(LoginData loginData) throws ParkingEngineException {
+	public LoginData login(LoginData loginData) throws ParkingEngineException {
 		LOG.info("login with param : " + " loginData: " + loginData );	
 		UserData user = userDataMapper.findUserDataByEmail(loginData.getEmail());
 		if(user == null){
@@ -39,13 +39,18 @@ public class LoginService {
 		}	
 		String passwordDB = user.getPassword();
 		String passwordInput = CipherUtil.passwordDigest(loginData.getEmail(), loginData.getPassword());
-		if(passwordDB!=passwordInput){
+		if(!passwordDB.equals(passwordInput)){
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_WRONG_EMAIL_OR_PASSWORD);
 		}
 		// generate session key
 		String sessionKey = user.getPhoneNo() + CommonUtil.generateAlphaNumeric(30);
-		
-		LOG.info("login done with param : " + " loginData: " + loginData);
+		user.setSessionKey(sessionKey);
+		user.setTimeGenSessionKey(timeService.getCurrentTime());
+		user.setUpdatedOn(timeService.getCurrentTime());
+		userDataMapper.updateLoginSessionKey(user.getId(), user.getSessionKey(), user.getTimeGenSessionKey(), user.getUpdatedOn());
+		loginData.setSessionId(sessionKey);
+		return loginData;
+//		LOG.info("login done with param : " + " loginData: " + loginData);
 	}
 	
 }

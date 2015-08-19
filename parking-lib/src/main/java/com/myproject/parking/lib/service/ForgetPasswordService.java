@@ -43,7 +43,7 @@ public class ForgetPasswordService {
 		// update password user
 		// update updated on	
 		// kirim ke email		
-		String password = CommonUtil.generateAlphaNumeric(6);
+		String password = CommonUtil.generateAlphaNumeric(Constants.LENGTH_GENERATE_FORGET_PASSWORD);
 		String passwordHash = CipherUtil.passwordDigest(user.getEmail(), password);
 		userDataMapper.updatePasswordUser(email, passwordHash, timeService.getCurrentTime());
 		// kirim ke email user

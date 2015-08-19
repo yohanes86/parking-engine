@@ -15,4 +15,6 @@ public interface UserDataMapper {
 			@Param("phoneNo") String phoneNo,@Param("actKey") String actKey);
 	public void updateStatusUser(@Param("email") String email, @Param("status") int status ,@Param("updatedOn") Date updatedOn );
 	public void updatePasswordUser(@Param("email") String email, @Param("password") String password ,@Param("updatedOn") Date updatedOn );
+	public void updateLoginSessionKey(@Param("id") int id, @Param("sessionKey") String sessionKey, 
+			@Param("timeGenSessionKey") Date timeGenSessionKey, @Param("updatedOn") Date updatedOn );
 }
