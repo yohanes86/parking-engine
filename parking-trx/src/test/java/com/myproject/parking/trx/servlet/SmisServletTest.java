@@ -49,10 +49,10 @@ public class SmisServletTest {
 		try {
 			
 			UserData userData = new UserData();
-			userData.setName("User Vincent");
-			userData.setPassword("Rahasia");
-			userData.setEmail("vincent_yohanes@yahoo.com");
-			userData.setPhoneNo("08179939399");
+			userData.setName("ADK");
+			userData.setPassword("password");
+			userData.setEmail("agusdk2011@gmail.com");
+			userData.setPhoneNo("085693938630");
 			userData.setLicenseNo("B 999 ROI");
 			
 			String s = mapper.writeValueAsString(userData);
@@ -280,7 +280,7 @@ public class SmisServletTest {
         }  // end try finally
 	}
 	
-	@Test
+//	@Test
 	public void testLoginUser() {
 		String url = testingLoginUser;
 		long startTime = System.currentTimeMillis();
@@ -288,8 +288,8 @@ public class SmisServletTest {
 		try {
 			
 			LoginData loginData = new LoginData();
-			loginData.setPassword("Rahasia");
-			loginData.setEmail("vincent_yohanes@yahoo.com");
+			loginData.setPassword("password");
+			loginData.setEmail("saagusdk2011@gmail.com");
 			
 			String s = mapper.writeValueAsString(loginData);
 			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
@@ -340,9 +340,9 @@ public class SmisServletTest {
 			
 			ChangePasswordVO changePasswordVO = new ChangePasswordVO();
 			changePasswordVO.setEmail("agusdk2011@gmail.com");
-			changePasswordVO.setSessionKey("dasdadda");
-			changePasswordVO.setPassword("VURRAD");
-			changePasswordVO.setNewPassword("admin123+");
+			changePasswordVO.setSessionKey("085693938630GX2FDXLBKWN35CMNGKI48YXEAQ1RPR");
+			changePasswordVO.setPassword("admin123+");
+			changePasswordVO.setNewPassword("password");
 			
 			String s = mapper.writeValueAsString(changePasswordVO);
 			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);

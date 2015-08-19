@@ -53,13 +53,14 @@ public class ChangePasswordService {
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_SESSION_KEY_DIFFERENT);
 		}
 		
-		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), changePasswordVO.getEmail());
-		
 		String passwordDB = user.getPassword();
 		String passwordInput = CipherUtil.passwordDigest(user.getEmail(), changePasswordVO.getPassword());
-		if(passwordDB!=passwordInput){
+		if(!passwordDB.equalsIgnoreCase(passwordInput)){
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_WRONG_OLD_PASSWORD);
 		}
+		
+		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), changePasswordVO.getEmail());
+		
 		String passwordHash = CipherUtil.passwordDigest(user.getEmail(), changePasswordVO.getNewPassword());
 		userDataMapper.updatePasswordUser(user.getEmail(), passwordHash, timeService.getCurrentTime());
 		
