@@ -69,8 +69,7 @@ public class ParkingServiceServlet extends HttpServlet {
 		long startTime = (int)System.currentTimeMillis();
 		
 		String pathInfo = request.getPathInfo();
-		LOG.info("{} START in {}ms", new String[] {pathInfo, 
-				CommonUtil.displayNumberNoDecimal(startTime) });
+		LOG.info("{} START", new String[] {pathInfo});
 		LOG.debug("POST PathInfo: {}", new String[] {pathInfo});
 		
 		BaseQueryLogic logic = logicFactory.getLogic().get(pathInfo);

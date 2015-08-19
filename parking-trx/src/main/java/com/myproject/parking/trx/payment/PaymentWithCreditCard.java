@@ -47,7 +47,7 @@ public class PaymentWithCreditCard implements BaseQueryLogic {
 		String result = "";
 		try {						
 			PaymentVO paymentVO = mapper.readValue(data, PaymentVO.class);
-			checkUserService.isValidUser(paymentVO.getEmail(),paymentVO.getSessionId());
+			checkUserService.isValidUser(paymentVO.getEmail(),paymentVO.getSessionKey());
 			Payment createdPayment = createPayment(paymentVO);				
 			result = MessageUtils.handleSuccess("Payment ID : " + createdPayment.getId() 
 					+ " Created Date : " + createdPayment.getCreateTime() + " State : " + createdPayment.getState(), mapper);

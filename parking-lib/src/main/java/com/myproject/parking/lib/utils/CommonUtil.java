@@ -210,4 +210,20 @@ public class CommonUtil {
 		 return z;
 	}
 	
+	public static long dateDifferentInMinutes(Date d1, Date currentTime){
+		//in milliseconds
+		long diff = currentTime.getTime() - d1.getTime();
+
+//		long diffSeconds = diff / 1000 % 60;
+		long diffMinutes = diff / (60 * 1000) % 60;
+//		long diffHours = diff / (60 * 60 * 1000) % 24;
+//		long diffDays = diff / (24 * 60 * 60 * 1000);
+
+//		System.out.print(diffDays + " days, ");
+//		System.out.print(diffHours + " hours, ");
+		System.out.print(diffMinutes + " minutes, ");
+//		System.out.print(diffSeconds + " seconds.");
+		return diffMinutes;
+	}
+	
 }

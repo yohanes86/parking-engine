@@ -48,12 +48,12 @@ public class ActivateUser implements BaseQueryLogic {
 			result = "Email : " +  request.getParameter("email") 
 					+ " No Hp : " + request.getParameter("noHp")
 					+ " has been activated.";
-		} catch (ParkingEngineException e) {
-			LOG.error("ParkingEngineException when processing " + pathInfo, e);
+		} catch (ParkingEngineException e) {			
 			result = MessageUtils.handleExceptionOther(e, "", mapper);
-		} catch (Exception e) {
-			LOG.error("Unexpected exception when processing " + pathInfo, e);
+			LOG.error("ParkingEngineException when processing " + pathInfo + " Error Message " + result, e);
+		} catch (Exception e) {			
 			result = MessageUtils.handleExceptionOther(e, "Unexpected exception when processing "+ e.getMessage(), mapper);
+			LOG.error("Unexpected exception when processing " + pathInfo + " Error Message " + result, e);
 		}
 		return result;
 	}
