@@ -55,7 +55,7 @@ public class ChangePasswordService {
 		
 		String passwordDB = user.getPassword();
 		String passwordInput = CipherUtil.passwordDigest(user.getEmail(), changePasswordVO.getPassword());
-		if(passwordDB!=passwordInput){
+		if(!passwordDB.equalsIgnoreCase(passwordInput)){
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_WRONG_OLD_PASSWORD);
 		}
 		
