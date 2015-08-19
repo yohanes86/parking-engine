@@ -41,7 +41,8 @@
      
      <select id="findUserDataByEmail" parameterType="java.util.Map" resultType="UserData">
          select 
-         	<include refid="_sqlUserData"/>
+         	<include refid="_sqlUserData"/>,
+         	password
          	from userdata 
          	where email = #{email}      
      </select>
@@ -61,5 +62,9 @@
      
      <update id="updatePasswordUser" parameterType="java.util.Map" >
     	UPDATE userdata SET password = #{password} ,updated_on = #{updatedOn} WHERE email = #{email} 	
+     </update>
+     
+      <update id="updateLoginSessionKey" parameterType="java.util.Map" >
+    	UPDATE userdata SET session_key = #{sessionKey}, time_gen_session_key = #{timeGenSessionKey}, updated_on = #{updatedOn} WHERE id = #{id} 	
      </update>
 </mapper>

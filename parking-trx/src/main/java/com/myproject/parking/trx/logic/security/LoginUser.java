@@ -40,9 +40,9 @@ public class LoginUser implements BaseQueryLogic {
 		String result = "";
 		try {						
 			LoginData loginData = mapper.readValue(data, LoginData.class);
-			loginService.login(loginData);
-			result = MessageUtils.handleSuccess("Email : " +  loginData.getEmail() 					
-					+ " has been logged." , mapper);
+			loginData = loginService.login(loginData);
+			String x = mapper.writeValueAsString(loginData);
+			result = MessageUtils.handleSuccess(x, mapper);
 		} catch (ParkingEngineException e) {
 			LOG.error("ParkingEngineException when processing " + pathInfo, e);
 			result = MessageUtils.handleException(e, "", mapper);

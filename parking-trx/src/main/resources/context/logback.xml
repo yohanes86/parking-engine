@@ -65,8 +65,8 @@
       <pattern>%date{dd-MMM HH:mm:ss.SSS} [%thread] %.-5level %logger{35} - %msg%n</pattern>
     </encoder>
   </appender> 
-  
-  <logger name="com.myproject.parking.trx" level="DEBUG" additivity="false">
+    
+   <logger name="com.myproject.parking" level="DEBUG" additivity="false">
     <appender-ref ref="CORE_FILE" />
     <appender-ref ref="STDOUT" />
   </logger>
