@@ -56,12 +56,12 @@ public class ChangePasswordService {
 		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), changePasswordVO.getEmail());
 		
 		String passwordDB = user.getPassword();
-		String passwordInput = CipherUtil.passwordDigest(changePasswordVO.getEmail(), changePasswordVO.getPassword());
+		String passwordInput = CipherUtil.passwordDigest(user.getEmail(), changePasswordVO.getPassword());
 		if(passwordDB!=passwordInput){
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_WRONG_OLD_PASSWORD);
 		}
-		String passwordHash = CipherUtil.passwordDigest(changePasswordVO.getEmail(), changePasswordVO.getNewPassword());
-		userDataMapper.updatePasswordUser(changePasswordVO.getEmail(), passwordHash, timeService.getCurrentTime());
+		String passwordHash = CipherUtil.passwordDigest(user.getEmail(), changePasswordVO.getNewPassword());
+		userDataMapper.updatePasswordUser(user.getEmail(), passwordHash, timeService.getCurrentTime());
 		
 		LOG.info("changePassword done with param : " + " EMAIL: " + changePasswordVO.getEmail());
 	}
