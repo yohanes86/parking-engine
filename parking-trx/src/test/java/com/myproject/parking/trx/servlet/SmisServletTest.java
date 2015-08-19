@@ -341,8 +341,8 @@ public class SmisServletTest {
 			ChangePasswordVO changePasswordVO = new ChangePasswordVO();
 			changePasswordVO.setEmail("agusdk2011@gmail.com");
 			changePasswordVO.setSessionKey("085693938630GX2FDXLBKWN35CMNGKI48YXEAQ1RPR");
-			changePasswordVO.setPassword("password");
-			changePasswordVO.setNewPassword("admin123+");
+			changePasswordVO.setPassword("admin123+");
+			changePasswordVO.setNewPassword("password");
 			
 			String s = mapper.writeValueAsString(changePasswordVO);
 			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
