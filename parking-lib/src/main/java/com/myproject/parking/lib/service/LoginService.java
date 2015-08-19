@@ -48,7 +48,7 @@ public class LoginService {
 		user.setTimeGenSessionKey(timeService.getCurrentTime());
 		user.setUpdatedOn(timeService.getCurrentTime());
 		userDataMapper.updateLoginSessionKey(user.getId(), user.getSessionKey(), user.getTimeGenSessionKey(), user.getUpdatedOn());
-		loginData.setSessionId(sessionKey);
+		loginData.setSessionKey(sessionKey);
 		return loginData;
 //		LOG.info("login done with param : " + " loginData: " + loginData);
 	}
