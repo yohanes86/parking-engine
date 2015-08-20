@@ -13,6 +13,8 @@
 	<!-- ========================= BUSINESS OBJECT DEFINITIONS ========================= -->
 	<!-- Scan all class with @Repository, @Service, and @Component -->
 	<!-- (beware that this does not enable mapper scanning!) -->
+	<context:property-placeholder location="classpath:*.properties" />
+	
 	<context:component-scan base-package="com.myproject.parking.lib.service" />	
 	
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
@@ -23,14 +25,21 @@
 			init-method="printInfo" />
 	
 	<bean id="notifEmailSender" class="com.myproject.parking.lib.utils.EmailSender">
-		<property name="smtpHost" value="smtp-mnet.biz.net.id" /> 
-		<property name="smtpPort" value="25" />
-		<property name="smtpUserName" value="" />
-		<property name="smtpPassword" value="" />
-		<property name="useTLS" value="false" />
-		<property name="useSSL" value="false" />
-		<property name="defaultFrom" value="yohanes@emobile.com.sg" />
+		<property name="smtpHost" value="${smtpHost}" /> 
+		<property name="smtpPort" value="${smtpPort}" />
+		<property name="smtpUserName" value="${smtpUserName}" />
+		<property name="smtpPassword" value="${smtpPassword}" />
+		<property name="useTLS" value="${useTLS}" />
+		<property name="useSSL" value="${useSSL}" />
+		<property name="defaultFrom" value="${defaultFrom}" />
 		<!-- <property name="htmlTemplate" value="${htmlTemplate.data}" /> -->
+	</bean>
+	
+	<bean id="veriTransManagerService" class="com.myproject.parking.lib.service.VeriTransManagerService">
+		<property name="clientKey" value="${clientKey}" /> 
+		<property name="serverKey" value="${serverKey}" />
+		<property name="environment" value="${environment}" />
+		<property name="connectionPoolSize" value="${connectionPoolSize}" />
 	</bean>
 	
 	<bean id="logicFactory" class="com.myproject.parking.trx.logic.LogicFactory">
@@ -42,9 +51,9 @@
 		        <entry key="/forgetPassword" value-ref="forgetPassword"></entry>
 		        <entry key="/loginUser" value-ref="loginUser"></entry>
 		        <entry key="/changePassword" value-ref="changePassword"></entry>
-		        <!-- Payment Module -->
-		        <entry key="/paymentCC" value-ref="paymentCC"></entry>
+		        <!-- Payment Module -->		        
 		        <entry key="/paymentPayPal" value-ref="paymentPayPal"></entry>
+		        <entry key="/receiveTrxFromVeriTrans" value-ref="receiveTrxFromVeriTrans"></entry>
 		        
 		    </map>
 		</property>

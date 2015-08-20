@@ -88,7 +88,9 @@ public class ParkingServiceServlet extends HttpServlet {
 		}
 		reader.close();
 		String data = sb.toString();
-		data = CipherUtil.decryptTripleDES(data, CipherUtil.PASSWORD);
+//		if(!"/receiveTrxFromVeriTrans".equalsIgnoreCase(pathInfo)){
+			data = CipherUtil.decryptTripleDES(data, CipherUtil.PASSWORD);
+//		}		
 		LOG.debug("RequestData: {}", new String[] { data });	
 	
 		String respData = logic.process(request,response,data, mapper, pathInfo);
