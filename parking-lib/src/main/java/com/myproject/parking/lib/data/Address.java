@@ -7,20 +7,59 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 public class Address implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private String city;
-	private String countryCode;
-	private String line1;
-	private String postalCode;
-	private String state;
+	private String firstName;
+    private String lastName;
+    private String address;
+    private String city;
+    private String postalCode;
+    private String phone;
+    private String countryCode;
 	
-	
-	
-//	billingAddress.setCity("Johnstown");
-//	billingAddress.setCountryCode("US");
-//	billingAddress.setLine1("52 N Main ST");
-//	billingAddress.setPostalCode("43210");
-//	billingAddress.setState("OH");
-	
+
+
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this);
+	}
+
+
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+
+
+	public String getLastName() {
+		return lastName;
+	}
+
+
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+
+
+	public String getAddress() {
+		return address;
+	}
+
+
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
+
 	public String getCity() {
 		return city;
 	}
@@ -29,30 +68,6 @@ public class Address implements Serializable {
 
 	public void setCity(String city) {
 		this.city = city;
-	}
-
-
-
-	public String getCountryCode() {
-		return countryCode;
-	}
-
-
-
-	public void setCountryCode(String countryCode) {
-		this.countryCode = countryCode;
-	}
-
-
-
-	public String getLine1() {
-		return line1;
-	}
-
-
-
-	public void setLine1(String line1) {
-		this.line1 = line1;
 	}
 
 
@@ -69,20 +84,25 @@ public class Address implements Serializable {
 
 
 
-	public String getState() {
-		return state;
+	public String getPhone() {
+		return phone;
 	}
 
 
 
-	public void setState(String state) {
-		this.state = state;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 
 
-	@Override
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this);
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
 	}
 }
