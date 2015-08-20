@@ -269,8 +269,9 @@ public class SmisServletTest {
 			VeriTransVO veriTransVO = new VeriTransVO();
 			veriTransVO.setEmail("agusdk2011@gmail.com");
 			veriTransVO.setSessionKey("085693938630GX2FDXLBKWN35CMNGKI48YXEAQ1RPR");
-			veriTransVO.setPrice("8888");
-			veriTransVO.setTokenId("441111-1118-d7988a9b-1cac-48c1-a7fe-653de4f116fc");
+			veriTransVO.setTotalPriceIdr(new Long(5000000));
+			veriTransVO.setTokenId("441111-1118-ce1c34bf-e76e-49c5-ade6-e594b74b5dc8");
+			veriTransVO.setPaymentMethod("Credit Card");
 			CustomerDetail customerDetail = new CustomerDetail();
 			customerDetail.setFirstName("AGUS DARMA");
 			customerDetail.setLastName("KUSUMA");

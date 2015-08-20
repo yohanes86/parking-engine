@@ -1,7 +1,5 @@
 package com.myproject.parking.lib.data;
 
-import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -11,11 +9,12 @@ public class VeriTransVO extends LoginData implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String tokenId;
-	private String price;
+	private Long TotalPriceIdr;
 	
 	private CustomerDetail customerDetail;
 	private TransactionDetails transactionDetails;
 	private List<Product> listProducts;
+	private String paymentMethod;
 
 	@Override
 	public String toString() {
@@ -28,14 +27,6 @@ public class VeriTransVO extends LoginData implements Serializable {
 
 	public void setTokenId(String tokenId) {
 		this.tokenId = tokenId;
-	}
-
-	public String getPrice() {
-		return price;
-	}
-
-	public void setPrice(String price) {
-		this.price = price;
 	}
 
 	public CustomerDetail getCustomerDetail() {
@@ -62,5 +53,21 @@ public class VeriTransVO extends LoginData implements Serializable {
 
 	public void setTransactionDetails(TransactionDetails transactionDetails) {
 		this.transactionDetails = transactionDetails;
+	}
+
+	public String getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
+	public Long getTotalPriceIdr() {
+		return TotalPriceIdr;
+	}
+
+	public void setTotalPriceIdr(Long totalPriceIdr) {
+		TotalPriceIdr = totalPriceIdr;
 	}
 }

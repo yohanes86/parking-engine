@@ -1,83 +1,66 @@
-package com.myproject.parking.lib.data;
+package com.myproject.parking.lib.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 public class TransactionVO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private String customerFirstName;
-	
-//	@Column(name = "customer_last_name", length = 20, nullable = true)
-    private String customerLastName;
 
-//    @Column(name = "customer_email", length = 45, nullable = true)
-    private String customerEmail;
+	private String customerLastName;
 
-//    @Column(name = "customer_phone", length = 19, nullable = true)
-    private String customerPhone;
+	private String customerEmail;
 
-//    @Column(name = "billing_first_name", length = 20, nullable = true)
-    private String billingFirstName;
+	private String customerPhone;
 
-//    @Column(name = "billing_last_name", length = 20, nullable = true)
-    private String billingLastName;
+	private String billingFirstName;
 
-//    @Column(name = "billing_address", length = 200, nullable = true)
-    private String billingAddress;
+	private String billingLastName;
 
-//    @Column(name = "billing_city", length = 20, nullable = true)
-    private String billingCity;
+	private String billingAddress;
 
-//    @Column(name = "billing_postal_code", length = 10, nullable = true)
-    private String billingPostalCode;
+	private String billingCity;
 
-//    @Column(name = "billing_phone", length = 19, nullable = true)
-    private String billingPhone;
+	private String billingPostalCode;
 
-//    @Column(name = "billing_country_code", length = 3, nullable = true)
-    private String billingCountryCode;
+	private String billingPhone;
 
-//    @Column(name = "shipping_first_name", length = 20, nullable = true)
-    private String shippingFirstName;
+	private String billingCountryCode;
 
-//    @Column(name = "shipping_last_name", length = 20, nullable = true)
-    private String shippingLastName;
+	private String shippingFirstName;
 
-//    @Column(name = "shipping_address", length = 200, nullable = true)
-    private String shippingAddress;
+	private String shippingLastName;
 
-//    @Column(name = "shipping_city", length = 20, nullable = true)
-    private String shippingCity;
+	private String shippingAddress;
 
-//    @Column(name = "shipping_postal_code", length = 10, nullable = true)
-    private String shippingPostalCode;
+	private String shippingCity;
 
-//    @Column(name = "shipping_phone", length = 19, nullable = true)
-    private String shippingPhone;
+	private String shippingPostalCode;
 
-//    @Column(name = "shipping_country_code", length = 3, nullable = true)
-    private String shippingCountryCode;
+	private String shippingPhone;
 
-//    @Column(name = "payment_order_id", length = 50, nullable = false)
-    private String paymentOrderId;
+	private String shippingCountryCode;
 
-//    @Column(name = "payment_transaction_id", length = 100)
-    private String paymentTransactionId;
+	private String paymentOrderId;
 
-//    @Column(name = "total_price_idr", nullable = false)
-    private Long totalPriceIdr;
+	private String paymentTransactionId;
 
-//    @Column(name = "payment_method", length = 20, nullable = false)
-    private String paymentMethod;
+	private Long totalPriceIdr;
 
-//    @Column(name = "payment_status", length = 20)
-    private String paymentStatus;
+	private String paymentMethod;
 
-//    @Column(name = "payment_fds_status", length = 20)
-    private String paymentFdsStatus;
+	private String paymentStatus;
+
+	private String paymentFdsStatus;
+
+	private Date createdOn;
+	private String createdBy;
+	private Date updatedOn;
+	private String updatedBy;
 
 	@Override
 	public String toString() {
@@ -284,5 +267,36 @@ public class TransactionVO implements Serializable {
 		this.paymentFdsStatus = paymentFdsStatus;
 	}
 
-	
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getUpdatedOn() {
+		return updatedOn;
+	}
+
+	public void setUpdatedOn(Date updatedOn) {
+		this.updatedOn = updatedOn;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
 }
