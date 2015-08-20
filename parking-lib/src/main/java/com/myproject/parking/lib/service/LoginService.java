@@ -23,7 +23,7 @@ public class LoginService {
 	private AppsTimeService timeService;
 	
 	public LoginData login(LoginData loginData) throws ParkingEngineException {
-		LOG.info("login with param : " + " loginData: " + loginData );	
+		LOG.debug("login with param : " + " loginData: " + loginData );	
 		UserData user = userDataMapper.findUserDataByEmail(loginData.getEmail());
 		if(user == null){
 			LOG.error("Can't find User with email " + loginData.getEmail());
@@ -49,6 +49,7 @@ public class LoginService {
 		user.setUpdatedOn(timeService.getCurrentTime());
 		userDataMapper.updateLoginSessionKey(user.getId(), user.getSessionKey(), user.getTimeGenSessionKey(), user.getUpdatedOn());
 		loginData.setSessionKey(sessionKey);
+		loginData.setPassword("*******");
 		return loginData;
 //		LOG.info("login done with param : " + " loginData: " + loginData);
 	}
