@@ -12,10 +12,12 @@ public class Mall implements Serializable {
 	private String mallName;
 	private String mallAddress;
 	private String mallPhone;
+	private int status;
 	private Date createdOn;
 	private String createdBy;
 	private Date updatedOn;
 	private String updatedBy;
+		
 
 	@Override
 	public String toString() {
@@ -92,6 +94,14 @@ public class Mall implements Serializable {
 
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }

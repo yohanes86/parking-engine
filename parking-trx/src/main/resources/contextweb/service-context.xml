@@ -54,6 +54,9 @@
 		        <!-- Payment Module -->		        
 		        <entry key="/paymentPayPal" value-ref="paymentPayPal"></entry>
 		        <entry key="/receiveTrxFromVeriTrans" value-ref="receiveTrxFromVeriTrans"></entry>
+		        <!-- Transaction Module -->
+		        <entry key="/listMall" value-ref="listMall"></entry>
+		        <entry key="/refreshCacheMall" value-ref="refreshCacheMall"></entry>
 		        
 		    </map>
 		</property>

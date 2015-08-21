@@ -21,8 +21,8 @@
 <mapper namespace="com.myproject.parking.lib.mapper.MallMapper">
     <sql id="_sqlMall">
     	m.id,m.mall_code as mallCode,m.mall_name as mallName,
-        m.mall_address as mallAddress,m.mall_phone as mallPhone,
-    	m.created_on as createdOn, m.created_by as m.createdBy,
+        m.mall_address as mallAddress,m.mall_phone as mallPhone,m.status,
+    	m.created_on as createdOn, m.created_by as createdBy,
     	m.updated_on as updatedOn, m.updated_by as updatedBy   	
     </sql>
     
