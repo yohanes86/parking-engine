@@ -47,7 +47,7 @@ public class SmisServletTest {
 	private final String testingForget = "http://localhost:8080/parking-trx/trx/forgetPassword";
 	private final String testingLoginUser = "http://localhost:8080/parking-trx/trx/loginUser";
 	private final String testingChangePassword = "http://localhost:8080/parking-trx/trx/changePassword";
-	private final String testingGetTrxFromVeriTrans = "http://192.168.1.101:8080/parking-trx/trx/receiveTrxFromVeriTrans";
+	private final String testingGetTrxFromVeriTrans = "http://localhost:8080/parking-trx/trx/receiveTrxFromVeriTrans";
 	
 	
 	
@@ -163,8 +163,8 @@ public class SmisServletTest {
 		try {
 			
 			LoginData loginData = new LoginData();
-			loginData.setPassword("password");
-			loginData.setEmail("saagusdk2011@gmail.com");
+			loginData.setPassword("Rahasia");
+			loginData.setEmail("vincent_yohanes@yahoo.com");
 			
 			String s = mapper.writeValueAsString(loginData);
 			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
@@ -267,16 +267,16 @@ public class SmisServletTest {
 		try {
 			
 			VeriTransVO veriTransVO = new VeriTransVO();
-			veriTransVO.setEmail("agusdk2011@gmail.com");
-			veriTransVO.setSessionKey("085693938630GX2FDXLBKWN35CMNGKI48YXEAQ1RPR");
+			veriTransVO.setEmail("vincent_yohanes@yahoo.com");
+			veriTransVO.setSessionKey("081799393992ZLI86NNV7JDZRNXGOL1AHLTT7GJFY");
 			veriTransVO.setTotalPriceIdr(new Long(5000000));
-			veriTransVO.setTokenId("441111-1118-ce1c34bf-e76e-49c5-ade6-e594b74b5dc8");
+			veriTransVO.setTokenId("481111-1114-fd4b7377-eefc-44b6-917e-39fe00973da3");
 			veriTransVO.setPaymentMethod("Credit Card");
 			CustomerDetail customerDetail = new CustomerDetail();
-			customerDetail.setFirstName("AGUS DARMA");
-			customerDetail.setLastName("KUSUMA");
-			customerDetail.setEmail("agusdk2011@gmail.com");
-			customerDetail.setPhone("085693938630");
+			customerDetail.setFirstName("Yohanes");
+			customerDetail.setLastName("Vincentius");
+			customerDetail.setEmail("vincent_yohanes@gmail.com");
+			customerDetail.setPhone("08179939399");
 			Address billAddress = new Address();
 			billAddress.setFirstName("AGUS DARMA BILLING");
 			billAddress.setLastName("KUSUMA BILLING");
