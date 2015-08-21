@@ -21,15 +21,11 @@
 <mapper namespace="com.myproject.parking.lib.mapper.SlotsParkingMapper">
     
     <sql id="_sqlSLotsParking">
-    	m.id as mall.id,m.mall_code as mall.mallCode,m.mall_name as mall.mallName,
-        m.mall_address as mall.mallAddress,m.mall_phone as mall.mallPhone,
-    	m.created_on as mall.createdOn, m.created_by as mall.createdBy,
-    	m.updated_on as mall.updatedOn, m.updated_by as mall.updatedBy,
-    	ms.id as mallSlots.id,ms.mall_id as mallSlots.mallId,
-    	ms.slots_name as mallSlots.slotsName,ms.slots_price as mallSlots.slotsPrice,
-    	ms.slots_status as mallSlots.slotsStatus,ms.created_on as mallSlots.createdOn,
-    	ms.created_by as mallSlots.createdBy,ms.updated_on as mallSlots.updatedOn,
-    	ms.updated_by as mallSlots.updatedBy
+    	m.mall_code as mallCode,m.mall_name as mallName,
+	    m.mall_address as mallAddress,m.mall_phone as mallPhone,
+	    m.status as status,
+		ms.slots_name as slotsName,ms.slots_price_idr as slotsPrice,
+		ms.slots_status as slotsStatus
     </sql>
     
     <select id="findSlotsParkingAvailable" parameterType="java.util.Map" resultType="SlotsParkingVO">
@@ -38,6 +34,9 @@
         from mall m 
 		inner join mall_slots ms on m.id = ms.mall_id
 		where ms.slots_status = 0
+		and m.status = 1
+		and m.mall_name = #{mallName}
+		limit 0,1
     </select>
     
 </mapper>

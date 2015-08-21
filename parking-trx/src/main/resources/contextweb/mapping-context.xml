@@ -21,5 +21,6 @@
 	<!-- Transaction Module -->
 	<bean id="listMall" class="com.myproject.parking.trx.logic.transaction.ListMall"/>
 	<bean id="refreshCacheMall" class="com.myproject.parking.trx.logic.transaction.RefreshCacheMall"/>
+	<bean id="findSLotsByMall" class="com.myproject.parking.trx.logic.transaction.FindSlotByMall"/>
 	
 </beans>
