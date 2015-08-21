@@ -4,7 +4,9 @@ public class Constants {
 	
 	public static final String ENVIRONMENT_DEV				= "http://localhost:8080/parking-trx/trx";
 	public static final String ENVIRONMENT_LIVE				= "http://localhost:8080/parking-trx/trx";
-	public static final long TIMEOUT_IN_MINUTES				= 70; // minutes				
+	public static final long TIMEOUT_IN_MINUTES				= 10; // minutes
+	
+	public static final String CACHE_MALL = "cache_mall";
 	
 	public static final String NE_SDF_FULL			= "dd-MM-yyyy HH:mm:ss";
 	public static final String NE_SDF_DATE			= "dd-MM-yyyy";

@@ -18,5 +18,8 @@
 	<!-- Payment Module -->
 	<bean id="paymentPayPal" class="com.myproject.parking.trx.payment.PaymentWithPayPal"/>
 	<bean id="receiveTrxFromVeriTrans" class="com.myproject.parking.trx.payment.ReceiveTransactionFromVeriTrans"/>
+	<!-- Transaction Module -->
+	<bean id="listMall" class="com.myproject.parking.trx.logic.transaction.ListMall"/>
+	<bean id="refreshCacheMall" class="com.myproject.parking.trx.logic.transaction.RefreshCacheMall"/>
 	
 </beans>

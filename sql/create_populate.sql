@@ -100,6 +100,143 @@ CREATE TABLE TransactionDetail
 CREATE UNIQUE INDEX idx_transactionId ON TransactionDetail (transaction_id)
 ;
 
+-- Table Mall
+
+CREATE TABLE Mall
+(
+  id Int NOT NULL AUTO_INCREMENT,
+  mall_code Varchar(128),
+  mall_name Varchar(128),
+  mall_address Varchar(128),
+  mall_phone Varchar(64),
+  created_on Timestamp,
+  created_by Varchar(128),
+  updated_on Timestamp,
+  updated_by Varchar(128),
+ PRIMARY KEY (id)
+)
+;
+
+CREATE UNIQUE INDEX idx ON Mall (created_on,created_by,updated_on,updated_by,mall_code,mall_name)
+;
+
+-- Table Mall_Slots
+
+CREATE TABLE Mall_Slots
+(
+  id Int NOT NULL AUTO_INCREMENT,
+  mall_id Int,
+  slots_name Varchar(128),
+  slots_price_idr Bigint,
+  slots_status Int,
+  created_on Timestamp,
+  created_by Varchar(128),
+  updated_on Timestamp,
+  updated_by Varchar(128),
+ PRIMARY KEY (id)
+)
+  COMMENT = 'slots_status 0 = FREE
+slots_status 1 = BOOKED
+'
+;
+
+CREATE UNIQUE INDEX idx ON Mall_Slots (created_on,created_by,updated_on,updated_by,slots_name,slots_status)
+;
 
 
 
+INSERT INTO mall(
+   mall_code
+  ,mall_name
+  ,mall_address
+  ,mall_phone
+  ,created_on
+  ,created_by
+  ,updated_on
+  ,updated_by
+) VALUES (
+  'KOKAS-001'
+  ,'Kota Casablanka'  -- mall_name - IN varchar(128)
+  ,''  -- mall_address - IN varchar(128)
+  ,''  -- mall_phone - IN varchar(64)
+  ,CURRENT_TIMESTAMP -- created_on - IN timestamp
+  ,'SYS'  -- created_by - IN varchar(128)
+  ,CURRENT_TIMESTAMP -- updated_on - IN timestamp
+  ,'SYS'  -- updated_by - IN varchar(128)
+)
+
+INSERT INTO mall_slots(
+   mall_id
+  ,slots_name
+  ,slots_price_idr
+  ,slots_status
+  ,created_on
+  ,created_by
+  ,updated_on
+  ,updated_by
+) VALUES (
+   1,'B1-A27'  -- slots_name - IN varchar(128)
+  ,10000   -- slots_price_idr - IN bigint(20)
+  ,0   -- slots_status - IN int(11)
+  ,CURRENT_TIMESTAMP -- created_on - IN timestamp
+  ,'SYS'  -- created_by - IN varchar(128)
+  ,CURRENT_TIMESTAMP -- updated_on - IN timestamp
+  ,'SYS'  -- updated_by - IN varchar(128)
+)
+
+INSERT INTO mall_slots(
+   mall_id
+  ,slots_name
+  ,slots_price_idr
+  ,slots_status
+  ,created_on
+  ,created_by
+  ,updated_on
+  ,updated_by
+) VALUES (
+   1,'B1-A28'  -- slots_name - IN varchar(128)
+  ,10000   -- slots_price_idr - IN bigint(20)
+  ,0   -- slots_status - IN int(11)
+  ,CURRENT_TIMESTAMP -- created_on - IN timestamp
+  ,'SYS'  -- created_by - IN varchar(128)
+  ,CURRENT_TIMESTAMP -- updated_on - IN timestamp
+  ,'SYS'  -- updated_by - IN varchar(128)
+)
+
+INSERT INTO mall_slots(
+   mall_id
+  ,slots_name
+  ,slots_price_idr
+  ,slots_status
+  ,created_on
+  ,created_by
+  ,updated_on
+  ,updated_by
+) VALUES (
+   1,'B1-A29'  -- slots_name - IN varchar(128)
+  ,10000   -- slots_price_idr - IN bigint(20)
+  ,0   -- slots_status - IN int(11)
+  ,CURRENT_TIMESTAMP -- created_on - IN timestamp
+  ,'SYS'  -- created_by - IN varchar(128)
+  ,CURRENT_TIMESTAMP -- updated_on - IN timestamp
+  ,'SYS'  -- updated_by - IN varchar(128)
+)
+
+INSERT INTO mall_slots(
+   mall_id
+  ,slots_name
+  ,slots_price_idr
+  ,slots_status
+  ,created_on
+  ,created_by
+  ,updated_on
+  ,updated_by
+) VALUES (
+   1,'B1-A30'  -- slots_name - IN varchar(128)
+  ,10000   -- slots_price_idr - IN bigint(20)
+  ,0   -- slots_status - IN int(11)
+  ,CURRENT_TIMESTAMP -- created_on - IN timestamp
+  ,'SYS'  -- created_by - IN varchar(128)
+  ,CURRENT_TIMESTAMP -- updated_on - IN timestamp
+  ,'SYS'  -- updated_by - IN varchar(128)
+)

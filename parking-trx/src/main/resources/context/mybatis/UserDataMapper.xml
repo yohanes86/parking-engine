@@ -68,6 +68,10 @@
     	UPDATE userdata SET session_key = #{sessionKey}, time_gen_session_key = #{timeGenSessionKey}, updated_on = #{updatedOn} WHERE id = #{id} 	
      </update>
      
+      <update id="removeSessionKey" parameterType="java.util.Map" >
+    	UPDATE userdata SET session_key = #{sessionKey}, updated_on = #{updatedOn} WHERE id = #{id} 	
+     </update>
+     
      <update id="updateSessionKeyUser" parameterType="java.util.Map" >
     	UPDATE userdata SET time_gen_session_key = #{timeSessionKey} WHERE email = #{email} 	
      </update>
