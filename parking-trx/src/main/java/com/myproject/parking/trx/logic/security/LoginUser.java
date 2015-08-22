@@ -24,6 +24,7 @@ import com.myproject.parking.lib.service.ActivateUserService;
 import com.myproject.parking.lib.service.ForgetPasswordService;
 import com.myproject.parking.lib.service.LoginService;
 import com.myproject.parking.lib.service.ParkingEngineException;
+import com.myproject.parking.lib.utils.CipherUtil;
 import com.myproject.parking.lib.utils.MessageUtils;
 import com.myproject.parking.trx.logic.BaseQueryLogic;
 

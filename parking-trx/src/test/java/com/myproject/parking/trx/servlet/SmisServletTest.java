@@ -47,11 +47,9 @@ public class SmisServletTest {
 	private final String testingForget = "http://localhost:8080/parking-trx/trx/forgetPassword";
 	private final String testingLoginUser = "http://localhost:8080/parking-trx/trx/loginUser";
 	private final String testingChangePassword = "http://localhost:8080/parking-trx/trx/changePassword";
-	private final String testingGetTrxFromVeriTrans = "http://192.168.1.101:8080/parking-trx/trx/receiveTrxFromVeriTrans";
+	private final String testingGetTrxFromVeriTrans = "http://localhost:8080/parking-trx/trx/receiveTrxFromVeriTrans";
 	private final String testingGetListMall = "http://localhost:8080/parking-trx/trx/listMall";
 	private final String testingRefreshCacheMall = "http://localhost:8080/parking-trx/trx/refreshCacheMall";
-	
-	
 	
 //	@Test
 	public void testRegistrationUser() {
@@ -107,7 +105,7 @@ public class SmisServletTest {
         }  // end try finally
 	}
 	
-//	@Test
+	@Test
 	public void testForgetPassword() {
 		String url = testingForget;
 		long startTime = System.currentTimeMillis();
@@ -165,8 +163,8 @@ public class SmisServletTest {
 		try {
 			
 			LoginData loginData = new LoginData();
-			loginData.setPassword("password");
-			loginData.setEmail("saagusdk2011@gmail.com");
+			loginData.setPassword("Rahasia");
+			loginData.setEmail("vincent_yohanes@yahoo.com");
 			
 			String s = mapper.writeValueAsString(loginData);
 			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
@@ -269,31 +267,31 @@ public class SmisServletTest {
 		try {
 			
 			VeriTransVO veriTransVO = new VeriTransVO();
-			veriTransVO.setEmail("agusdk2011@gmail.com");
-			veriTransVO.setSessionKey("085693938630GX2FDXLBKWN35CMNGKI48YXEAQ1RPR");
+			veriTransVO.setEmail("vincent_yohanes@yahoo.com");
+			veriTransVO.setSessionKey("08179939399NZW28KL6WCJ55RQJ1HJU8XGBPCX5IH");
 			veriTransVO.setTotalPriceIdr(new Long(5000000));
-			veriTransVO.setTokenId("441111-1118-ce1c34bf-e76e-49c5-ade6-e594b74b5dc8");
+			veriTransVO.setTokenId("481111-1114-30a2858e-bad4-497a-9bc6-7a83cf2bbf6b");
 			veriTransVO.setPaymentMethod("Credit Card");
 			CustomerDetail customerDetail = new CustomerDetail();
-			customerDetail.setFirstName("AGUS DARMA");
-			customerDetail.setLastName("KUSUMA");
-			customerDetail.setEmail("agusdk2011@gmail.com");
-			customerDetail.setPhone("085693938630");
+			customerDetail.setFirstName("YOHANES");
+			customerDetail.setLastName("VINCENTIUS");
+			customerDetail.setEmail("vincent_yohanes@yahoo.com");
+			customerDetail.setPhone("081807771819");
 			Address billAddress = new Address();
-			billAddress.setFirstName("AGUS DARMA BILLING");
-			billAddress.setLastName("KUSUMA BILLING");
-			billAddress.setAddress("Jalan Raya Perancis");
-			billAddress.setCity("Tangerang");
-			billAddress.setPhone("085693938630");
-			billAddress.setPostalCode("15211");
+			billAddress.setFirstName("YOHANES BILLING");
+			billAddress.setLastName("VINCENTIUS");
+			billAddress.setAddress("Jalan Raya");
+			billAddress.setCity("Jakarta");
+			billAddress.setPhone("081807771819");
+			billAddress.setPostalCode("11740");
 			
 			Address shipAddress = new Address();
-			shipAddress.setFirstName("AGUS DARMA SHIPPING");
-			shipAddress.setLastName("KUSUMA SHIPPING");
-			shipAddress.setAddress("Jalan Raya Perancis");
-			shipAddress.setCity("Tangerang");
-			shipAddress.setPhone("085693938630");
-			shipAddress.setPostalCode("15211");
+			shipAddress.setFirstName("Yohanes SHIPPING");
+			shipAddress.setLastName("Vincentius SHIPPING");
+			shipAddress.setAddress("Jalan Raya aaa");
+			shipAddress.setCity("Jakarta");
+			shipAddress.setPhone("081807771819");
+			shipAddress.setPostalCode("11740");
 			customerDetail.setBillingAddress(billAddress);
 			customerDetail.setShippingAddress(shipAddress);
 			
@@ -354,7 +352,7 @@ public class SmisServletTest {
         }  // end try finally
 	}
 	
-	@Test
+//	@Test
 	public void testGetListMall() {
 		String url = testingGetListMall;
 		long startTime = System.currentTimeMillis();
