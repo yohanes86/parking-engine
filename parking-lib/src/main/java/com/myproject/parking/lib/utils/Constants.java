@@ -4,7 +4,7 @@ public class Constants {
 	
 	public static final String ENVIRONMENT_DEV				= "http://localhost:8080/parking-trx/trx";
 	public static final String ENVIRONMENT_LIVE				= "http://localhost:8080/parking-trx/trx";
-	public static final long TIMEOUT_IN_MINUTES				= 10; // minutes
+	public static final long TIMEOUT_IN_MINUTES				= 80; // minutes
 	
 	public static final String CACHE_MALL = "cache_mall";
 	
@@ -44,5 +44,7 @@ public class Constants {
 	public static final String UNREGISTER_DEALER		= "TIDAK TERDAFTAR";
 	
 	public static final int LENGTH_GENERATE_FORGET_PASSWORD = 6;
+	
+	public static final String SHARED_PREF_LOGIN		= "SharedPrefLogin";	
 	
 }

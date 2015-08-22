@@ -1,5 +1,7 @@
 package com.myproject.parking.lib.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.Security;
 import java.util.Arrays;

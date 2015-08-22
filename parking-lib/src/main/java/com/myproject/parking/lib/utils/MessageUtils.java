@@ -21,6 +21,7 @@ public class MessageUtils {
 		String result = "";
 		try {
 			result = mapper.writeValueAsString(messageVO);
+			result = CipherUtil.encryptTripleDES(result, CipherUtil.PASSWORD);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
