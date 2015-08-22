@@ -29,7 +29,7 @@
     <select id="findAllMall" resultType="Mall">
         select  
         <include refid="_sqlMall"/>
-        from mall m            
+        from mall m where m.status = 1           
     </select>
     
 </mapper>

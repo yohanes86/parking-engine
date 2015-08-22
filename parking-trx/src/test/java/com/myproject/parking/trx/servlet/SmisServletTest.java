@@ -26,8 +26,10 @@ import com.myproject.parking.lib.data.CustomerDetail;
 import com.myproject.parking.lib.data.ForgetPasswordVO;
 import com.myproject.parking.lib.data.LoginData;
 import com.myproject.parking.lib.data.Product;
+import com.myproject.parking.lib.data.SlotsParkingVO;
 import com.myproject.parking.lib.data.TransactionDetails;
 import com.myproject.parking.lib.data.VeriTransVO;
+import com.myproject.parking.lib.entity.Mall;
 import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.utils.CipherUtil;
 import com.myproject.parking.lib.utils.CommonUtil;
@@ -50,6 +52,7 @@ public class SmisServletTest {
 	private final String testingGetTrxFromVeriTrans = "http://localhost:8080/parking-trx/trx/receiveTrxFromVeriTrans";
 	private final String testingGetListMall = "http://localhost:8080/parking-trx/trx/listMall";
 	private final String testingRefreshCacheMall = "http://localhost:8080/parking-trx/trx/refreshCacheMall";
+	private final String testingGetSlotsByMall = "http://localhost:8080/parking-trx/trx/findSLotsByMall";
 	
 //	@Test
 	public void testRegistrationUser() {
@@ -417,6 +420,59 @@ public class SmisServletTest {
 			
 			
 			String s = mapper.writeValueAsString(loginData);
+			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
+			LOG.debug("Request: " + s);
+            StringEntity entity = new StringEntity(s);
+			
+			HttpPost post = new HttpPost(url);
+			post.setHeader("Content-Type", "application/json");
+			post.setEntity(entity);
+			
+			// Execute HTTP request
+			LOG.debug("Executing request: " + post.getURI());
+            HttpResponse response = client.execute(post);
+            
+            // Get hold of the response entity
+            StatusLine sl = response.getStatusLine();
+            LOG.debug("StatusCode: " + sl.getStatusCode());
+            Assert.assertEquals(200, sl.getStatusCode());
+
+            HttpEntity respEntity = response.getEntity();
+            String respString = EntityUtils.toString(respEntity);
+            LOG.debug("Response: " + respString);
+            
+//            WalletTrxResponse trxResp = mapper.
+//            		readValue(respString, WalletTrxResponse.class);
+//            Assert.assertEquals(trxReq.getRequestId(), trxResp.getRequestId());
+            Assert.assertEquals(true, true);
+            int delta = (int) (System.currentTimeMillis() - startTime);
+            LOG.info("Finish running one thread in {}ms", 
+            		new String[] { CommonUtil.displayNumberNoDecimal(delta) } );
+		}catch (Exception e) {
+		
+			LOG.warn("Unexpected Exception", e);
+		} finally {
+            // When HttpClient instance is no longer needed,
+            // shut down the connection manager to ensure
+            // immediate deallocation of all system resources
+            client.getConnectionManager().shutdown();
+        }  // end try finally
+	}
+	
+	@Test
+	public void testGetListSlotsByMall() {
+		String url = testingGetSlotsByMall;
+		long startTime = System.currentTimeMillis();
+		HttpClient client = new DefaultHttpClient();
+		try {
+			
+			SlotsParkingVO slotsParkingVO = new SlotsParkingVO();
+			slotsParkingVO.setEmail("agusdk2011@gmail.com");
+			slotsParkingVO.setSessionKey("085693938630GX2FDXLBKWN35CMNGKI48YXEAQ1RPR");
+			slotsParkingVO.setMallName("Kota Casablanka");
+			
+			
+			String s = mapper.writeValueAsString(slotsParkingVO);
 			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
 			LOG.debug("Request: " + s);
             StringEntity entity = new StringEntity(s);
