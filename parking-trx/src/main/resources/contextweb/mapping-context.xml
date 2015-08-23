@@ -14,6 +14,7 @@
 	<bean id="userActivate" class="com.myproject.parking.trx.logic.security.ActivateUser"/>
 	<bean id="forgetPassword" class="com.myproject.parking.trx.logic.security.ForgetPassword"/>
 	<bean id="loginUser" class="com.myproject.parking.trx.logic.security.LoginUser"/>
+	<bean id="logoutUser" class="com.myproject.parking.trx.logic.security.LogoutUser"/>
 	<bean id="changePassword" class="com.myproject.parking.trx.logic.security.ChangePassword"/>
 	<!-- Payment Module -->
 	<bean id="paymentPayPal" class="com.myproject.parking.trx.payment.PaymentWithPayPal"/>

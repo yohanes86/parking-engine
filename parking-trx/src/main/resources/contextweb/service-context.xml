@@ -50,6 +50,7 @@
 		        <entry key="/userActivate" value-ref="userActivate"></entry>
 		        <entry key="/forgetPassword" value-ref="forgetPassword"></entry>
 		        <entry key="/loginUser" value-ref="loginUser"></entry>
+		        <entry key="/logoutUser" value-ref="logoutUser"></entry>
 		        <entry key="/changePassword" value-ref="changePassword"></entry>
 		        <!-- Payment Module -->		        
 		        <entry key="/paymentPayPal" value-ref="paymentPayPal"></entry>
