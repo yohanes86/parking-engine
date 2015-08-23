@@ -108,7 +108,7 @@ public class SmisServletTest {
         }  // end try finally
 	}
 	
-	@Test
+//	@Test
 	public void testForgetPassword() {
 		String url = testingForget;
 		long startTime = System.currentTimeMillis();
@@ -407,7 +407,7 @@ public class SmisServletTest {
         }  // end try finally
 	}
 	
-//	@Test
+	@Test
 	public void testRefreshCacheMall() {
 		String url = testingRefreshCacheMall;
 		long startTime = System.currentTimeMillis();
@@ -459,7 +459,7 @@ public class SmisServletTest {
         }  // end try finally
 	}
 	
-	@Test
+//	@Test
 	public void testGetListSlotsByMall() {
 		String url = testingGetSlotsByMall;
 		long startTime = System.currentTimeMillis();
