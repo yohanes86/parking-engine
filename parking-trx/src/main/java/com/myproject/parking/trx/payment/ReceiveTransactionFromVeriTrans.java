@@ -38,7 +38,7 @@ public class ReceiveTransactionFromVeriTrans implements BaseQueryLogic {
 		try {		
 			TransactionVO transaction = new TransactionVO(); 
 			VeriTransVO veriTransVO = mapper.readValue(data, VeriTransVO.class);
-			veriTransManagerService.charge(veriTransVO.getTokenId(),transaction,veriTransVO);
+			transaction = veriTransManagerService.charge(veriTransVO.getTokenId(),transaction,veriTransVO);
 			result = MessageUtils.handleSuccess("Transaction ID : " + transaction.getId() 
 					+ " Price : " + transaction.getTotalPriceIdr() 
 					+ " Payment Status : " + transaction.getPaymentStatus() 
