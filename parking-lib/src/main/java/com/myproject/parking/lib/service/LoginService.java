@@ -60,6 +60,9 @@ public class LoginService {
 		userDataMapper.updateLoginSessionKey(user.getId(), user.getSessionKey(), user.getTimeGenSessionKey(), user.getUpdatedOn());
 		loginData.setSessionKey(sessionKey);
 		loginData.setPassword("*******");
+		loginData.setName(user.getName());
+		loginData.setPhoneNo(user.getPhoneNo());
+		loginData.setName(user.getName());
 		return loginData;
 //		LOG.info("login done with param : " + " loginData: " + loginData);
 	}
