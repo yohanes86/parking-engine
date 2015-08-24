@@ -1,6 +1,6 @@
 ﻿/*
 Created: 17-Aug-15
-Modified: 20-Aug-15
+Modified: 23-Aug-15
 Model: MySQL 5.1
 Database: MySQL 5.1
 */
@@ -109,6 +109,7 @@ CREATE TABLE Mall
   mall_name Varchar(128),
   mall_address Varchar(128),
   mall_phone Varchar(64),
+  status Int DEFAULT 1,
   created_on Timestamp,
   created_by Varchar(128),
   updated_on Timestamp,
@@ -145,11 +146,16 @@ CREATE UNIQUE INDEX idx ON Mall_Slots (created_on,created_by,updated_on,updated_
 
 
 
+ALTER TABLE parkingonline.mall
+ ADD mall_image VARCHAR(64) AFTER mall_phone;
+
+
 INSERT INTO mall(
    mall_code
   ,mall_name
   ,mall_address
   ,mall_phone
+  ,mall_image
   ,created_on
   ,created_by
   ,updated_on
@@ -157,8 +163,9 @@ INSERT INTO mall(
 ) VALUES (
   'KOKAS-001'
   ,'Kota Casablanka'  -- mall_name - IN varchar(128)
-  ,''  -- mall_address - IN varchar(128)
-  ,''  -- mall_phone - IN varchar(64)
+  ,'Jalan Raya Tebet No 100'  -- mall_address - IN varchar(128)
+  ,'021-55934854'  -- mall_phone - IN varchar(64)
+  ,'kota_kasablanka'  -- mall_phone - IN varchar(64)
   ,CURRENT_TIMESTAMP -- created_on - IN timestamp
   ,'SYS'  -- created_by - IN varchar(128)
   ,CURRENT_TIMESTAMP -- updated_on - IN timestamp
