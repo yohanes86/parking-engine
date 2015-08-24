@@ -49,7 +49,7 @@ public class UserDataService {
 		sb.append("\n").append("\n");
 		sb.append("Your account has been successfully registered.").append("\n");
 		sb.append("Please click link below to activate your account.").append("\n");
-		sb.append(Constants.ENVIRONMENT_DEV+"/userActivate?actKey="+ user.getActivateKey() + "&email=" + user.getEmail() + "&noHp=" + user.getPhoneNo()).append("\n");
+		sb.append(Constants.ENVIRONMENT_LIVE+"/userActivate?actKey="+ user.getActivateKey() + "&email=" + user.getEmail() + "&noHp=" + user.getPhoneNo()).append("\n");
 		sb.append("Thank you for using our application.").append("\n");
 		sb.append("\n");
 		sb.append("Regards,");
