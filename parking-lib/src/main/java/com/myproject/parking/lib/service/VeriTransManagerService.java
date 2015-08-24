@@ -105,7 +105,7 @@ public class VeriTransManagerService {
 	}
 	
 	@Transactional(rollbackFor={Exception.class})
-	public void charge(String vtToken,TransactionVO transactionVO,VeriTransVO veriTransVO) throws ParkingEngineException,RestClientException {
+	public TransactionVO charge(String vtToken,TransactionVO transactionVO,VeriTransVO veriTransVO) throws ParkingEngineException,RestClientException {
 		LOG.debug(" Process charge to veritrans with token: "+vtToken + " email : " + veriTransVO.getEmail());
 		LOG.debug(" Parameter VeriTransVO: "+veriTransVO);
 		UserData user = userDataMapper.findUserDataByEmail(veriTransVO.getEmail());
@@ -150,6 +150,7 @@ public class VeriTransManagerService {
 			throw e;
 		}
 		LOG.debug(" Parameter TransactionVO: "+transactionVO);
+		return transactionVO;
 	}
 	
 	
