@@ -132,7 +132,7 @@ public class VeriTransManagerService {
 		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), veriTransVO.getEmail());
 		try {
 			final CreditCardRequest request = createCreditCardRequest(vtToken,veriTransVO);
-			transactionVO = updateTransaction(veriTransVO);
+			transactionVO = createTransaction(veriTransVO);
 			VtDirect vtDirect = getVtGatewayFactory().vtDirect();			
             final VtResponse vtResponse = vtDirect.charge(request);            
             transactionVO.setPaymentTransactionId(vtResponse.getTransactionId());
@@ -146,6 +146,7 @@ public class VeriTransManagerService {
             }        
             transactionMapper.updateTransactionStatus(transactionVO.getPaymentTransactionId(), 
             		transactionVO.getPaymentFdsStatus(), transactionVO.getPaymentStatus(), transactionVO.getPaymentOrderId());
+            transactionVO.setBookingCode("CONTOH BOOKING CODE");// get booking code from booking id
 		} catch (RestClientException e) {
 			throw e;
 		}
@@ -154,7 +155,7 @@ public class VeriTransManagerService {
 	}
 	
 	
-	protected TransactionVO updateTransaction(VeriTransVO veriTransVO) {		
+	protected TransactionVO createTransaction(VeriTransVO veriTransVO) {		
         final TransactionVO ret = new TransactionVO();
         ret.setBillingAddress(veriTransVO.getCustomerDetail().getBillingAddress().getAddress());
         ret.setBillingCity(veriTransVO.getCustomerDetail().getBillingAddress().getCity());
@@ -182,6 +183,7 @@ public class VeriTransManagerService {
         ret.setPaymentOrderId(veriTransVO.getTransactionDetails().getOrderId());
         ret.setPaymentStatus(null);
         ret.setPaymentTransactionId(null);
+        ret.setBookingId(veriTransVO.getBookingId());
 
         ret.setTotalPriceIdr(veriTransVO.getTotalPriceIdr());
         Date now = timeService.getCurrentTime();

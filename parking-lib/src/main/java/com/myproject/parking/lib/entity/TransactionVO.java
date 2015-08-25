@@ -56,6 +56,8 @@ public class TransactionVO implements Serializable {
 	private String paymentStatus;
 
 	private String paymentFdsStatus;
+	private String bookingId;
+	private String bookingCode;
 
 	private Date createdOn;
 	private String createdBy;
@@ -297,6 +299,22 @@ public class TransactionVO implements Serializable {
 
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public String getBookingId() {
+		return bookingId;
+	}
+
+	public void setBookingId(String bookingId) {
+		this.bookingId = bookingId;
+	}
+
+	public String getBookingCode() {
+		return bookingCode;
+	}
+
+	public void setBookingCode(String bookingCode) {
+		this.bookingCode = bookingCode;
 	}
 
 }
