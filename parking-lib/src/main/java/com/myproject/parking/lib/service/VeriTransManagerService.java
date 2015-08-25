@@ -132,7 +132,7 @@ public class VeriTransManagerService {
 		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), veriTransVO.getEmail());
 		try {
 			final CreditCardRequest request = createCreditCardRequest(vtToken,veriTransVO);
-			transactionVO = saveTransaction(veriTransVO);
+			transactionVO = updateTransaction(veriTransVO);
 			VtDirect vtDirect = getVtGatewayFactory().vtDirect();			
             final VtResponse vtResponse = vtDirect.charge(request);            
             transactionVO.setPaymentTransactionId(vtResponse.getTransactionId());
@@ -154,7 +154,7 @@ public class VeriTransManagerService {
 	}
 	
 	
-	protected TransactionVO saveTransaction(VeriTransVO veriTransVO) {		
+	protected TransactionVO updateTransaction(VeriTransVO veriTransVO) {		
         final TransactionVO ret = new TransactionVO();
         ret.setBillingAddress(veriTransVO.getCustomerDetail().getBillingAddress().getAddress());
         ret.setBillingCity(veriTransVO.getCustomerDetail().getBillingAddress().getCity());

@@ -18,6 +18,7 @@ public class ParkingEngineException extends Exception {
 	public static final int ENGINE_WRONG_OLD_PASSWORD		= 19;
 	
 	public static final int VERITRANS_CHARGE_FAILED			= 20;
+	public static final int ENGINE_SLOT_NOT_AVAILABLE	= 21;
 	
 	private int errorCode;
 	private String[] info;

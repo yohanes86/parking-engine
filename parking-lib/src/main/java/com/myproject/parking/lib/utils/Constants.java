@@ -45,6 +45,7 @@ public class Constants {
 	public static final String UNREGISTER_DEALER		= "TIDAK TERDAFTAR";
 	
 	public static final int LENGTH_GENERATE_FORGET_PASSWORD = 6;
+	public static final int LENGTH_GENERATE_BOOKING_CODE = 6;
 	
 	public static final String SHARED_PREF_LOGIN		= "SharedPrefLogin";	
 	
