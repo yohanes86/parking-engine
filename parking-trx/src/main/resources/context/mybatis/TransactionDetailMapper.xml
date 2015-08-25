@@ -23,4 +23,9 @@
     	insert into transactiondetail(transaction_id,name_item,price_each_idr)values(#{transactionId}, #{nameItem}, #{priceEachIdr})  	
      </insert>
      
+     <update id="updateMallSlotStatus" parameterType="java.util.Map">      
+    	UPDATE mall_slots SET slots_status = 1 WHERE id = #{idSlot}
+     </update>
+     
+     
 </mapper>

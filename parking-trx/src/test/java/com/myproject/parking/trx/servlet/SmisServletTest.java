@@ -51,7 +51,7 @@ public class SmisServletTest {
 	private final String testingChangePassword = "http://localhost:8080/parking-trx/trx/changePassword";
 	private final String testingGetTrxFromVeriTrans = "http://localhost:8080/parking-trx/trx/receiveTrxFromVeriTrans";
 	private final String testingGetListMall = "http://localhost:8080/parking-trx/trx/listMall";
-	private final String testingRefreshCacheMall = "http://ec2-52-3-211-119.compute-1.amazonaws.com:8080/parking-trx/trx/refreshCacheMall";
+	private final String testingRefreshCacheMall = "http://ec2-52-3-21-158.compute-1.amazonaws.com:8080/parking-trx/trx/refreshCacheMall";
 	private final String testingGetSlotsByMall = "http://localhost:8080/parking-trx/trx/findSLotsByMall";
 	
 //	@Test

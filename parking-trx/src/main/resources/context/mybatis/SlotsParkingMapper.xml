@@ -24,7 +24,7 @@
     	m.mall_code as mallCode,m.mall_name as mallName,
 	    m.mall_address as mallAddress,m.mall_phone as mallPhone,
 	    m.status as status,
-		ms.slots_name as slotsName,ms.slots_price_idr as slotsPrice,
+		ms.id as idSlot,ms.slots_name as slotsName,ms.slots_price_idr as slotsPrice,
 		ms.slots_status as slotsStatus
     </sql>
     
