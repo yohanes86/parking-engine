@@ -1,6 +1,6 @@
 ﻿/*
 Created: 17-Aug-15
-Modified: 23-Aug-15
+Modified: 25-Aug-15
 Model: MySQL 5.1
 Database: MySQL 5.1
 */
@@ -74,6 +74,7 @@ CREATE TABLE Transaction
   payment_method Varchar(128),
   payment_status Varchar(128),
   payment_fds_status Varchar(128),
+  booking_code Varchar(64),
   created_on Timestamp NOT NULL,
   created_by Varchar(50) NOT NULL,
   updated_on Timestamp NOT NULL,
@@ -142,6 +143,26 @@ slots_status 1 = BOOKED
 ;
 
 CREATE UNIQUE INDEX idx ON Mall_Slots (created_on,created_by,updated_on,updated_by,slots_name,slots_status)
+;
+
+-- Table Booking
+
+CREATE TABLE Booking
+(
+  id Int NOT NULL AUTO_INCREMENT,
+  name Varchar(50),
+  phone_no Varchar(16),
+  email Varchar(50),
+  booking_id Varchar(128),
+  booking_code Varchar(128),
+  booking_date Timestamp,
+ PRIMARY KEY (id)
+)
+  COMMENT = '
+'
+;
+
+CREATE UNIQUE INDEX idx ON Booking (booking_code,booking_date,booking_id,email)
 ;
 
 
