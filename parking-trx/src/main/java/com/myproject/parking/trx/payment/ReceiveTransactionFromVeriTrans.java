@@ -42,7 +42,8 @@ public class ReceiveTransactionFromVeriTrans implements BaseQueryLogic {
 			result = MessageUtils.handleSuccess("Transaction ID : " + transaction.getId() 
 					+ " Price : " + transaction.getTotalPriceIdr() 
 					+ " Payment Status : " + transaction.getPaymentStatus() 
-					+ " FDS Status : " + transaction.getPaymentFdsStatus(), mapper);
+					+ " FDS Status : " + transaction.getPaymentFdsStatus()
+					+ " Booking Code : " + transaction.getBookingCode(), mapper);
 		} catch (ParkingEngineException e) {
 			result = MessageUtils.handleException(e, "", mapper);
 			LOG.error("ParkingEngineException when processing " + pathInfo + " Error Message " + result);

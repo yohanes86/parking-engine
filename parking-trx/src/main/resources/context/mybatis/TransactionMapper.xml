@@ -22,10 +22,10 @@
      <insert id="createTransaction" parameterType="TransactionVO" useGeneratedKeys="true" keyProperty="id">      
     	insert into transaction(customer_first_name,customer_last_name,customer_email,customer_phone,billing_first_name,billing_last_name,billing_address,billing_city
   			,billing_postal_code,billing_country_code,billing_phone,shipping_first_name,shipping_last_name,shipping_address,shipping_city,shipping_postal_code,shipping_phone
-  			,shipping_country_code,payment_order_id,payment_transaction_id,total_price_idr,payment_method,payment_status,payment_fds_status,booking_code,created_on,created_by,updated_on,updated_by)
+  			,shipping_country_code,payment_order_id,payment_transaction_id,total_price_idr,payment_method,payment_status,payment_fds_status,booking_id,created_on,created_by,updated_on,updated_by)
     		values(#{customerFirstName}, #{customerLastName}, #{customerEmail}, #{customerPhone}, #{billingFirstName}, #{billingLastName}, #{billingAddress}, #{billingCity},
     		#{billingPostalCode}, #{billingPhone}, #{billingCountryCode}, #{shippingFirstName}, #{shippingLastName}, #{shippingAddress}, #{shippingCity}, #{shippingPostalCode},
-    		#{shippingPhone}, #{shippingCountryCode}, #{paymentOrderId}, #{paymentTransactionId}, #{totalPriceIdr}, #{paymentMethod}, #{paymentStatus}, #{paymentFdsStatus},#{bookingCode},
+    		#{shippingPhone}, #{shippingCountryCode}, #{paymentOrderId}, #{paymentTransactionId}, #{totalPriceIdr}, #{paymentMethod}, #{paymentStatus}, #{paymentFdsStatus},#{bookingId},
     		#{createdOn}, #{createdBy}, #{updatedOn}, #{updatedBy})  	
      </insert>
      
