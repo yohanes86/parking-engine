@@ -151,7 +151,7 @@ public class VeriTransManagerService {
             }        
             transactionMapper.updateTransactionStatus(transactionVO.getPaymentTransactionId(), 
             		transactionVO.getPaymentFdsStatus(), transactionVO.getPaymentStatus(), transactionVO.getPaymentOrderId());
-            Booking booking = bookingMapper.findBookingById(veriTransVO.getBookingId());
+            Booking booking = bookingMapper.findBookingByBookingId(veriTransVO.getBookingId());
             transactionVO.setBookingCode(booking.getBookingCode());// get booking code from booking id
             booking.setBookingStatus(Constants.STATUS_ALREADY_PAY);
             bookingMapper.updateBookingStatus(booking);

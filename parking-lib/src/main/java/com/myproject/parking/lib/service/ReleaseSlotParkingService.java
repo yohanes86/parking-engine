@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.myproject.parking.lib.data.SlotsParkingVO;
+import com.myproject.parking.lib.entity.Booking;
 import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.mapper.BookingMapper;
 import com.myproject.parking.lib.mapper.SlotsParkingMapper;
@@ -57,9 +58,13 @@ public class ReleaseSlotParkingService {
 		
 		SlotsParkingVO slotReleaseVO = null;
 		slotReleaseVO = slotsParkingMapper.findSlotsParkingRelease(slotsParkingVO.getMallName());
-		if(slotReleaseVO != null){
-			bookingMapper.updateMallSlotStatusAvailable(slotReleaseVO.getIdSlot());
+		if(slotReleaseVO == null){
+			throw new ParkingEngineException(ParkingEngineException.ALL_SLOT_AVAILABLE);
 		}
+			bookingMapper.updateMallSlotStatusAvailable(slotReleaseVO.getIdSlot());
+			Booking booking = bookingMapper.findBookingByBookingId(slotReleaseVO.getBookingId());
+			booking.setBookingStatus(Constants.STATUS_ALREADY_CHECK_OUT);
+			bookingMapper.updateBookingStatus(booking);
 		
 	}
 }
