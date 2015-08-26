@@ -36,7 +36,7 @@ public class BookingService {
 	private CheckSessionKeyService checkSessionKeyService;
 	
 	public String generateBookingCode(String phoneNo){
-		String bookingCode = "BCODE"+phoneNo+CommonUtil.generateNumeric(Constants.LENGTH_GENERATE_BOOKING_CODE);
+		String bookingCode = "BCODE"+CommonUtil.generateNumeric(Constants.LENGTH_GENERATE_BOOKING_CODE);
 		return bookingCode;		
 	}
 	

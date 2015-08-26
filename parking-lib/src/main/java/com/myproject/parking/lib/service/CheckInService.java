@@ -67,7 +67,7 @@ public class CheckInService {
 		// check waktu hanya 2 jam
 		checkExpiredBookingCode(booking2.getBookingDate());
 		
-		booking2.setBookingStatus(Constants.BOOKING_ALREADY_CHECK_IN);
+		booking2.setBookingStatus(Constants.STATUS_ALREADY_CHECK_IN);
 		bookingMapper.updateBookingStatus(booking2);
 		
 	}
@@ -109,7 +109,7 @@ public class CheckInService {
 		bookingVO.setBookingDateValue(CommonUtil.displayDateTime(booking2.getBookingDate()));
 		bookingVO.setBookingId(booking2.getBookingId());
 		bookingVO.setBookingStatus(booking2.getBookingStatus());
-		if(Constants.BOOKING_ALREADY_PAY==booking2.getBookingStatus()){
+		if(Constants.STATUS_ALREADY_PAY==booking2.getBookingStatus()){
 			bookingVO.setBookingStatusValue(Constants.BOOKING_ALREADY_PAY_VALUE);	
 		}else {
 			bookingVO.setBookingStatusValue(Constants.BOOKING_VALUE);

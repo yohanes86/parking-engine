@@ -13,6 +13,7 @@ public interface BookingMapper {
 	public Booking findBookingByIdAllowPay(@Param("bookingId") String bookingId);
 	public Booking findBookingByCodeAllowCheckIn(@Param("bookingCode") String bookingCode);
 	public List<Booking> findBookingNotPay();
+	public List<Booking> findBookingNotCheckIn();
 	public void updateMallSlotStatusAvailable(@Param("idSlot") int idSlot);
 	public void updateBookingStatus(Booking booking);
 	

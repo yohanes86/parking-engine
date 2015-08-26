@@ -1,6 +1,7 @@
 package com.myproject.parking.lib.utils;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Properties;
 
 import org.codehaus.jackson.JsonGenerationException;
@@ -39,10 +40,17 @@ public class MessageUtils {
 			Properties props = PropertiesLoaderUtils.loadProperties(resource);
 			if (e instanceof ParkingEngineException) {
 				ParkingEngineException jme = (ParkingEngineException) e;
-				messageVO.setRc(jme.getErrorCode());
-				messageVO.setMessageRc(props.getProperty("rc."+jme.getErrorCode()));
-				messageVO.setOtherMessage(otherMessage);
-				LOG.warn("MessageVO : [{}]", messageVO);
+				if(jme.hasInfo()){
+					messageVO.setRc(jme.getErrorCode());
+					messageVO.setMessageRc(props.getProperty("rc."+jme.getErrorCode())+ " " + Arrays.toString(jme.getInfo()));
+					messageVO.setOtherMessage(otherMessage);
+					LOG.warn("MessageVO : [{}]", messageVO);
+				}else{
+					messageVO.setRc(jme.getErrorCode());
+					messageVO.setMessageRc(props.getProperty("rc."+jme.getErrorCode()));
+					messageVO.setOtherMessage(otherMessage);
+					LOG.warn("MessageVO : [{}]", messageVO);
+				}
 			} else {
 				messageVO.setRc(ParkingEngineException.ENGINE_UNKNOWN_ERROR);
 				messageVO.setMessageRc(props.getProperty("rc."+ParkingEngineException.ENGINE_UNKNOWN_ERROR));

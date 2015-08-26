@@ -147,13 +147,13 @@ public class VeriTransManagerService {
             LOG.debug(" Response veritrans : " +vtResponse.getStatusCode() + " Error Message : " + vtResponse.getStatusMessage() 
             		+ " with token: "+vtToken + " email : " + veriTransVO.getEmail());
             if (!vtResponse.getStatusCode().equals("200")) {
-            	throw new ParkingEngineException(ParkingEngineException.VERITRANS_CHARGE_FAILED);
+            	throw new ParkingEngineException(ParkingEngineException.VERITRANS_CHARGE_FAILED,vtResponse.getStatusMessage());
             }        
             transactionMapper.updateTransactionStatus(transactionVO.getPaymentTransactionId(), 
             		transactionVO.getPaymentFdsStatus(), transactionVO.getPaymentStatus(), transactionVO.getPaymentOrderId());
             Booking booking = bookingMapper.findBookingById(veriTransVO.getBookingId());
             transactionVO.setBookingCode(booking.getBookingCode());// get booking code from booking id
-            booking.setBookingStatus(Constants.BOOKING_ALREADY_PAY);
+            booking.setBookingStatus(Constants.STATUS_ALREADY_PAY);
             bookingMapper.updateBookingStatus(booking);
 		} catch (RestClientException e) {
 			throw e;
