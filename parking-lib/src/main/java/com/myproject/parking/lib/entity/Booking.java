@@ -17,7 +17,16 @@ public class Booking implements Serializable {
 	private String bookingCode;
 	private Date bookingDate;
 	private int bookingStatus;
-		
+	/**
+	 * 0 = booking pertama
+	   1 = jika booking tapi tidak dibayar selama 15 menit sehingga 
+	   scheduler akan otomatis release
+	   2 = booking + pay
+	   3 = user check in di mall
+	   4 = jika setelah di booking dan dibayar user tidak datang selama 2 jam 
+	   scheduler akan otomatis release
+	 */
+			
 
 	@Override
 	public String toString() {
