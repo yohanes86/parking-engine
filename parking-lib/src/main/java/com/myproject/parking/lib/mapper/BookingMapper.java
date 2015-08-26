@@ -10,7 +10,8 @@ public interface BookingMapper {
 	
 	public void createBooking(Booking booking);
 	public Booking findBookingById(@Param("bookingId") String bookingId);
-	public Booking findBookingByIdAllowPay(@Param("bookingId") String bookingId);	
+	public Booking findBookingByIdAllowPay(@Param("bookingId") String bookingId);
+	public Booking findBookingByCodeAllowCheckIn(@Param("bookingCode") String bookingCode);
 	public List<Booking> findBookingNotPay();
 	public void updateMallSlotStatusAvailable(@Param("idSlot") int idSlot);
 	public void updateBookingStatus(Booking booking);

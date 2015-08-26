@@ -20,6 +20,8 @@ public class ParkingEngineException extends Exception {
 	public static final int VERITRANS_CHARGE_FAILED			= 20;
 	public static final int ENGINE_SLOT_NOT_AVAILABLE	= 21;
 	public static final int BOOKING_ID_EXPIRED_TO_PAY	= 22;
+	public static final int BOOKING_CODE_NOT_AVAILABLE	= 23;
+	public static final int BOOKING_CODE_EXPIRED	= 24;
 	
 	private int errorCode;
 	private String[] info;
