@@ -29,9 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.myproject.parking.lib.data.Product;
 import com.myproject.parking.lib.data.VeriTransVO;
+import com.myproject.parking.lib.entity.Booking;
 import com.myproject.parking.lib.entity.TransactionDetailVO;
 import com.myproject.parking.lib.entity.TransactionVO;
 import com.myproject.parking.lib.entity.UserData;
+import com.myproject.parking.lib.mapper.BookingMapper;
 import com.myproject.parking.lib.mapper.TransactionDetailMapper;
 import com.myproject.parking.lib.mapper.TransactionMapper;
 import com.myproject.parking.lib.mapper.UserDataMapper;
@@ -50,6 +52,9 @@ public class VeriTransManagerService {
 	
 	@Autowired
 	private TransactionDetailMapper transactionDetailMapper;
+	
+	@Autowired
+	private BookingMapper bookingMapper;
 	
 	@Autowired
 	private AppsTimeService timeService;
@@ -146,7 +151,8 @@ public class VeriTransManagerService {
             }        
             transactionMapper.updateTransactionStatus(transactionVO.getPaymentTransactionId(), 
             		transactionVO.getPaymentFdsStatus(), transactionVO.getPaymentStatus(), transactionVO.getPaymentOrderId());
-            transactionVO.setBookingCode("CONTOH BOOKING CODE");// get booking code from booking id
+            Booking booking = bookingMapper.findBookingById(veriTransVO.getBookingId());
+            transactionVO.setBookingCode(booking.getBookingCode());// get booking code from booking id
 		} catch (RestClientException e) {
 			throw e;
 		}
