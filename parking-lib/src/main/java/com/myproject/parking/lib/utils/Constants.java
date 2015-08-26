@@ -8,6 +8,10 @@ public class Constants {
 	public static final long EXPIRED_BOOKING_CODE_IN_MINUTES				= 2; // minutes
 	public static final int BOOKING_ALREADY_SCAN							= 1	;
 	public static final int BOOKING_ALREADY_PAY								= 2	;
+	public static final int BOOKING_ALREADY_CHECK_IN								= 3	;
+	
+	public static final String BOOKING_ALREADY_PAY_VALUE				= "Complete";
+	public static final String BOOKING_VALUE				= "Suspect";
 	
 	public static final String ADMIN				= "admin";
 	public static final String STAFF				= "staff";

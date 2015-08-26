@@ -26,7 +26,7 @@ public class CheckSessionKeyService {
 		Date now = timeService.getCurrentTime();
 		long minutes = CommonUtil.dateDifferentInMinutes(sessionDB, now);
 		if(minutes>Constants.TIMEOUT_IN_MINUTES){
-			LOG.error("Expired Session Key, Parameter email : " + email);
+			LOG.error("Expired Session Key, Parameter email : " + email + " with setting : " + Constants.TIMEOUT_IN_MINUTES + " minutes.");
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_SESSION_KEY_EXPIRED);		
 		}
 		// update session db dengan current
