@@ -71,26 +71,26 @@
 	
 	<!-- =========================== Scheduler Release Booking Non Payment =========================== -->
 	
-	<bean id="releaseBookingNonPaymentService" class="com.myproject.parking.lib.service.scheduler.ReleaseBookingNonPaymentService"
+	<bean id="autoReleaseBookingService" class="com.myproject.parking.lib.service.scheduler.AutoReleaseBookingService"
 	    init-method="release" />
 	 
-	<bean id="releaseBookingNonPaymentJob"
+	<bean id="autoReleaseBookingJob"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="releaseBookingNonPaymentService" />
+		<property name="targetObject" ref="autoReleaseBookingService" />
 		<property name="targetMethod" value="release" />
 		<property name="concurrent" value="false" />
 	</bean>
 	
-	<bean id="releaseBookingNonPaymentTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-		<property name="jobDetail" ref="releaseBookingNonPaymentJob" />
-		<property name="cronExpression" value=" 0 0/5 * * * ? " />
+	<bean id="autoReleaseBookingTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="autoReleaseBookingJob" />
+		<property name="cronExpression" value=" 0 0/2 * * * ? " />
 	</bean>
 	
 	<!-- =========================== Scheduler =========================== -->
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<!-- <ref bean="releaseBookingNonPaymentTrigger" /> -->
+				<ref bean="autoReleaseBookingTrigger" />
 			</list>
 		</property>
 	</bean>

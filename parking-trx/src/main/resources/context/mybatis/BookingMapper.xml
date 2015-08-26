@@ -64,6 +64,12 @@
         and m.booking_status = 0
     </select>
     
+     <select id="findBookingNotCheckIn" resultType="Booking">
+        select <include refid="_sqlBooking"/>  
+        from booking m 
+        where m.booking_status = 2
+    </select>
+    
      <update id="updateMallSlotStatusAvailable" parameterType="java.util.Map">      
     	UPDATE mall_slots SET slots_status = 0 WHERE id = #{idSlot}
      </update>
