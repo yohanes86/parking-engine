@@ -24,5 +24,7 @@
 	<bean id="refreshCacheMall" class="com.myproject.parking.trx.logic.transaction.RefreshCacheMall"/>
 	<bean id="findSLotsByMall" class="com.myproject.parking.trx.logic.transaction.FindSlotByMall"/>
 	<bean id="checkOrderAllowPay" class="com.myproject.parking.trx.logic.transaction.CheckOrderAllowPay"/>
+	<bean id="checkBookingCode" class="com.myproject.parking.trx.logic.transaction.CheckInAllow"/>
+	<bean id="confirmCodeBooking" class="com.myproject.parking.trx.logic.transaction.CheckInConfirm"/>
 	
 </beans>

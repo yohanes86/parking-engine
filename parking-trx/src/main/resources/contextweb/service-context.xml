@@ -61,6 +61,9 @@
 		        <entry key="/refreshCacheMall" value-ref="refreshCacheMall"></entry>
 		        <entry key="/findSLotsByMall" value-ref="findSLotsByMall"></entry>
 		        <entry key="/checkOrderAllowPay" value-ref="checkOrderAllowPay"></entry>
+		        <entry key="/checkBookingCode" value-ref="checkBookingCode"></entry>
+		        <entry key="/confirmCodeBooking" value-ref="confirmCodeBooking"></entry>
+		        
 		    </map>
 		</property>
 	</bean>

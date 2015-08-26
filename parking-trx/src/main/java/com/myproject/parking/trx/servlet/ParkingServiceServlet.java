@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ import com.myproject.parking.lib.utils.CipherUtil;
 import com.myproject.parking.lib.utils.CommonUtil;
 import com.myproject.parking.trx.logic.BaseQueryLogic;
 import com.myproject.parking.trx.logic.LogicFactory;
-import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalResource;
 
 public class ParkingServiceServlet extends HttpServlet {
@@ -46,6 +46,7 @@ public class ParkingServiceServlet extends HttpServlet {
 		// faster this way, not default
 //		mapper.configure(SerializationConfig.Feature.USE_STATIC_TYPING, true); 
 		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
 		try {
 			Resource resource = new ClassPathResource("sdk_config.properties");
 			Properties props = PropertiesLoaderUtils.loadProperties(resource);
