@@ -6,9 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.myproject.parking.lib.data.LoginData;
 import com.myproject.parking.lib.data.SlotsParkingVO;
-import com.myproject.parking.lib.entity.Booking;
 import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.mapper.SlotsParkingMapper;
 import com.myproject.parking.lib.mapper.UserDataMapper;
@@ -54,26 +52,5 @@ public class ReleaseSlotParkingService {
 			slotsParkingMapper.updateReleaseSlotParking(slotReleaseVO.getIdSlot());
 		}
 		
-//		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), slotsParkingVO.getEmail());
-//		SlotsParkingVO slotsAvailable = null;
-//		slotsAvailable = slotsParkingMapper.findSlotsParkingAvailable(slotsParkingVO.getMallName());
-//		if(slotsAvailable == null){
-//			throw new ParkingEngineException(ParkingEngineException.ENGINE_SLOT_NOT_AVAILABLE);
-//		}
-//			slotsAvailable.setEmail(slotsParkingVO.getEmail());
-//			slotsAvailable.setSessionKey(slotsParkingVO.getSessionKey());
-//			Booking booking = new Booking();
-//			booking.setName(user.getName());
-//			booking.setEmail(user.getEmail());
-//			booking.setMallName(slotsAvailable.getMallName());
-//			booking.setIdSlot(slotsAvailable.getIdSlot());
-//			booking.setPhoneNo(user.getPhoneNo());	
-//			booking.setBookingCode(bookingService.generateBookingCode(user.getPhoneNo()));
-//			booking.setBookingId(bookingService.generateBookingId(user.getPhoneNo()));
-//			booking.setBookingDate(timeService.getCurrentTime());
-//			bookingService.saveBooking(booking,slotsAvailable.getIdSlot());
-//			slotsAvailable.setBookingId(booking.getBookingId());
-//		LOG.debug("process find Slots By Mall DONE with param slotsAvailable : " + slotsAvailable);
-//		return slotsAvailable;
 	}
 }
