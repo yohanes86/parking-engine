@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.myproject.parking.lib.data.SlotsParkingVO;
 import com.myproject.parking.lib.entity.UserData;
+import com.myproject.parking.lib.mapper.BookingMapper;
 import com.myproject.parking.lib.mapper.SlotsParkingMapper;
 import com.myproject.parking.lib.mapper.UserDataMapper;
 import com.myproject.parking.lib.utils.Constants;
@@ -20,7 +21,13 @@ public class ReleaseSlotParkingService {
 	private UserDataMapper userDataMapper;
 	
 	@Autowired
+	private BookingMapper bookingMapper;
+	
+	@Autowired
 	private SlotsParkingMapper slotsParkingMapper;
+	
+	@Autowired
+	private CheckSessionKeyService checkSessionKeyService;
 	
 	public void releaseSlotParking(SlotsParkingVO slotsParkingVO) throws ParkingEngineException {
 		LOG.debug("process release Slot Parking : " + slotsParkingVO);	
@@ -46,10 +53,12 @@ public class ReleaseSlotParkingService {
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_SESSION_KEY_DIFFERENT);
 		}		
 		
+		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), slotsParkingVO.getEmail());
+		
 		SlotsParkingVO slotReleaseVO = null;
 		slotReleaseVO = slotsParkingMapper.findSlotsParkingRelease(slotsParkingVO.getMallName());
 		if(slotReleaseVO != null){
-			slotsParkingMapper.updateReleaseSlotParking(slotReleaseVO.getIdSlot());
+			bookingMapper.updateMallSlotStatusAvailable(slotReleaseVO.getIdSlot());
 		}
 		
 	}

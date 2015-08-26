@@ -9,6 +9,4 @@ public interface SlotsParkingMapper {
 	public SlotsParkingVO findSlotsParkingAvailable(@Param("mallName") String mallName);
 	
 	public SlotsParkingVO findSlotsParkingRelease(@Param("mallName") String mallName);
-	
-	public void updateReleaseSlotParking(@Param("idSlot") int idSlot);
 }
