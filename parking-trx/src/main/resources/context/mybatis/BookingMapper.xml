@@ -22,5 +22,19 @@
      <insert id="createBooking" parameterType="booking" useGeneratedKeys="true" keyProperty="id">      	
     	INSERT INTO booking(name,phone_no,email,booking_id,booking_code,booking_date) VALUES (#{name},#{phoneNo},#{email},#{bookingId},#{bookingCode},#{bookingDate})	
      </insert>
+     
+     <sql id="_sqlBooking">
+    	m.id ,m.name,
+	    m.phone_no as phoneNo,m.email as email,
+	    m.booking_id as bookingId,
+		m.booking_code as bookingCode,m.booking_date as bookingDate
+    </sql>
+     
+     <select id="findBookingById" parameterType="java.util.Map" resultType="Booking">
+        select 
+        <include refid="_sqlBooking"/> 
+        from booking m 		
+		where m.booking_id = #{bookingId}
+    </select>
 		
 </mapper>
