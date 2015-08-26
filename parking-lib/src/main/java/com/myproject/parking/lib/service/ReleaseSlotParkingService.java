@@ -10,6 +10,7 @@ import com.myproject.parking.lib.data.LoginData;
 import com.myproject.parking.lib.data.SlotsParkingVO;
 import com.myproject.parking.lib.entity.Booking;
 import com.myproject.parking.lib.entity.UserData;
+import com.myproject.parking.lib.mapper.SlotsParkingMapper;
 import com.myproject.parking.lib.mapper.UserDataMapper;
 import com.myproject.parking.lib.utils.Constants;
 
@@ -20,11 +21,14 @@ public class ReleaseSlotParkingService {
 	@Autowired
 	private UserDataMapper userDataMapper;
 	
-	public void releaseSlotParking(LoginData loginData) throws ParkingEngineException {
-		LOG.debug("process releaseSlotParking.. ");	
-		UserData user = userDataMapper.findUserDataByEmail(loginData.getEmail());
+	@Autowired
+	private SlotsParkingMapper slotsParkingMapper;
+	
+	public void releaseSlotParking(SlotsParkingVO slotsParkingVO) throws ParkingEngineException {
+		LOG.debug("process release Slot Parking : " + slotsParkingVO);	
+		UserData user = userDataMapper.findUserDataByEmail(slotsParkingVO.getEmail());
 		if(user == null){
-			LOG.error("Can't find User with email : " + loginData.getEmail());
+			LOG.error("Can't find User with email : " + slotsParkingVO.getEmail());
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_FOUND);
 		}
 		if(Constants.BLOCKED == user.getStatus()){
@@ -36,33 +40,40 @@ public class ReleaseSlotParkingService {
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_ACTIVE);
 		}		
 		if(StringUtils.isEmpty(user.getSessionKey())){
-			LOG.error("User Must Login Before make transaction, Parameter email : " + loginData.getEmail());
+			LOG.error("User Must Login Before make transaction, Parameter email : " + slotsParkingVO.getEmail());
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_LOGIN);
 		}
-		if(!user.getSessionKey().equals(loginData.getSessionKey())){
-			LOG.error("Wrong Session Key, Parameter email : " + loginData.getEmail());
+		if(!user.getSessionKey().equals(slotsParkingVO.getSessionKey())){
+			LOG.error("Wrong Session Key, Parameter email : " + slotsParkingVO.getEmail());
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_SESSION_KEY_DIFFERENT);
 		}		
-		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), slotsParkingVO.getEmail());
-		SlotsParkingVO slotsAvailable = null;
-		slotsAvailable = slotsParkingMapper.findSlotsParkingAvailable(slotsParkingVO.getMallName());
-		if(slotsAvailable == null){
-			throw new ParkingEngineException(ParkingEngineException.ENGINE_SLOT_NOT_AVAILABLE);
+		
+		SlotsParkingVO slotReleaseVO = null;
+		slotReleaseVO = slotsParkingMapper.findSlotsParkingRelease(slotsParkingVO.getMallName());
+		if(slotReleaseVO != null){
+			slotsParkingMapper.updateReleaseSlotParking(slotReleaseVO.getIdSlot());
 		}
-			slotsAvailable.setEmail(slotsParkingVO.getEmail());
-			slotsAvailable.setSessionKey(slotsParkingVO.getSessionKey());
-			Booking booking = new Booking();
-			booking.setName(user.getName());
-			booking.setEmail(user.getEmail());
-			booking.setMallName(slotsAvailable.getMallName());
-			booking.setIdSlot(slotsAvailable.getIdSlot());
-			booking.setPhoneNo(user.getPhoneNo());	
-			booking.setBookingCode(bookingService.generateBookingCode(user.getPhoneNo()));
-			booking.setBookingId(bookingService.generateBookingId(user.getPhoneNo()));
-			booking.setBookingDate(timeService.getCurrentTime());
-			bookingService.saveBooking(booking,slotsAvailable.getIdSlot());
-			slotsAvailable.setBookingId(booking.getBookingId());
-		LOG.debug("process find Slots By Mall DONE with param slotsAvailable : " + slotsAvailable);
-		return slotsAvailable;
+		
+//		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), slotsParkingVO.getEmail());
+//		SlotsParkingVO slotsAvailable = null;
+//		slotsAvailable = slotsParkingMapper.findSlotsParkingAvailable(slotsParkingVO.getMallName());
+//		if(slotsAvailable == null){
+//			throw new ParkingEngineException(ParkingEngineException.ENGINE_SLOT_NOT_AVAILABLE);
+//		}
+//			slotsAvailable.setEmail(slotsParkingVO.getEmail());
+//			slotsAvailable.setSessionKey(slotsParkingVO.getSessionKey());
+//			Booking booking = new Booking();
+//			booking.setName(user.getName());
+//			booking.setEmail(user.getEmail());
+//			booking.setMallName(slotsAvailable.getMallName());
+//			booking.setIdSlot(slotsAvailable.getIdSlot());
+//			booking.setPhoneNo(user.getPhoneNo());	
+//			booking.setBookingCode(bookingService.generateBookingCode(user.getPhoneNo()));
+//			booking.setBookingId(bookingService.generateBookingId(user.getPhoneNo()));
+//			booking.setBookingDate(timeService.getCurrentTime());
+//			bookingService.saveBooking(booking,slotsAvailable.getIdSlot());
+//			slotsAvailable.setBookingId(booking.getBookingId());
+//		LOG.debug("process find Slots By Mall DONE with param slotsAvailable : " + slotsAvailable);
+//		return slotsAvailable;
 	}
 }
