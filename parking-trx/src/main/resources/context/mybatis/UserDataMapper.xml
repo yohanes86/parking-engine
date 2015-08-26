@@ -21,14 +21,14 @@
 <mapper namespace="com.myproject.parking.lib.mapper.UserDataMapper">
      <insert id="createUserData" parameterType="UserData" useGeneratedKeys="true" keyProperty="id">
     	insert into userdata(name, password, phone_no, email, license_no, activate_key, session_key, status, 
-    			created_on, created_by, updated_on, updated_by)
+    			created_on, created_by, updated_on, updated_by,group_user)
     		values(#{name}, #{password}, #{phoneNo}, #{email}, #{licenseNo}, #{activateKey}, #{sessionKey}, #{status},
-    			#{createdOn}, #{createdBy}, #{updatedOn}, #{updatedBy})  	
+    			#{createdOn}, #{createdBy}, #{updatedOn}, #{updatedBy},#{groupUser})  	
      </insert>
      
      <sql id="_sqlUserData">
     	id, name, phone_no as phoneNo,email,license_no as licenseNo,activate_key as activateKey,session_key as sessionKey,status,time_gen_session_key as timeGenSessionKey,
-    	created_on as createdOn, created_by as createdBy,updated_on as updatedOn, updated_by as updatedBy   	
+    	created_on as createdOn, created_by as createdBy,updated_on as updatedOn, updated_by as updatedBy, group_user as groupUser   	
     </sql>
      
      <select id="findUserDataByEmailAndPhoneNo" parameterType="java.util.Map" resultType="UserData">
