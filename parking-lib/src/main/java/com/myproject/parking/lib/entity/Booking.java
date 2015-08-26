@@ -11,9 +11,12 @@ public class Booking implements Serializable {
 	private String name;
 	private String phoneNo;
 	private String email;
+	private String mallName;
+	private int idSlot;
 	private String bookingId;
 	private String bookingCode;
 	private Date bookingDate;
+	private int bookingStatus;
 		
 
 	@Override
@@ -90,6 +93,39 @@ public class Booking implements Serializable {
 	public void setBookingDate(Date bookingDate) {
 		this.bookingDate = bookingDate;
 	}
+
+
+	public String getMallName() {
+		return mallName;
+	}
+
+
+	public void setMallName(String mallName) {
+		this.mallName = mallName;
+	}
+
+
+	public int getIdSlot() {
+		return idSlot;
+	}
+
+
+	public void setIdSlot(int idSlot) {
+		this.idSlot = idSlot;
+	}
+
+
+	public int getBookingStatus() {
+		return bookingStatus;
+	}
+
+
+	public void setBookingStatus(int bookingStatus) {
+		this.bookingStatus = bookingStatus;
+	}
+
+
+	
 
 	
 

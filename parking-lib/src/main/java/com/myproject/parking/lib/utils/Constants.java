@@ -5,6 +5,8 @@ public class Constants {
 	public static final String ENVIRONMENT_DEV				= "http://localhost:8080/parking-trx/trx";
 	public static final String ENVIRONMENT_LIVE = "http://ec2-52-3-21-158.compute-1.amazonaws.com:8080/parking-trx/trx";
 	public static final long TIMEOUT_IN_MINUTES				= 10; // minutes
+	public static final int BOOKING_ALREADY_SCAN						= 1	;
+	public static final int BOOKING_ALREADY_PAY						= 2	;
 
 	
 	public static final String CACHE_MALL = "cache_mall";

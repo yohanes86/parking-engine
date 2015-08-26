@@ -153,6 +153,8 @@ public class VeriTransManagerService {
             		transactionVO.getPaymentFdsStatus(), transactionVO.getPaymentStatus(), transactionVO.getPaymentOrderId());
             Booking booking = bookingMapper.findBookingById(veriTransVO.getBookingId());
             transactionVO.setBookingCode(booking.getBookingCode());// get booking code from booking id
+            booking.setBookingStatus(Constants.BOOKING_ALREADY_PAY);
+            bookingMapper.updateBookingStatus(booking);
 		} catch (RestClientException e) {
 			throw e;
 		}
