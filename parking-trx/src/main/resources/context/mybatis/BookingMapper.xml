@@ -41,6 +41,14 @@
 		where m.booking_id = #{bookingId}
     </select>
     
+     <select id="findBookingByIdAllowPay" parameterType="java.util.Map" resultType="Booking">
+        select 
+        <include refid="_sqlBooking"/> 
+        from booking m 		
+		where m.booking_id = #{bookingId}
+		and m.booking_status = 0
+    </select>
+    
      <select id="findBookingNotPay" resultType="Booking">
         select <include refid="_sqlBooking"/>  
         from booking m left join transaction t on m.booking_id = t.booking_id 

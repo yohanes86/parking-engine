@@ -60,7 +60,7 @@
 		        <entry key="/listMall" value-ref="listMall"></entry>
 		        <entry key="/refreshCacheMall" value-ref="refreshCacheMall"></entry>
 		        <entry key="/findSLotsByMall" value-ref="findSLotsByMall"></entry>
-		        
+		        <entry key="/checkOrderAllowPay" value-ref="checkOrderAllowPay"></entry>
 		    </map>
 		</property>
 	</bean>
