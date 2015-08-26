@@ -34,7 +34,7 @@
 		m.booking_code as bookingCode,m.booking_date as bookingDate
     </sql>
      
-     <select id="findBookingById" parameterType="java.util.Map" resultType="Booking">
+     <select id="findBookingByBookingId" parameterType="java.util.Map" resultType="Booking">
         select 
         <include refid="_sqlBooking"/> 
         from booking m 		
