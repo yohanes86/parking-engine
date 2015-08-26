@@ -7,6 +7,10 @@ public class Constants {
 	public static final long TIMEOUT_IN_MINUTES				= 1; // minutes
 	public static final int BOOKING_ALREADY_SCAN						= 1	;
 	public static final int BOOKING_ALREADY_PAY						= 2	;
+	
+	public static final String ADMIN				= "admin";
+	public static final String STAFF				= "staff";
+	public static final String USER				= "user";
 
 	
 	public static final String CACHE_MALL = "cache_mall";

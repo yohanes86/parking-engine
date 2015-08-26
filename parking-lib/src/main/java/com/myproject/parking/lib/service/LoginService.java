@@ -63,6 +63,7 @@ public class LoginService {
 		loginData.setName(user.getName());
 		loginData.setPhoneNo(user.getPhoneNo());
 		loginData.setName(user.getName());
+		loginData.setGroupUser(user.getGroupUser());
 		return loginData;
 //		LOG.info("login done with param : " + " loginData: " + loginData);
 	}

@@ -12,6 +12,7 @@ public class LoginData implements Serializable {
 	private String password;
 	private String sessionKey;
 	private String phoneNo;
+	private String groupUser;
 
 	public String getEmail() {
 		return email;
@@ -56,6 +57,14 @@ public class LoginData implements Serializable {
 
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
+	}
+
+	public String getGroupUser() {
+		return groupUser;
+	}
+
+	public void setGroupUser(String groupUser) {
+		this.groupUser = groupUser;
 	}
 
 }

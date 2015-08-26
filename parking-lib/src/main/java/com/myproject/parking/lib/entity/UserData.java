@@ -17,6 +17,7 @@ public class UserData implements java.io.Serializable {
 	private String sessionKey;
 	private int status;
 	private Date timeGenSessionKey;
+	private String groupUser;
 	private Date createdOn;
 	private String createdBy;
 	private Date updatedOn;
@@ -114,5 +115,13 @@ public class UserData implements java.io.Serializable {
 
 	public void setActivateKey(String activateKey) {
 		this.activateKey = activateKey;
+	}
+
+	public String getGroupUser() {
+		return groupUser;
+	}
+
+	public void setGroupUser(String groupUser) {
+		this.groupUser = groupUser;
 	}
 }
