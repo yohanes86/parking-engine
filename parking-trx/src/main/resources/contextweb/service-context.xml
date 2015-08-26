@@ -63,7 +63,8 @@
 		        <entry key="/checkOrderAllowPay" value-ref="checkOrderAllowPay"></entry>
 		        <entry key="/checkBookingCode" value-ref="checkBookingCode"></entry>
 		        <entry key="/confirmCodeBooking" value-ref="confirmCodeBooking"></entry>
-		        
+		        <!-- Release Slot Parking -->
+		        <entry key="/releaseSlotParking" value-ref="releaseSlotParking"></entry>
 		    </map>
 		</property>
 	</bean>
@@ -89,7 +90,7 @@
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="releaseBookingNonPaymentTrigger" />
+				<!-- <ref bean="releaseBookingNonPaymentTrigger" /> -->
 			</list>
 		</property>
 	</bean>

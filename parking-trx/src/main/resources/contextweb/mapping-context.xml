@@ -26,5 +26,7 @@
 	<bean id="checkOrderAllowPay" class="com.myproject.parking.trx.logic.transaction.CheckOrderAllowPay"/>
 	<bean id="checkBookingCode" class="com.myproject.parking.trx.logic.transaction.CheckInAllow"/>
 	<bean id="confirmCodeBooking" class="com.myproject.parking.trx.logic.transaction.CheckInConfirm"/>
+	<!-- Release Slot Parking Module -->
+	<bean id="releaseSlotParking" class="com.myproject.parking.trx.logic.transaction.ReleaseSlotParking"/>
 	
 </beans>

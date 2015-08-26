@@ -53,7 +53,7 @@ public class SmisServletTest {
 	private final String testingGetListMall = "http://localhost:8080/parking-trx/trx/listMall";
 	private final String testingRefreshCacheMall = "http://ec2-52-3-21-158.compute-1.amazonaws.com:8080/parking-trx/trx/refreshCacheMall";
 	private final String testingGetSlotsByMall = "http://localhost:8080/parking-trx/trx/findSLotsByMall";
-	private final String testingReleaseSlot = "http://localhost:8080/parking-trx/trx/releaseSlot";
+	private final String testingReleaseSlot = "http://localhost:8080/parking-trx/trx/releaseSlotParking";
 	
 //	@Test
 	public void testRegistrationUser() {
@@ -520,10 +520,11 @@ public class SmisServletTest {
 		HttpClient client = new DefaultHttpClient();
 		try {
 			
-			LoginData loginData = new LoginData();
-			loginData.setEmail("agusdk2011@gmail.com");
-			loginData.setSessionKey("085693938630GX2FDXLBKWN35CMNGKI48YXEAQ1RPR");
-			String s = mapper.writeValueAsString(loginData);
+			SlotsParkingVO slotsParkingVO = new SlotsParkingVO();
+			slotsParkingVO.setEmail("vincent_yohanes@yahoo.com");
+			slotsParkingVO.setSessionKey("0817993939910ZTTKUOOYDYXBBA9B36LZ7CKPDAPU");
+			slotsParkingVO.setMallName("Kota Casablanka");
+			String s = mapper.writeValueAsString(slotsParkingVO);
 			
 			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
 			LOG.debug("Request: " + s);

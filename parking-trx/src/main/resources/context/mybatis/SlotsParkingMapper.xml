@@ -39,4 +39,19 @@
 		limit 0,1
     </select>
     
+    <select id="findSlotsParkingRelease" parameterType="java.util.Map" resultType="SlotsParkingVO">
+        select 
+        <include refid="_sqlSLotsParking"/> 
+        from mall m 
+		inner join mall_slots ms on m.id = ms.mall_id
+		where ms.slots_status = 1
+		and m.status = 1
+		and m.mall_name = #{mallName}
+		limit 0,1
+    </select>
+    
+     <update id="updateReleaseSlotParking" parameterType="java.util.Map">
+		update mall_slots ms set slots_status = 0 where ms.id = #{idSlot}
+    </update>
+    
 </mapper>
