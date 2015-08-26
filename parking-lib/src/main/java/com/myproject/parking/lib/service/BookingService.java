@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.myproject.parking.lib.data.BookingVO;
 import com.myproject.parking.lib.entity.Booking;
 import com.myproject.parking.lib.mapper.BookingMapper;
 import com.myproject.parking.lib.mapper.TransactionDetailMapper;
@@ -38,6 +39,15 @@ public class BookingService {
 	protected void updateSlotStatus(int idSlot) {	
 		// update mall slot menjadi 1 alias booked tapi belum bayar
 		transactionDetailMapper.updateMallSlotStatus(idSlot);
+	}
+	
+	public void checkBookingIdAllowPay(BookingVO bookingVO) throws ParkingEngineException {
+		Booking booking2 = null;
+		booking2 = bookingMapper.findBookingByIdAllowPay(bookingVO.getBookingId());
+		if(booking2 == null){
+			throw new ParkingEngineException(ParkingEngineException.BOOKING_ID_EXPIRED_TO_PAY);
+		}
+		
 	}
 	
 	@Transactional(rollbackFor=Exception.class)
