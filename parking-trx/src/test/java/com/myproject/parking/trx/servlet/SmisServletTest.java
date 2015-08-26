@@ -53,6 +53,7 @@ public class SmisServletTest {
 	private final String testingGetListMall = "http://localhost:8080/parking-trx/trx/listMall";
 	private final String testingRefreshCacheMall = "http://ec2-52-3-21-158.compute-1.amazonaws.com:8080/parking-trx/trx/refreshCacheMall";
 	private final String testingGetSlotsByMall = "http://localhost:8080/parking-trx/trx/findSLotsByMall";
+	private final String testingReleaseSlot = "http://localhost:8080/parking-trx/trx/releaseSlot";
 	
 //	@Test
 	public void testRegistrationUser() {
@@ -407,7 +408,7 @@ public class SmisServletTest {
         }  // end try finally
 	}
 	
-	@Test
+//	@Test
 	public void testRefreshCacheMall() {
 		String url = testingRefreshCacheMall;
 		long startTime = System.currentTimeMillis();
@@ -473,6 +474,57 @@ public class SmisServletTest {
 			
 			
 			String s = mapper.writeValueAsString(slotsParkingVO);
+			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
+			LOG.debug("Request: " + s);
+            StringEntity entity = new StringEntity(s);
+			
+			HttpPost post = new HttpPost(url);
+			post.setHeader("Content-Type", "application/json");
+			post.setEntity(entity);
+			
+			// Execute HTTP request
+			LOG.debug("Executing request: " + post.getURI());
+            HttpResponse response = client.execute(post);
+            
+            // Get hold of the response entity
+            StatusLine sl = response.getStatusLine();
+            LOG.debug("StatusCode: " + sl.getStatusCode());
+            Assert.assertEquals(200, sl.getStatusCode());
+
+            HttpEntity respEntity = response.getEntity();
+            String respString = EntityUtils.toString(respEntity);
+            LOG.debug("Response: " + respString);
+            
+//            WalletTrxResponse trxResp = mapper.
+//            		readValue(respString, WalletTrxResponse.class);
+//            Assert.assertEquals(trxReq.getRequestId(), trxResp.getRequestId());
+            Assert.assertEquals(true, true);
+            int delta = (int) (System.currentTimeMillis() - startTime);
+            LOG.info("Finish running one thread in {}ms", 
+            		new String[] { CommonUtil.displayNumberNoDecimal(delta) } );
+		}catch (Exception e) {
+		
+			LOG.warn("Unexpected Exception", e);
+		} finally {
+            // When HttpClient instance is no longer needed,
+            // shut down the connection manager to ensure
+            // immediate deallocation of all system resources
+            client.getConnectionManager().shutdown();
+        }  // end try finally
+	}
+	
+	@Test
+	public void testReleaseSlot() {
+		String url = testingReleaseSlot;
+		long startTime = System.currentTimeMillis();
+		HttpClient client = new DefaultHttpClient();
+		try {
+			
+			LoginData loginData = new LoginData();
+			loginData.setEmail("agusdk2011@gmail.com");
+			loginData.setSessionKey("085693938630GX2FDXLBKWN35CMNGKI48YXEAQ1RPR");
+			String s = mapper.writeValueAsString(loginData);
+			
 			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
 			LOG.debug("Request: " + s);
             StringEntity entity = new StringEntity(s);
