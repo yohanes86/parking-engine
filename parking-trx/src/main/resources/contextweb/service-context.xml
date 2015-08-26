@@ -65,15 +65,30 @@
 		</property>
 	</bean>
 	
-	<!-- ========================= SCHEDULER ========================= -->
-	<!--  <bean id="syncTimeJob" class="com.myproject.parking.lib.job.SyncTimeJob" 
-		init-method="syncTime" />
-	-->
-	<!-- <task:scheduled-tasks scheduler="systemScheduler"> -->
-		 <!-- run every 1 hour -->
-	<!-- <task:scheduled ref="syncTimeJob" method="syncTime" cron="0 0 * * * ?"/>
-		 </task:scheduled-tasks>
+	<!-- =========================== Scheduler Release Booking Non Payment =========================== -->
 	
-	<task:scheduler id="systemScheduler" pool-size="1" />
-	-->
+	<bean id="releaseBookingNonPaymentService" class="com.myproject.parking.lib.service.scheduler.ReleaseBookingNonPaymentService"
+	    init-method="release" />
+	 
+	<bean id="releaseBookingNonPaymentJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="releaseBookingNonPaymentService" />
+		<property name="targetMethod" value="release" />
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<bean id="releaseBookingNonPaymentTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="releaseBookingNonPaymentJob" />
+		<property name="cronExpression" value=" 0 0/5 * * * ? " />
+	</bean>
+	
+	<!-- =========================== Scheduler =========================== -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="releaseBookingNonPaymentTrigger" />
+			</list>
+		</property>
+	</bean>
+	
 </beans>
