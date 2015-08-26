@@ -1,5 +1,6 @@
 package com.myproject.parking.lib.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.myproject.parking.lib.data.BookingVO;
 import com.myproject.parking.lib.entity.Booking;
+import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.mapper.BookingMapper;
 import com.myproject.parking.lib.mapper.TransactionDetailMapper;
+import com.myproject.parking.lib.mapper.UserDataMapper;
 import com.myproject.parking.lib.utils.CommonUtil;
 import com.myproject.parking.lib.utils.Constants;
 
@@ -25,6 +28,12 @@ public class BookingService {
 	
 	@Autowired
 	private AppsTimeService timeService;
+	
+	@Autowired
+	private UserDataMapper userDataMapper;
+	
+	@Autowired
+	private CheckSessionKeyService checkSessionKeyService;
 	
 	public String generateBookingCode(String phoneNo){
 		String bookingCode = "BCODE"+phoneNo+CommonUtil.generateNumeric(Constants.LENGTH_GENERATE_BOOKING_CODE);
@@ -42,6 +51,28 @@ public class BookingService {
 	}
 	
 	public void checkBookingIdAllowPay(BookingVO bookingVO) throws ParkingEngineException {
+		UserData user = userDataMapper.findUserDataByEmail(bookingVO.getEmail());
+		if(user == null){
+			LOG.error("Can't find User with email : " + bookingVO.getEmail());
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_FOUND);
+		}
+		if(Constants.BLOCKED == user.getStatus()){
+			LOG.error("User already blocked");
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_BLOCKED);
+		}
+		if(Constants.PENDING == user.getStatus()){
+			LOG.error("User not active");
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_ACTIVE);
+		}		
+		if(StringUtils.isEmpty(user.getSessionKey())){
+			LOG.error("User Must Login Before make transaction, Parameter email : " + bookingVO.getEmail());
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_LOGIN);
+		}
+		if(!user.getSessionKey().equals(bookingVO.getSessionKey())){
+			LOG.error("Wrong Session Key, Parameter email : " + bookingVO.getEmail());
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_SESSION_KEY_DIFFERENT);
+		}		
+		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), bookingVO.getEmail());
 		Booking booking2 = null;
 		booking2 = bookingMapper.findBookingByIdAllowPay(bookingVO.getBookingId());
 		if(booking2 == null){
