@@ -50,8 +50,4 @@
 		limit 0,1
     </select>
     
-     <update id="updateReleaseSlotParking" parameterType="java.util.Map">
-		update mall_slots ms set slots_status = 0 where ms.id = #{idSlot}
-    </update>
-    
 </mapper>
