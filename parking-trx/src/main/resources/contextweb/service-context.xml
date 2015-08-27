@@ -83,7 +83,7 @@
 	
 	<bean id="autoReleaseBookingTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="autoReleaseBookingJob" />
-		<property name="cronExpression" value=" 0 0/2 * * * ? " />
+		<property name="cronExpression" value=" 0 0/10 * * * ? " />
 	</bean>
 	
 	<!-- =========================== Scheduler =========================== -->
