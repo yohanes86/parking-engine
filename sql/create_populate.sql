@@ -1,6 +1,6 @@
 ﻿/*
 Created: 17-Aug-15
-Modified: 25-Aug-15
+Modified: 27-Aug-15
 Model: MySQL 5.1
 Database: MySQL 5.1
 */
@@ -22,8 +22,9 @@ CREATE TABLE UserData
   activate_key Varchar(35),
   session_key Varchar(50),
   status Int NOT NULL,
-  time_gen_session_key Timestamp,
-  created_on Timestamp NOT NULL,
+  time_gen_session_key Datetime,
+  group_user Varchar(20),
+  created_on Datetime NOT NULL,
   created_by Varchar(50) NOT NULL,
   updated_on Timestamp NOT NULL,
   updated_by Varchar(50) NOT NULL,
@@ -74,8 +75,8 @@ CREATE TABLE Transaction
   payment_method Varchar(128),
   payment_status Varchar(128),
   payment_fds_status Varchar(128),
-  booking_code Varchar(64),
-  created_on Timestamp NOT NULL,
+  booking_id Varchar(128),
+  created_on Datetime NOT NULL,
   created_by Varchar(50) NOT NULL,
   updated_on Timestamp NOT NULL,
   updated_by Varchar(50) NOT NULL,
@@ -111,7 +112,7 @@ CREATE TABLE Mall
   mall_address Varchar(128),
   mall_phone Varchar(64),
   status Int DEFAULT 1,
-  created_on Timestamp,
+  created_on Datetime,
   created_by Varchar(128),
   updated_on Timestamp,
   updated_by Varchar(128),
@@ -131,7 +132,7 @@ CREATE TABLE Mall_Slots
   slots_name Varchar(128),
   slots_price_idr Bigint,
   slots_status Int,
-  created_on Timestamp,
+  created_on Datetime,
   created_by Varchar(128),
   updated_on Timestamp,
   updated_by Varchar(128),
@@ -153,13 +154,14 @@ CREATE TABLE Booking
   name Varchar(50),
   phone_no Varchar(16),
   email Varchar(50),
+  mall_name Varchar(128),
+  id_slot Int,
   booking_id Varchar(128),
   booking_code Varchar(128),
-  booking_date Timestamp,
+  booking_date Datetime,
+  booking_status Int DEFAULT 0,
  PRIMARY KEY (id)
 )
-  COMMENT = '
-'
 ;
 
 CREATE UNIQUE INDEX idx ON Booking (booking_code,booking_date,booking_id,email)
@@ -191,7 +193,7 @@ INSERT INTO mall(
   ,'SYS'  -- created_by - IN varchar(128)
   ,CURRENT_TIMESTAMP -- updated_on - IN timestamp
   ,'SYS'  -- updated_by - IN varchar(128)
-)
+);
 
 INSERT INTO mall_slots(
    mall_id
@@ -210,7 +212,7 @@ INSERT INTO mall_slots(
   ,'SYS'  -- created_by - IN varchar(128)
   ,CURRENT_TIMESTAMP -- updated_on - IN timestamp
   ,'SYS'  -- updated_by - IN varchar(128)
-)
+);
 
 INSERT INTO mall_slots(
    mall_id
@@ -229,7 +231,7 @@ INSERT INTO mall_slots(
   ,'SYS'  -- created_by - IN varchar(128)
   ,CURRENT_TIMESTAMP -- updated_on - IN timestamp
   ,'SYS'  -- updated_by - IN varchar(128)
-)
+);
 
 INSERT INTO mall_slots(
    mall_id
@@ -248,7 +250,7 @@ INSERT INTO mall_slots(
   ,'SYS'  -- created_by - IN varchar(128)
   ,CURRENT_TIMESTAMP -- updated_on - IN timestamp
   ,'SYS'  -- updated_by - IN varchar(128)
-)
+);
 
 INSERT INTO mall_slots(
    mall_id
@@ -267,4 +269,4 @@ INSERT INTO mall_slots(
   ,'SYS'  -- created_by - IN varchar(128)
   ,CURRENT_TIMESTAMP -- updated_on - IN timestamp
   ,'SYS'  -- updated_by - IN varchar(128)
-)
+);
