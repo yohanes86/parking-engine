@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.myproject.parking.lib.data.SlotsParkingVO;
 import com.myproject.parking.lib.entity.Booking;
@@ -30,6 +31,7 @@ public class ReleaseSlotParkingService {
 	@Autowired
 	private CheckSessionKeyService checkSessionKeyService;
 	
+	@Transactional(rollbackFor=Exception.class)
 	public void releaseSlotParking(SlotsParkingVO slotsParkingVO) throws ParkingEngineException {
 		LOG.debug("process release Slot Parking : " + slotsParkingVO);	
 		UserData user = userDataMapper.findUserDataByEmail(slotsParkingVO.getEmail());
