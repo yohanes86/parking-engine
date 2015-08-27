@@ -31,15 +31,19 @@ public class UserDataService {
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_HAS_BEEN_REGISTERED);
 		}
 		else{
+			try {
+				LOG.debug("Sending Email Confirmation Registration..");
+				composeEmailMsg(user);
+			} catch (ParkingEngineException e) {
+				throw e;
+			}
 			LOG.debug("Registration User: {}", user);
 			userDataMapper.createUserData(user);
-			
-			LOG.debug("Sending Email Confirmation Registration..");
-			composeEmailMsg(user);
 		}
 	}
 	
-	private void composeEmailMsg(UserData user){
+	private void composeEmailMsg(UserData user) throws ParkingEngineException{
+		boolean sendingEmail = false;
 		String emailTo= user.getEmail();
 		String emailSubject= "PARKING ONLINE : Register Account";
 		String message= "";
@@ -56,6 +60,13 @@ public class UserDataService {
 		sb.append("\n").append("\n");
 		sb.append("Administrator");
 		message = sb.toString();
-		emailSender.sendSimpleMail("", emailTo, emailSubject, message);
+		
+		sendingEmail = emailSender.sendSimpleMail("", emailTo, emailSubject, message);
+		if(sendingEmail == false){
+			String msg = "Failed Sending Email to: [" + emailTo + "]";
+			LOG.warn(msg);
+			throw new ParkingEngineException(ParkingEngineException.FAILED_SENDING_EMAIL);
+		}
+	
 	}
 }

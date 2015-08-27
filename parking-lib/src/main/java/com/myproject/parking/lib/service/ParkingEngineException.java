@@ -23,6 +23,7 @@ public class ParkingEngineException extends Exception {
 	public static final int BOOKING_CODE_NOT_AVAILABLE		= 23;
 	public static final int BOOKING_CODE_EXPIRED			= 24;
 	public static final int ALL_SLOT_AVAILABLE				= 25;
+	public static final int FAILED_SENDING_EMAIL			= 26;
 	
 	private int errorCode;
 	private String[] info;
