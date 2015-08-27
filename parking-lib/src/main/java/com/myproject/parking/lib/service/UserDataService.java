@@ -29,14 +29,9 @@ public class UserDataService {
 			String msg = String.format("User with phoneNo:[%s] and email:[%s] has been registered", user.getPhoneNo(), user.getEmail());
 			LOG.warn(msg);
 			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_HAS_BEEN_REGISTERED);
-		}
-		else{
-			try {
-				LOG.debug("Sending Email Confirmation Registration..");
-				composeEmailMsg(user);
-			} catch (ParkingEngineException e) {
-				throw e;
-			}
+		}else{
+			LOG.debug("Sending Email Confirmation Registration..");
+			composeEmailMsg(user);
 			LOG.debug("Registration User: {}", user);
 			userDataMapper.createUserData(user);
 		}
