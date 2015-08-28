@@ -65,8 +65,9 @@ public class AutoReleaseBookingService {
 	private boolean isExpiredPay(Date bookDate){
 		boolean hasil = false;
 		Date now = timeService.getCurrentTime();
-		LOG.info("isExpiredPay with param : " + " Booking Id Date: " + bookDate + " current time : " + now + " Setting : " + Constants.EXPIRED_PAY_IN_MINUTES );
+		LOG.info("isExpiredPay with param : " + " Booking Id Date: " + bookDate + " current time : " + now + " Setting : " + Constants.EXPIRED_PAY_IN_MINUTES + " minutes" );
 		long minutes = CommonUtil.dateDifferentInMinutes(bookDate, now);
+		LOG.info("different minutes : " + minutes);
 		if(minutes>=Constants.EXPIRED_PAY_IN_MINUTES){
 			LOG.warn("Expired Booking Id with setting : " + Constants.EXPIRED_PAY_IN_MINUTES + " minutes.");
 			hasil = true;
@@ -78,10 +79,11 @@ public class AutoReleaseBookingService {
 	private boolean isExpiredCheckIn(Date bookDate){
 		boolean hasil = false;
 		Date now = timeService.getCurrentTime();
-		LOG.info("isExpiredCheckIn with param : " + " BookingCodeDate: " + bookDate + " current time : " + now + " Setting : " + Constants.EXPIRED_BOOKING_CODE_IN_MINUTES );
-		long minutes = CommonUtil.dateDifferentInMinutes(bookDate, now);
-		if(minutes>=Constants.EXPIRED_BOOKING_CODE_IN_MINUTES){
-			LOG.warn("Expired Booking Code with setting : " + Constants.EXPIRED_BOOKING_CODE_IN_MINUTES + " minutes.");
+		LOG.info("isExpiredCheckIn with param : " + " BookingCodeDate: " + bookDate + " current time : " + now + " Setting : " + Constants.EXPIRED_BOOKING_CODE_IN_HOURS + " hours" );
+		long hours = CommonUtil.dateDifferentInHours(bookDate, now);
+		LOG.info("different hours : " + hours);
+		if(hours>=Constants.EXPIRED_BOOKING_CODE_IN_HOURS){
+			LOG.warn("Expired Booking Code with setting : " + Constants.EXPIRED_BOOKING_CODE_IN_HOURS + " hours.");
 			hasil = true;
 		}		
 		LOG.info("isExpiredCheckIn Done with param : " + " BookingCodeDate: " + bookDate + " current time : " + now );

@@ -127,9 +127,10 @@ public class CheckInService {
 	private void checkExpiredBookingCode(Date bookingCodeDB) throws ParkingEngineException {			
 		Date now = timeService.getCurrentTime();
 		LOG.info("checkExpiredBookingCode with param : " + " BookingCodeDate: " + bookingCodeDB + " current time : " + now );
-		long minutes = CommonUtil.dateDifferentInMinutes(bookingCodeDB, now);
-		if(minutes>Constants.EXPIRED_BOOKING_CODE_IN_MINUTES){
-			LOG.error("Expired Booking Code with setting : " + Constants.EXPIRED_BOOKING_CODE_IN_MINUTES + " minutes.");
+		long hours = CommonUtil.dateDifferentInHours(bookingCodeDB, now);
+		LOG.info("different hours : " + hours);
+		if(hours>Constants.EXPIRED_BOOKING_CODE_IN_HOURS){
+			LOG.error("Expired Booking Code with setting : " + Constants.EXPIRED_BOOKING_CODE_IN_HOURS + " hours.");
 			throw new ParkingEngineException(ParkingEngineException.BOOKING_CODE_EXPIRED);		
 		}		
 		LOG.info("checkExpiredBookingCode Done with param : " + " BookingCodeDate: " + bookingCodeDB + " current time : " + now );	
