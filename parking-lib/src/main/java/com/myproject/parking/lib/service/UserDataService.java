@@ -48,7 +48,7 @@ public class UserDataService {
 	private void composeEmailMsg(UserData user) throws ParkingEngineException, EmailException, IOException{
 //		boolean sendingEmail = false;
 		String emailTo= user.getEmail();
-		String emailSubject= "PARKING ONLINE : Register Account";
+		String emailSubject= Constants.APP_NAME+": Register Account";
 		String txtMessage= "";
 		String link = Constants.ENVIRONMENT_LIVE+"/userActivate?actKey="+ user.getActivateKey() + "&email=" + user.getEmail() + "&noHp=" + user.getPhoneNo();
 		
