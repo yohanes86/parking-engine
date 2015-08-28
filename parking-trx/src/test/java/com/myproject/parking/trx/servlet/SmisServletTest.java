@@ -55,7 +55,7 @@ public class SmisServletTest {
 	private final String testingGetSlotsByMall = "http://localhost:8080/parking-trx/trx/findSLotsByMall";
 	private final String testingReleaseSlot = "http://localhost:8080/parking-trx/trx/releaseSlotParking";
 	
-//	@Test
+	@Test
 	public void testRegistrationUser() {
 		String url = testingUserRegistration;
 		long startTime = System.currentTimeMillis();
@@ -64,7 +64,7 @@ public class SmisServletTest {
 			
 			UserData userData = new UserData();
 			userData.setName("ADK");
-			userData.setPassword("password");
+			userData.setPassword("admin");
 			userData.setEmail("agusdk2011@gmail.com");
 			userData.setPhoneNo("085693938630");
 			userData.setLicenseNo("B 999 ROI");
@@ -109,7 +109,7 @@ public class SmisServletTest {
         }  // end try finally
 	}
 	
-	@Test
+//	@Test
 	public void testForgetPassword() {
 		String url = testingForget;
 		long startTime = System.currentTimeMillis();
