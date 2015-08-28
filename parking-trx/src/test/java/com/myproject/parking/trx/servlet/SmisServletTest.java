@@ -109,7 +109,7 @@ public class SmisServletTest {
         }  // end try finally
 	}
 	
-//	@Test
+	@Test
 	public void testForgetPassword() {
 		String url = testingForget;
 		long startTime = System.currentTimeMillis();
@@ -513,7 +513,7 @@ public class SmisServletTest {
         }  // end try finally
 	}
 	
-	@Test
+//	@Test
 	public void testReleaseSlot() {
 		String url = testingReleaseSlot;
 		long startTime = System.currentTimeMillis();
