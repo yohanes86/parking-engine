@@ -124,6 +124,26 @@
 		</dependency>
 		<!-- Scheduler -->
 		
+		<!-- Web Socket -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20140107</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.collections</groupId>
+			<artifactId>google-collections</artifactId>
+			<version>0.8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+			<scope>provided</scope>
+		</dependency> 
+		<!-- Web Socket -->
 		<!-- DB Access Framework - MyBatis -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
