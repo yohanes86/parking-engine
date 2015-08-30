@@ -1,5 +1,6 @@
 package com.myproject.parking.lib.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,10 @@ public class ActivateUserService {
 	private AppsTimeService timeService;
 	
 	public void activateUser(String actKey,String email,String noHp) throws ParkingEngineException {
-		LOG.info("activateUser with param : " + "ACT KEY : " + actKey + " EMAIL: " + email + " NO HP : " + noHp);	
+		LOG.info("activateUser with param : " + "ACT KEY : " + actKey + " EMAIL: " + email + " NO HP : " + noHp);			
+		if (StringUtils.isEmpty(actKey)||StringUtils.isEmpty(email)||StringUtils.isEmpty(noHp)) {					
+			throw new ParkingEngineException(ParkingEngineException.PARAMETER_NOT_COMPLETE);															
+		}			
 		UserData user = userDataMapper.findUserByEmailAndPhoneNoAndActKey(email, noHp,actKey);
 		if(user == null){
 			LOG.error("Can't find User");
