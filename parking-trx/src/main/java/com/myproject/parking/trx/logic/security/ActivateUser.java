@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.myproject.parking.lib.service.ActivateUserService;
-import com.myproject.parking.lib.service.CheckUserService;
 import com.myproject.parking.lib.service.ParkingEngineException;
 import com.myproject.parking.lib.utils.MessageUtils;
 import com.myproject.parking.trx.logic.BaseQueryLogic;
@@ -34,17 +33,8 @@ public class ActivateUser implements BaseQueryLogic {
 	public String process(HttpServletRequest request,HttpServletResponse response,String data, ObjectMapper mapper, String pathInfo) {
 		LOG.debug("Start process Query :"+pathInfo);		
 		String result = "";
-		try {						
-			if (request.getParameter("actKey") != null) {
-				if (request.getParameter("email") != null) {
-					if (request.getParameter("noHp") != null) {
-						activateUserService.activateUser(request.getParameter("actKey"),request.getParameter("email"),request.getParameter("noHp"));
-					}					
-				}				
-			}		
-//			result = MessageUtils.handleSuccess("Email : " +  request.getParameter("email") 
-//					+ " No Hp : " + request.getParameter("noHp")
-//					+ " has been activated." , mapper);
+		try {									
+			activateUserService.activateUser(request.getParameter("actKey"),request.getParameter("email"),request.getParameter("noHp"));
 			result = "Email : " +  request.getParameter("email") 
 					+ " No Hp : " + request.getParameter("noHp")
 					+ " has been activated.";
