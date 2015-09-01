@@ -9,5 +9,7 @@ public interface TransactionMapper {
 	public void updateTransactionStatus(@Param("PaymentTransactionId") String PaymentTransactionId
 			,@Param("PaymentFdsStatus") String PaymentFdsStatus
 			,@Param("PaymentStatus") String PaymentStatus,@Param("orderId") String orderId);
+	public void updateEmailNotification(@Param("emailNotification") int emailNotification,@Param("emailNotificationReason") String emailNotificationReason,
+			@Param("orderId") String orderId);
     
 }

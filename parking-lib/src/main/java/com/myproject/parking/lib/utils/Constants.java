@@ -21,6 +21,10 @@ public class Constants {
 	public static final String ADMIN				= "admin";
 	public static final String STAFF				= "staff";
 	public static final String USER				= "user";
+	
+	public static final int EMAIL_NOTIF_SENT						= 1	;
+	public static final int EMAIL_NOTIF_FAILED						= 0	;
+	public static final String EMAIL_REASON_SUCCESS						= "Success"	;
 
 	
 	public static final String CACHE_MALL = "cache_mall";

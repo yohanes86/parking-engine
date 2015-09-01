@@ -58,6 +58,8 @@ public class TransactionVO implements Serializable {
 	private String paymentFdsStatus;
 	private String bookingId;
 	private String bookingCode;
+	private int emailNotification;
+	private String emailNotificationReason;
 
 	private Date createdOn;
 	private String createdBy;
@@ -315,6 +317,22 @@ public class TransactionVO implements Serializable {
 
 	public void setBookingCode(String bookingCode) {
 		this.bookingCode = bookingCode;
+	}
+
+	public int getEmailNotification() {
+		return emailNotification;
+	}
+
+	public void setEmailNotification(int emailNotification) {
+		this.emailNotification = emailNotification;
+	}
+
+	public String getEmailNotificationReason() {
+		return emailNotificationReason;
+	}
+
+	public void setEmailNotificationReason(String emailNotificationReason) {
+		this.emailNotificationReason = emailNotificationReason;
 	}
 
 }
