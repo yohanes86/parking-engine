@@ -39,12 +39,12 @@ public class ReceiveTransactionFromVeriTrans implements BaseQueryLogic {
 			TransactionVO transaction = new TransactionVO(); 
 			VeriTransVO veriTransVO = mapper.readValue(data, VeriTransVO.class);
 			transaction = veriTransManagerService.charge(veriTransVO.getTokenId(),transaction,veriTransVO);
-			result = MessageUtils.handleSuccess("Nama : " + veriTransVO.getCustomerDetail().getFirstName()+"\r\n "
-					+ " Email : " + veriTransVO.getCustomerDetail().getEmail()+"\r\n "
-					+ " No Hp : " + veriTransVO.getCustomerDetail().getPhone()+"\r\n "
-					+ " Price : " + transaction.getTotalPriceIdr()+"\r\n " 				
-					+ " Area Parkir : " + veriTransVO.getListProducts().get(0).getLongName()+"\r\n "
-					+ " Booking Code : " + transaction.getBookingCode(), mapper);
+			result = MessageUtils.handleSuccess(" Nama : " + veriTransVO.getCustomerDetail().getFirstName()+"\r\n "
+					+ "Email : " + veriTransVO.getCustomerDetail().getEmail()+"\r\n "
+					+ "No Hp : " + veriTransVO.getCustomerDetail().getPhone()+"\r\n "
+					+ "Price : " + transaction.getTotalPriceIdr()+"\r\n " 				
+					+ "Area Parkir : " + veriTransVO.getListProducts().get(0).getLongName()+"\r\n "
+					+ "Booking Code : " + transaction.getBookingCode(), mapper);
 		} catch (ParkingEngineException e) {
 			result = MessageUtils.handleException(e, "", mapper);
 			LOG.error("ParkingEngineException when processing " + pathInfo + " Error Message " + result);
