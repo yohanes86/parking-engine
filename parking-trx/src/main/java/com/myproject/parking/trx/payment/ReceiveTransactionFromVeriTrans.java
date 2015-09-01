@@ -39,10 +39,11 @@ public class ReceiveTransactionFromVeriTrans implements BaseQueryLogic {
 			TransactionVO transaction = new TransactionVO(); 
 			VeriTransVO veriTransVO = mapper.readValue(data, VeriTransVO.class);
 			transaction = veriTransManagerService.charge(veriTransVO.getTokenId(),transaction,veriTransVO);
-			result = MessageUtils.handleSuccess("Transaction ID : " + transaction.getId() 
-					+ " Price : " + transaction.getTotalPriceIdr() 
-					+ " Payment Status : " + transaction.getPaymentStatus() 
-					+ " FDS Status : " + transaction.getPaymentFdsStatus()
+			result = MessageUtils.handleSuccess("Nama : " + veriTransVO.getName()
+					+ " Email : " + veriTransVO.getEmail()
+					+ " No Hp : " + veriTransVO.getPhoneNo()
+					+ " Price : " + transaction.getTotalPriceIdr() 				
+					+ " Area Parkir : " + veriTransVO.getListProducts().get(0).getLongName()
 					+ " Booking Code : " + transaction.getBookingCode(), mapper);
 		} catch (ParkingEngineException e) {
 			result = MessageUtils.handleException(e, "", mapper);

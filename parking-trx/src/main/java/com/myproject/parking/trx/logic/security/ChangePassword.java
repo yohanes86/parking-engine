@@ -29,8 +29,7 @@ public class ChangePassword implements BaseQueryLogic {
 		try {						
 			ChangePasswordVO changePasswordVO = mapper.readValue(data, ChangePasswordVO.class);
 			changePasswordService.changePassword(changePasswordVO);
-			result = MessageUtils.handleSuccess("Password has been changed with param : " 
-			+ " Email : "  + changePasswordVO.getEmail() , mapper);
+			result = MessageUtils.handleSuccess("Password has been changed", mapper);
 		} catch (ParkingEngineException e) {			
 			result = MessageUtils.handleException(e, "", mapper);
 			LOG.error("ParkingEngineException when processing " + pathInfo + " Error Message : " + result);
