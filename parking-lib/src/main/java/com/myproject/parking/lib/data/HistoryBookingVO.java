@@ -14,7 +14,7 @@ public class HistoryBookingVO extends LoginData implements Serializable {
 	private String bookingDateValue;
 	private String bookingId;
 	private String bookingCode;
-	private String status;
+	private int status;
 	
 
 	@Override
@@ -54,13 +54,7 @@ public class HistoryBookingVO extends LoginData implements Serializable {
 		this.bookingCode = bookingCode;
 	}
 
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
+	
 
 	public Date getBookingDate() {
 		return bookingDate;
@@ -68,6 +62,14 @@ public class HistoryBookingVO extends LoginData implements Serializable {
 
 	public void setBookingDate(Date bookingDate) {
 		this.bookingDate = bookingDate;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	

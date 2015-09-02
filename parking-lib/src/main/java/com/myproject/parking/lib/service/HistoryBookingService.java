@@ -14,6 +14,7 @@ import com.myproject.parking.lib.data.LoginData;
 import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.mapper.HistoryBookingMapper;
 import com.myproject.parking.lib.mapper.UserDataMapper;
+import com.myproject.parking.lib.utils.CommonUtil;
 import com.myproject.parking.lib.utils.Constants;
 
 @Service
@@ -57,7 +58,10 @@ public class HistoryBookingService {
 		}		
 		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), loginData.getEmail());
 		List<HistoryBookingVO> listHistoryBooking = null;
-		listHistoryBooking = historyBookingMapper.findHistoryBooking(loginData.getEmail());				
+		listHistoryBooking = historyBookingMapper.findHistoryBooking(loginData.getEmail());	
+		for (HistoryBookingVO historyBookingVO : listHistoryBooking) {
+			historyBookingVO.setBookingDateValue(CommonUtil.displayDateTime(historyBookingVO.getBookingDate()));
+		}
 		LOG.info("process find history booking Done");
 		return listHistoryBooking;
 	}
