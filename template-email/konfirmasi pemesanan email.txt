@@ -1,0 +1,24 @@
+Yth Bapak/Ibu ......
+Terima kasih telah menggunakan Premium Parkir Solution untuk memesan valet parkir
+Berikut adalah informasi pemesanan anda:
+
+Nama customer 		: Agus
+
+Booking Id		: BCODEdasasasasa
+
+Booking Code		: BCODE77777
+
+Mall Name		: MALL AAAAA
+
+Area Parkir		: AMAMAMAMA
+
+Waktu Transaksi		: 07/09/15 13:16:01
+
+Jumlah Belanja		: Rp.	10.000
+
+Status Pembayaran 	: Berhasil
+
+Jika anda tidak melakukan transaksi di atas, harap melaporkan email ini ke agusdk2011@gmail.com
+
+
+0
