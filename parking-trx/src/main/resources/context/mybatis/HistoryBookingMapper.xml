@@ -23,7 +23,7 @@
     	b.mall_name,b.booking_date,b.booking_id,b.booking_code,b.booking_status   	
     </sql>
     
-    <select id="findHistoryBooking" resultType="HistoryBookingVO">         
+    <select id="findHistoryBooking" parameterType="java.util.Map" resultType="HistoryBookingVO">         
         select  
         <include refid="_sqlHistoryBooking"/>
 		from booking b where b.email =#{email} 
