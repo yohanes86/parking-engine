@@ -20,9 +20,8 @@
 
 <mapper namespace="com.myproject.parking.lib.mapper.HistoryBookingMapper">
     <sql id="_sqlHistoryBooking">
-    	b.mall_name,b.booking_date,b.booking_id,b.booking_code,b.booking_status   	
-    </sql>
-    
+    	b.mall_name as mallName,b.booking_date as bookingDate,b.booking_id as bookingId,b.booking_code as bookingCode,b.booking_status as status   	
+    </sql>    
     <select id="findHistoryBooking" parameterType="java.util.Map" resultType="HistoryBookingVO">         
         select  
         <include refid="_sqlHistoryBooking"/>
