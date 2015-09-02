@@ -390,28 +390,28 @@ public class VeriTransManagerService {
 				+ "										Berikut adalah informasi pemesanan anda: "
 				+ "									</td> "
 				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
-				+ "										Nama customer 			: " + user.getName()
+				+ "										<b>Nama customer</b> 			: " + user.getName()
 				+ "									</td> "
 				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
-				+ "										Booking Id				: " + transactionVO.getBookingId()
+				+ "										<b>Booking Id</b>				: " + transactionVO.getBookingId()
 				+ "									</td> "
 				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
-				+ "										Booking Code			: " + transactionVO.getBookingCode()
+				+ "										<b>Booking Code</b>			: " + transactionVO.getBookingCode()
 				+ "									</td> "
 				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
-				+ "										Mall Name				: " + veriTransVO.getListProducts().get(0).getShortName()
+				+ "										<b>Mall Name</b>				: " + veriTransVO.getListProducts().get(0).getShortName()
 				+ "									</td> "
 				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
-				+ "										Area Parkir				: " + veriTransVO.getListProducts().get(0).getLongName()
+				+ "										<b>Area Parkir</b>				: " + veriTransVO.getListProducts().get(0).getLongName()
 				+ "									</td> "
 				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
-				+ "										Waktu Transaksi			: " + CommonUtil.displayDateTime(transactionVO.getUpdatedOn())
+				+ "										<b>Waktu Transaksi</b>			: " + CommonUtil.displayDateTime(transactionVO.getUpdatedOn())
 				+ "									</td> "
 				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
-				+ "										Jumlah Belanja			: " + transactionVO.getTotalPriceIdr()
+				+ "										<b>Jumlah Belanja</b>			: " + transactionVO.getTotalPriceIdr()
 				+ "									</td> "
 				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
-				+ "										Status Pembayaran 		: " + transactionVO.getPaymentStatus()
+				+ "										<b>Status Pembayaran</b> 		: " + transactionVO.getPaymentStatus()
 				+ "									</td> "
 				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
 				+ "										Jika anda tidak melakukan transaksi di atas, harap melaporkan email ini ke agusdk2011@gmail.com "
