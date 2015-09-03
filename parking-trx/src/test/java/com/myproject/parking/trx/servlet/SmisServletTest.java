@@ -62,8 +62,9 @@ public class SmisServletTest {
 	public void tes() {
 		//in milliseconds
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");	
-		Calendar calendar = new GregorianCalendar(2013,1,28,13,24,56);
+		Calendar calendar = new GregorianCalendar(2015,8,03,19,27,00);
 		System.out.println(sdf.format(calendar.getTime()));
+		System.out.println("Current" + sdf.format(new Date().getTime()));
 		Date a =  calendar.getTime(); 
 		long diff = new Date().getTime() - a.getTime();
 
@@ -71,11 +72,15 @@ public class SmisServletTest {
 		long diffMinutes = diff / (60 * 1000) % 60;
 		long diffHours = diff / (60 * 60 * 1000) % 24;
 		long diffDays = diff / (24 * 60 * 60 * 1000);
+		
+		long diffMinutesOnly = diff / (60 * 1000);
 
 		System.out.print(diffDays + " days, ");
 		System.out.print(diffHours + " hours, ");
-		System.out.print(diffHours + " hours, ");
+		System.out.print(diffMinutes + " minutes, ");
 		System.out.print(diffSeconds + " seconds.");
+		
+		System.out.print(diffMinutesOnly + " minutes.");
 	}
 	
 	
