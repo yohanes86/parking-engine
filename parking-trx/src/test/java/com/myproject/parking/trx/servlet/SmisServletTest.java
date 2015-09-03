@@ -1,6 +1,10 @@
 package com.myproject.parking.trx.servlet;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +33,6 @@ import com.myproject.parking.lib.data.Product;
 import com.myproject.parking.lib.data.SlotsParkingVO;
 import com.myproject.parking.lib.data.TransactionDetails;
 import com.myproject.parking.lib.data.VeriTransVO;
-import com.myproject.parking.lib.entity.Mall;
 import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.utils.CipherUtil;
 import com.myproject.parking.lib.utils.CommonUtil;
@@ -56,6 +59,32 @@ public class SmisServletTest {
 	private final String testingReleaseSlot = "http://localhost:8080/parking-trx/trx/releaseSlotParking";
 	
 	@Test
+	public void tes() {
+		//in milliseconds
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");	
+		Calendar calendar = new GregorianCalendar(2015,8,03,19,27,00);
+		System.out.println(sdf.format(calendar.getTime()));
+		System.out.println("Current" + sdf.format(new Date().getTime()));
+		Date a =  calendar.getTime(); 
+		long diff = new Date().getTime() - a.getTime();
+
+		long diffSeconds = diff / 1000 % 60;
+		long diffMinutes = diff / (60 * 1000) % 60;
+		long diffHours = diff / (60 * 60 * 1000) % 24;
+		long diffDays = diff / (24 * 60 * 60 * 1000);
+		
+		long diffMinutesOnly = diff / (60 * 1000);
+
+		System.out.print(diffDays + " days, ");
+		System.out.print(diffHours + " hours, ");
+		System.out.print(diffMinutes + " minutes, ");
+		System.out.print(diffSeconds + " seconds.");
+		
+		System.out.print(diffMinutesOnly + " minutes.");
+	}
+	
+	
+//	@Test
 	public void testRegistrationUser() {
 		String url = testingUserRegistration;
 		long startTime = System.currentTimeMillis();
