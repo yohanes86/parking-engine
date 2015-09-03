@@ -71,14 +71,10 @@ public class MallService {
 		}
 		if(isValidGetFromCache(mapper)){
 			listMall = getFromMallCache(mapper);
-			List<MallSlotAvailable> listMallSlotAvailable = mallMapper.findSlotAvailablePerMall();
-			for (int i = 1; i <= listMall.size(); i++) {
-				if(listMall.get(i).getId() == listMallSlotAvailable.get(i).getId()){
-					listMall.get(i).setSlotAvailable(listMallSlotAvailable.get(i).getSlotAvailable());
-				}
-			}
+			setSlotAvailable(listMall);
 		}else{			
 			listMall = mallMapper.findAllMall();
+			setSlotAvailable(listMall);
 			LOG.debug("Mall get from db List Mall : " + listMall.size());
 			String listMallCacheJson = "";
 			try {
@@ -96,6 +92,19 @@ public class MallService {
 		
 		LOG.info("process find All Mall Done");
 		return listMall;
+	}
+	
+	public void setSlotAvailable(List<Mall> listMall){
+		List<MallSlotAvailable> listMallSlotAvailable = mallMapper.findSlotAvailablePerMall();			
+		for (int i = 0; i < listMall.size(); i++) {
+			listMall.get(i).setSlotAvailable(0);
+			for (int j = 0; j < listMallSlotAvailable.size(); j++) {
+				if(listMall.get(i).getId() == listMallSlotAvailable.get(j).getId()){
+					listMall.get(i).setSlotAvailable(listMallSlotAvailable.get(j).getSlotAvailable());
+					break;
+				}
+			}
+		}
 	}
 	
 	public void refreshCacheMall() throws ParkingEngineException {
