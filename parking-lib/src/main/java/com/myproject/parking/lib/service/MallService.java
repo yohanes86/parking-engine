@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.myproject.parking.lib.data.LoginData;
 import com.myproject.parking.lib.entity.Mall;
+import com.myproject.parking.lib.entity.MallSlotAvailable;
 import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.mapper.MallMapper;
 import com.myproject.parking.lib.mapper.UserDataMapper;
@@ -70,6 +71,12 @@ public class MallService {
 		}
 		if(isValidGetFromCache(mapper)){
 			listMall = getFromMallCache(mapper);
+			List<MallSlotAvailable> listMallSlotAvailable = mallMapper.findSlotAvailablePerMall();
+			for (int i = 1; i <= listMall.size(); i++) {
+				if(listMall.get(i).getId() == listMallSlotAvailable.get(i).getId()){
+					listMall.get(i).setSlotAvailable(listMallSlotAvailable.get(i).getSlotAvailable());
+				}
+			}
 		}else{			
 			listMall = mallMapper.findAllMall();
 			LOG.debug("Mall get from db List Mall : " + listMall.size());
