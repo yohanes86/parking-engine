@@ -242,4 +242,11 @@ public class CommonUtil {
 		return diffHours;
 	}
 	
+	public static long dateDifferentInMinutesOnly(Date d1, Date currentTime){
+		//in milliseconds
+		long diff = currentTime.getTime() - d1.getTime();
+		long diffMinutesOnly = diff / (60 * 1000);
+		return diffMinutesOnly;
+	}
+	
 }
