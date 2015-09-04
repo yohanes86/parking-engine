@@ -45,8 +45,7 @@ public class ParkingServiceServlet extends HttpServlet {
 		mapper = new ObjectMapper();
 		// faster this way, not default
 //		mapper.configure(SerializationConfig.Feature.USE_STATIC_TYPING, true); 
-		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
+		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);		
 		try {
 			Resource resource = new ClassPathResource("sdk_config.properties");
 			Properties props = PropertiesLoaderUtils.loadProperties(resource);
