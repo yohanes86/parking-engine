@@ -93,7 +93,7 @@ public class AutoReleaseBookingService {
 				
 				try {
 					long minutes = checkMinutesBeforeExpired(booking.getBookingDate());
-					if(minutes > 105 && minutes < 120){
+					if(minutes >= 105 && minutes < 120){
 						/**
 						 * Jika kurang 15 menit dari 2 jam maka akan di notif email
 						 * sebelum kirim email cek dahulu apakah sudah pernah dikirim apa belum
