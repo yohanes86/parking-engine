@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.myproject.parking.lib.data.LoginData;
 import com.myproject.parking.lib.entity.Mall;
+import com.myproject.parking.lib.entity.MallSlotAvailable;
 import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.mapper.MallMapper;
 import com.myproject.parking.lib.mapper.UserDataMapper;
@@ -70,8 +71,10 @@ public class MallService {
 		}
 		if(isValidGetFromCache(mapper)){
 			listMall = getFromMallCache(mapper);
+			setSlotAvailable(listMall);
 		}else{			
 			listMall = mallMapper.findAllMall();
+			setSlotAvailable(listMall);
 			LOG.debug("Mall get from db List Mall : " + listMall.size());
 			String listMallCacheJson = "";
 			try {
@@ -89,6 +92,19 @@ public class MallService {
 		
 		LOG.info("process find All Mall Done");
 		return listMall;
+	}
+	
+	public void setSlotAvailable(List<Mall> listMall){
+		List<MallSlotAvailable> listMallSlotAvailable = mallMapper.findSlotAvailablePerMall();			
+		for (int i = 0; i < listMall.size(); i++) {
+			listMall.get(i).setSlotAvailable(0);
+			for (int j = 0; j < listMallSlotAvailable.size(); j++) {
+				if(listMall.get(i).getId() == listMallSlotAvailable.get(j).getId()){
+					listMall.get(i).setSlotAvailable(listMallSlotAvailable.get(j).getSlotAvailable());
+					break;
+				}
+			}
+		}
 	}
 	
 	public void refreshCacheMall() throws ParkingEngineException {

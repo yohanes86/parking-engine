@@ -29,7 +29,20 @@
     <select id="findAllMall" resultType="Mall">
         select  
         <include refid="_sqlMall"/>
-        from mall m where m.status = 1           
+        from mall m
+        where m.status = 1 
+    </select>
+    
+    
+    <select id="findSlotAvailablePerMall" resultType="MallSlotAvailable">
+        select m.id,
+        count(m.id) as slotAvailable
+		from mall m
+		inner join mall_slots ms
+		on m.id = ms.mall_id
+		where m.status = 1 and ms.slots_status = 0
+		group by ms.mall_id
+		order by m.id asc
     </select>
     
 </mapper>
