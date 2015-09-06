@@ -1,6 +1,6 @@
 ﻿/*
 Created: 17-Aug-15
-Modified: 27-Aug-15
+Modified: 06-Sep-15
 Model: MySQL 5.1
 Database: MySQL 5.1
 */
@@ -24,6 +24,7 @@ CREATE TABLE UserData
   status Int NOT NULL,
   time_gen_session_key Datetime,
   group_user Varchar(20),
+  branch_mall Varchar(128) DEFAULT ALL,
   created_on Datetime NOT NULL,
   created_by Varchar(50) NOT NULL,
   updated_on Timestamp NOT NULL,
@@ -76,12 +77,17 @@ CREATE TABLE Transaction
   payment_status Varchar(128),
   payment_fds_status Varchar(128),
   booking_id Varchar(128),
+  email_notification Int,
+  email_notification_reason Varchar(256),
   created_on Datetime NOT NULL,
   created_by Varchar(50) NOT NULL,
   updated_on Timestamp NOT NULL,
   updated_by Varchar(50) NOT NULL,
  PRIMARY KEY (id)
 )
+  COMMENT = 'email notification
+1 already sent email
+0 not sent or failed'
 ;
 
 CREATE UNIQUE INDEX idx_orderId_paymentId ON Transaction (payment_order_id,payment_transaction_id)
