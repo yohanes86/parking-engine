@@ -18,6 +18,7 @@ public class UserData implements java.io.Serializable {
 	private int status;
 	private Date timeGenSessionKey;
 	private String groupUser;
+	private String branchMall;
 	private Date createdOn;
 	private String createdBy;
 	private Date updatedOn;
@@ -123,5 +124,13 @@ public class UserData implements java.io.Serializable {
 
 	public void setGroupUser(String groupUser) {
 		this.groupUser = groupUser;
+	}
+
+	public String getBranchMall() {
+		return branchMall;
+	}
+
+	public void setBranchMall(String branchMall) {
+		this.branchMall = branchMall;
 	}
 }
