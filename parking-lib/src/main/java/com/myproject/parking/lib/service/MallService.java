@@ -69,11 +69,17 @@ public class MallService {
 		if(listMallCache == null){
 			listMallCache = new HashMap<String, String>();
 		}
-		if(isValidGetFromCache(mapper)){
-			listMall = getFromMallCache(mapper);
+		LOG.info("User branch mall :  " + user.getBranchMall());	
+		if(isValidGetFromCache(mapper,user)){
+			listMall = getFromMallCache(mapper,user);
 			setSlotAvailable(listMall);
-		}else{			
-			listMall = mallMapper.findAllMall();
+		}else{		
+			
+			if(Constants.BRANCH_MALL_ALL.equalsIgnoreCase(user.getBranchMall())){
+				listMall = mallMapper.findAllMall();
+			}else{
+				listMall = mallMapper.findMallByName(user.getBranchMall());
+			}				
 			setSlotAvailable(listMall);
 			LOG.debug("Mall get from db List Mall : " + listMall.size());
 			String listMallCacheJson = "";
@@ -86,7 +92,12 @@ public class MallService {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			listMallCache.put(Constants.CACHE_MALL, listMallCacheJson);
+			if(Constants.BRANCH_MALL_ALL.equalsIgnoreCase(user.getBranchMall())){
+				listMallCache.put(Constants.CACHE_MALL, listMallCacheJson);
+			}else{
+				listMallCache.put(Constants.CACHE_MALL+user.getBranchMall(), listMallCacheJson);
+			}
+			
 		}
 		
 		
@@ -111,19 +122,30 @@ public class MallService {
 		listMallCache = null;
 	}
 	
-	private boolean isValidGetFromCache(ObjectMapper mapper){
+	private boolean isValidGetFromCache(ObjectMapper mapper,UserData user){
 		boolean hasil = false;
-		String listMallCacheJson = listMallCache.get(Constants.CACHE_MALL);
+		String listMallCacheJson = null;
+		if(Constants.BRANCH_MALL_ALL.equalsIgnoreCase(user.getBranchMall())){
+			listMallCacheJson = listMallCache.get(Constants.CACHE_MALL);
+		}else{
+			listMallCacheJson = listMallCache.get(Constants.CACHE_MALL+user.getBranchMall());
+		}
+		
 		if(!StringUtils.isEmpty(listMallCacheJson)){
 			hasil = true;
 		}
 		return hasil;
 	}
 	
-	private List<Mall> getFromMallCache(ObjectMapper mapper){
+	private List<Mall> getFromMallCache(ObjectMapper mapper,UserData user){
 		List<Mall> listMall = new ArrayList<Mall>();
 		try {
-			String listMallCacheJson = listMallCache.get(Constants.CACHE_MALL);
+			String listMallCacheJson = null;
+			if(Constants.BRANCH_MALL_ALL.equalsIgnoreCase(user.getBranchMall())){
+				listMallCacheJson = listMallCache.get(Constants.CACHE_MALL);
+			}else{
+				listMallCacheJson = listMallCache.get(Constants.CACHE_MALL+user.getBranchMall());
+			}			
 			listMall = mapper.readValue(listMallCacheJson, new TypeReference<List<Mall>>(){});
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
