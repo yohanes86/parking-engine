@@ -33,6 +33,14 @@
         where m.status = 1 
     </select>
     
+    <select id="findMallByName" parameterType="java.util.Map" resultType="Mall">
+        select  
+        <include refid="_sqlMall"/>
+        from mall m
+        where m.status = 1 
+        and m.mall_name = #{mallName}
+    </select>
+    
     
     <select id="findSlotAvailablePerMall" resultType="MallSlotAvailable">
         select m.id,
