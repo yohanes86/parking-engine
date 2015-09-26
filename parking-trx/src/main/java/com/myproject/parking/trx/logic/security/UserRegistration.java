@@ -42,6 +42,7 @@ public class UserRegistration implements BaseQueryLogic {
 			user.setStatus(Constants.PENDING);
 			user.setActivateKey(user.getPhoneNo() + CommonUtil.generateAlphaNumeric(10));
 			user.setGroupUser(Constants.USER);
+			user.setBranchMall(Constants.BRANCH_MALL_ALL);
 			
 			userDataService.processingRegistrationUser(user);
 			result = MessageUtils.handleSuccess("[Registration User : " + user.getName() + "]"+" [PhoneNo: " + user.getPhoneNo() + "]"+" [Email: " + user.getEmail() + "]"+" Created Date : " + user.getCreatedOn() , mapper);
