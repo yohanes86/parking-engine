@@ -1,7 +1,7 @@
 ﻿/*
 Created: 17-Aug-15
 Modified: 06-Sep-15
-Model: MySQL 5.1
+Model: IKM
 Database: MySQL 5.1
 */
 
@@ -9,26 +9,19 @@ Database: MySQL 5.1
 
 -- Create tables section -------------------------------------------------
 
--- Table UserData
+-- Table User
 
-CREATE TABLE UserData
+CREATE TABLE User
 (
   id Int NOT NULL AUTO_INCREMENT,
+  kode_sekolah Varchar(64),
+  nomor_induk Varchar(64),
   name Varchar(50) NOT NULL,
   password Varchar(80),
-  phone_no Varchar(16) NOT NULL,
-  email Varchar(50) NOT NULL,
-  license_no Varchar(12) NOT NULL,
-  activate_key Varchar(35),
-  session_key Varchar(50),
-  status Int NOT NULL,
-  time_gen_session_key Datetime,
-  group_user Varchar(20),
-  branch_mall Varchar(128) DEFAULT ALL,
+  user_type Varchar(32),
+  status_user Int NOT NULL,
   created_on Datetime NOT NULL,
-  created_by Varchar(50) NOT NULL,
   updated_on Timestamp NOT NULL,
-  updated_by Varchar(50) NOT NULL,
  PRIMARY KEY (id)
 )
   COMMENT = 'status: 
@@ -41,136 +34,172 @@ activate key : digunakan pada saat registration user, key activate di cocokan de
 session key: digunakan pada saat device req ke server '
 ;
 
-CREATE UNIQUE INDEX idx_email ON UserData (email)
-;
+-- Table Sekolah
 
-CREATE INDEX idx_phone_no ON UserData (phone_no)
-;
-
--- Table Transaction
-
-CREATE TABLE Transaction
+CREATE TABLE Sekolah
 (
   id Int NOT NULL AUTO_INCREMENT,
-  customer_first_name Varchar(128) NOT NULL,
-  customer_last_name Varchar(128),
-  customer_email Varchar(64),
-  customer_phone Varchar(64) NOT NULL,
-  billing_first_name Varchar(128) NOT NULL,
-  billing_last_name Varchar(128) NOT NULL,
-  billing_address Varchar(128),
-  billing_city Varchar(64),
-  billing_postal_code Varchar(32),
-  billing_country_code Varchar(128),
-  billing_phone Varchar(128),
-  shipping_first_name Varchar(128),
-  shipping_last_name Varchar(128),
-  shipping_address Varchar(128),
-  shipping_city Varchar(128),
-  shipping_postal_code Varchar(128),
-  shipping_phone Varchar(128),
-  shipping_country_code Varchar(128),
-  payment_order_id Varchar(128),
-  payment_transaction_id Varchar(128),
-  total_price_idr Bigint,
-  payment_method Varchar(128),
-  payment_status Varchar(128),
-  payment_fds_status Varchar(128),
-  booking_id Varchar(128),
-  email_notification Int,
-  email_notification_reason Varchar(256),
+  kode_sekolah Varchar(64),
+  nama_sekolah Varchar(64),
+  created_on Datetime NOT NULL,
+  updated_on Timestamp NOT NULL,
+ PRIMARY KEY (id)
+)
+  COMMENT = 'status: 
+0 pending
+1 active
+2 blocked
+
+activate key : digunakan pada saat registration user, key activate di cocokan dengan yg di kirim dari email
+
+session key: digunakan pada saat device req ke server '
+;
+
+-- Table Kelas
+
+CREATE TABLE Kelas
+(
+  id Int NOT NULL AUTO_INCREMENT,
+  kode_kelas Varchar(64),
+  nama_kelas Varchar(64),
+  created_on Datetime NOT NULL,
+  updated_on Timestamp NOT NULL,
+ PRIMARY KEY (id)
+)
+  COMMENT = 'status: 
+0 pending
+1 active
+2 blocked
+
+activate key : digunakan pada saat registration user, key activate di cocokan dengan yg di kirim dari email
+
+session key: digunakan pada saat device req ke server '
+;
+
+-- Table user_sekolah_kelas
+
+CREATE TABLE user_sekolah_kelas
+(
+  user_id Int NOT NULL,
+  sekolah_id Int NOT NULL,
+  kelas_id Int NOT NULL,
+  subject_id Int
+)
+  COMMENT = 'status: 
+0 pending
+1 active
+2 blocked
+
+activate key : digunakan pada saat registration user, key activate di cocokan dengan yg di kirim dari email
+
+session key: digunakan pada saat device req ke server '
+;
+
+-- Table agenda
+
+CREATE TABLE agenda
+(
+  kode_kelas Varchar(64),
+  nama_kelas Varchar(64),
+  kode_sekolah Varchar(64),
+  nama_sekolah Varchar(64),
+  tanggal_agenda Datetime,
+  isi_agenda Varchar(512),
+  agenda_type Int,
   created_on Datetime NOT NULL,
   created_by Varchar(50) NOT NULL,
   updated_on Timestamp NOT NULL,
-  updated_by Varchar(50) NOT NULL,
- PRIMARY KEY (id)
+  updated_by Varchar(50) NOT NULL
 )
-  COMMENT = 'email notification
-1 already sent email
-0 not sent or failed'
+  COMMENT = 'status: 
+0 pending
+1 active
+2 blocked
+
+activate key : digunakan pada saat registration user, key activate di cocokan dengan yg di kirim dari email
+
+session key: digunakan pada saat device req ke server '
 ;
 
-CREATE UNIQUE INDEX idx_orderId_paymentId ON Transaction (payment_order_id,payment_transaction_id)
-;
+-- Table kalender_akademis
 
--- Table TransactionDetail
-
-CREATE TABLE TransactionDetail
+CREATE TABLE kalender_akademis
 (
-  id Int NOT NULL AUTO_INCREMENT,
-  transaction_id Int NOT NULL,
-  name_item Varchar(128),
-  price_each_idr Bigint,
- PRIMARY KEY (id)
+  kode_sekolah Varchar(64),
+  tanggal_agenda Datetime,
+  isi_agenda Varchar(512)
 )
+  COMMENT = 'status: 
+0 pending
+1 active
+2 blocked
+
+activate key : digunakan pada saat registration user, key activate di cocokan dengan yg di kirim dari email
+
+session key: digunakan pada saat device req ke server '
 ;
 
-CREATE UNIQUE INDEX idx_transactionId ON TransactionDetail (transaction_id)
-;
+-- Table message
 
--- Table Mall
-
-CREATE TABLE Mall
+CREATE TABLE message
 (
-  id Int NOT NULL AUTO_INCREMENT,
-  mall_code Varchar(128),
-  mall_name Varchar(128),
-  mall_address Varchar(128),
-  mall_phone Varchar(64),
-  status Int DEFAULT 1,
+  from_user_id Int,
+  to_user_id Int,
+  isi_message Varchar(512),
+  is_read Int,
   created_on Datetime,
-  created_by Varchar(128),
-  updated_on Timestamp,
-  updated_by Varchar(128),
- PRIMARY KEY (id)
+  updated_on Timestamp
 )
+  COMMENT = 'status: 
+0 pending
+1 active
+2 blocked
+
+activate key : digunakan pada saat registration user, key activate di cocokan dengan yg di kirim dari email
+
+session key: digunakan pada saat device req ke server '
 ;
 
-CREATE UNIQUE INDEX idx ON Mall (created_on,created_by,updated_on,updated_by,mall_code,mall_name)
-;
+-- Table nilai
 
--- Table Mall_Slots
-
-CREATE TABLE Mall_Slots
+CREATE TABLE nilai
 (
   id Int NOT NULL AUTO_INCREMENT,
-  mall_id Int,
-  slots_name Varchar(128),
-  slots_price_idr Bigint,
-  slots_status Int,
+  user_id Int,
+  nama_test Varchar(512),
+  nilai Bigint,
   created_on Datetime,
-  created_by Varchar(128),
   updated_on Timestamp,
-  updated_by Varchar(128),
  PRIMARY KEY (id)
 )
-  COMMENT = 'slots_status 0 = FREE
-slots_status 1 = BOOKED
-'
+  COMMENT = 'status: 
+0 pending
+1 active
+2 blocked
+
+activate key : digunakan pada saat registration user, key activate di cocokan dengan yg di kirim dari email
+
+session key: digunakan pada saat device req ke server '
 ;
 
-CREATE UNIQUE INDEX idx ON Mall_Slots (created_on,created_by,updated_on,updated_by,slots_name,slots_status)
-;
+-- Table subject
 
--- Table Booking
-
-CREATE TABLE Booking
+CREATE TABLE subject
 (
   id Int NOT NULL AUTO_INCREMENT,
-  name Varchar(50),
-  phone_no Varchar(16),
-  email Varchar(50),
-  mall_name Varchar(128),
-  id_slot Int,
-  booking_id Varchar(128),
-  booking_code Varchar(128),
-  booking_date Datetime,
-  booking_status Int DEFAULT 0,
+  subject_name Varchar(64),
+  created_on Datetime NOT NULL,
+  updated_on Timestamp NOT NULL,
  PRIMARY KEY (id)
 )
-;
+  COMMENT = 'status: 
+0 pending
+1 active
+2 blocked
 
-CREATE UNIQUE INDEX idx ON Booking (booking_code,booking_date,booking_id,email)
+activate key : digunakan pada saat registration user, key activate di cocokan dengan yg di kirim dari email
+
+session key: digunakan pada saat device req ke server '
 ;
 
 
