@@ -170,6 +170,7 @@ public class EmailSender {
 		email.setTLS(useTLS);
 		email.setSubject(subject);
 		email.setHtmlMsg(html);
+		email.setSmtpPort(smtpPort);
 		email.setTextMsg(alternateText);
 		email.send();
 	}
