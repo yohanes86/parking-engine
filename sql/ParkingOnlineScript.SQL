@@ -270,3 +270,11 @@ INSERT INTO mall_slots(
   ,CURRENT_TIMESTAMP -- updated_on - IN timestamp
   ,'SYS'  -- updated_by - IN varchar(128)
 );
+
+
+ALTER TABLE parking_online.userdata
+ ADD branch_mall VARCHAR(64) AFTER updated_by;
+ 
+ ALTER TABLE parking_online.transaction
+ ADD email_notification int AFTER booking_id;
+
