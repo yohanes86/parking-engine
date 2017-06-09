@@ -147,6 +147,7 @@ public class EmailSender {
 			String alternateText, Resource[] resources) throws EmailException, IOException {
 		HtmlEmail email = new HtmlEmail();
 		email.setHostName(smtpHost);
+		email.setSmtpPort(smtpPort);
 		if(StringUtils.isEmpty(fromEmail)){
 			fromEmail = defaultFrom;
 		}
@@ -167,7 +168,8 @@ public class EmailSender {
 				html = html.replaceAll("\\$\\{" + i++ + "\\}", "cid:" + id);
 			}
 		}
-		email.setTLS(useTLS);
+		email.setStartTLSEnabled(useTLS);
+//		email.setTLS(useTLS);
 		email.setSubject(subject);
 		email.setHtmlMsg(html);
 		email.setSmtpPort(smtpPort);
