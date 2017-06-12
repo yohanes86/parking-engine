@@ -9,13 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myproject.parking.lib.utils.CipherUtil;
 import com.myproject.parking.lib.utils.CommonUtil;
 import com.myproject.parking.trx.logic.BaseQueryLogic;
@@ -38,7 +39,8 @@ public class ParkingServiceServlet extends HttpServlet {
 				config.getServletContext());
 		mapper = new ObjectMapper();
 		// faster this way, not default
-		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);		
+//		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);		
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		LOG.debug("Servlet Initialized");
 	}
 	  
@@ -74,9 +76,9 @@ public class ParkingServiceServlet extends HttpServlet {
 		}
 		reader.close();
 		String data = sb.toString();
-//		if(!"/receiveTrxFromVeriTrans".equalsIgnoreCase(pathInfo)){
+		if(!"/charge".equalsIgnoreCase(pathInfo)){
 			data = CipherUtil.decryptTripleDES(data, CipherUtil.PASSWORD);
-//		}		
+		}		
 		LOG.debug("RequestData: {}", new String[] { data });	
 	
 		String respData = logic.process(request,response,data, mapper, pathInfo);

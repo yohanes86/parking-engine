@@ -12,19 +12,14 @@ package com.myproject.parking.trx.logic.security;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.myproject.parking.lib.data.ForgetPasswordVO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myproject.parking.lib.data.LoginData;
-import com.myproject.parking.lib.data.PaymentVO;
-import com.myproject.parking.lib.service.ActivateUserService;
-import com.myproject.parking.lib.service.ForgetPasswordService;
 import com.myproject.parking.lib.service.LoginService;
 import com.myproject.parking.lib.service.ParkingEngineException;
-import com.myproject.parking.lib.utils.CipherUtil;
 import com.myproject.parking.lib.utils.MessageUtils;
 import com.myproject.parking.trx.logic.BaseQueryLogic;
 
