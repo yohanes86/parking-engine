@@ -7,16 +7,15 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.myproject.parking.lib.data.BookingVO;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.myproject.parking.lib.data.EmailNotifVO;
 import com.myproject.parking.lib.entity.Booking;
 import com.myproject.parking.lib.mapper.BookingMapper;
@@ -46,8 +45,8 @@ public class AutoReleaseBookingService {
 	public void release(){
 		if(mapper == null){
 			mapper = new ObjectMapper();
-			mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		}
 		
 		

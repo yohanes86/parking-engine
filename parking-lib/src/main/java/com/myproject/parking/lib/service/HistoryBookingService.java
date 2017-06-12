@@ -3,12 +3,12 @@ package com.myproject.parking.lib.service;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myproject.parking.lib.data.HistoryBookingVO;
 import com.myproject.parking.lib.data.LoginData;
 import com.myproject.parking.lib.entity.UserData;

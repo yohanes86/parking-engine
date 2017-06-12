@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.myproject.parking.lib.data.Product;
 import com.myproject.parking.lib.data.VeriTransVO;
 import com.myproject.parking.lib.entity.Booking;
+import com.myproject.parking.lib.entity.MidTransVO;
 import com.myproject.parking.lib.entity.TransactionDetailVO;
 import com.myproject.parking.lib.entity.TransactionVO;
 import com.myproject.parking.lib.entity.UserData;
@@ -182,6 +183,35 @@ public class VeriTransManagerService {
 			LOG.error(" Send email notification failed " + e.getMessage());
 		}
 		return transactionVO;
+	}
+	
+	@Transactional(rollbackFor={Exception.class})
+	public MidTransVO chargeMidtrans(MidTransVO midTransVO) throws ParkingEngineException,RestClientException {
+		LOG.debug(" chargeMidtrans: "+midTransVO) ;
+		UserData user = userDataMapper.findUserDataByEmail(midTransVO.getCustomerDetails().getEmail());
+		if(user == null){
+			LOG.error("Can't find User with email : " + midTransVO.getCustomerDetails().getEmail());
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_FOUND);
+		}
+		if(Constants.BLOCKED == user.getStatus()){
+			LOG.error("User already blocked");
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_BLOCKED);
+		}
+		if(Constants.PENDING == user.getStatus()){
+			LOG.error("User not active");
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_ACTIVE);
+		}		
+		if(StringUtils.isEmpty(user.getSessionKey())){
+			LOG.error("User Must Login Before make transaction, Parameter email : " + midTransVO.getCustomerDetails().getEmail());
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_LOGIN);
+		}
+//		if(!user.getSessionKey().equals(veriTransVO.getSessionKey())){
+//			LOG.error("Wrong Session Key, Parameter email : " + veriTransVO.getEmail());
+//			throw new ParkingEngineException(ParkingEngineException.ENGINE_SESSION_KEY_DIFFERENT);
+//		}
+		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), midTransVO.getCustomerDetails().getEmail());
+		
+		return midTransVO;
 	}
 	
 	
