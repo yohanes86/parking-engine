@@ -58,11 +58,10 @@
 		        <entry key="/logoutUser" value-ref="logoutUser"></entry>
 		        <entry key="/changePassword" value-ref="changePassword"></entry>
 		        <entry key="/logoutUser" value-ref="logoutUser"></entry>
-		        <!-- Payment Module -->		        
-		        <!--<entry key="/paymentPayPal" value-ref="paymentPayPal"></entry>  -->
-		      <!--   <entry key="/paymentPayPal" value-ref="paymentPayPal"></entry> -->
+		        <!-- Payment Module -->		        		       
 		        <entry key="/receiveTrxFromVeriTrans" value-ref="receiveTrxFromVeriTrans"></entry>
 		        <entry key="/charge" value-ref="charge"></entry>
+		        <entry key="/payment_notif" value-ref="payment_notif"></entry>
 		        <!-- Transaction Module -->
 		        <entry key="/listMall" value-ref="listMall"></entry>
 		        <entry key="/refreshCacheMall" value-ref="refreshCacheMall"></entry>

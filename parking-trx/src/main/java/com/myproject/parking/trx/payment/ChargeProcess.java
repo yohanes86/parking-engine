@@ -40,10 +40,10 @@ public class ChargeProcess implements BaseQueryLogic {
 			MidTransVO midTransVO = new MidTransVO(); 
 			midTransVO = mapper.readValue(data, MidTransVO.class);
 			responseVO = veriTransManagerService.chargeMidtrans(mapper,midTransVO,data);
-			result = MessageUtils.handleSuccess(" Nama : " + midTransVO.getCustomerDetails().getFirstName()+"\r\n "
-					+ "Email : " + midTransVO.getCustomerDetails().getEmail()+"\r\n "
-					+ "No Hp : " + midTransVO.getCustomerDetails().getPhone()+"\r\n "
-					+ "Price : " + midTransVO.getTransactionDetails().getGrossAmount()+"\r\n " , mapper);
+//			result = MessageUtils.handleSuccess(" Nama : " + midTransVO.getCustomerDetails().getFirstName()+"\r\n "
+//					+ "Email : " + midTransVO.getCustomerDetails().getEmail()+"\r\n "
+//					+ "No Hp : " + midTransVO.getCustomerDetails().getPhone()+"\r\n "
+//					+ "Price : " + midTransVO.getTransactionDetails().getGrossAmount()+"\r\n " , mapper);
 			result = mapper.writeValueAsString(responseVO);
 		} catch (ParkingEngineException e) {
 			result = MessageUtils.handleException(e, "", mapper);

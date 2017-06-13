@@ -17,10 +17,9 @@
 	<bean id="logoutUser" class="com.myproject.parking.trx.logic.security.LogoutUser"/>	
 	<bean id="changePassword" class="com.myproject.parking.trx.logic.security.ChangePassword"/>
 	<!-- Payment Module -->
-	<!--  <bean id="paymentPayPal" class="com.myproject.parking.trx.payment.PaymentWithPayPal"/>-->
-	<!-- <bean id="paymentPayPal" class="com.myproject.parking.trx.payment.PaymentWithPayPal"/> -->
 	<bean id="receiveTrxFromVeriTrans" class="com.myproject.parking.trx.payment.ReceiveTransactionFromVeriTrans"/>
 	<bean id="charge" class="com.myproject.parking.trx.payment.ChargeProcess"/>
+	<bean id="payment_notif" class="com.myproject.parking.trx.payment.PaymentNotifProcess"/>
 	<!-- Transaction Module -->
 	<bean id="listMall" class="com.myproject.parking.trx.logic.transaction.ListMall"/>
 	<bean id="refreshCacheMall" class="com.myproject.parking.trx.logic.transaction.RefreshCacheMall"/>
