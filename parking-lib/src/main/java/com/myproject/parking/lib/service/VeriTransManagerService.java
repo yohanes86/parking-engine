@@ -29,7 +29,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myproject.parking.lib.data.Product;
+import com.myproject.parking.lib.data.ResponseVO;
 import com.myproject.parking.lib.data.VeriTransVO;
 import com.myproject.parking.lib.entity.Booking;
 import com.myproject.parking.lib.entity.MidTransVO;
@@ -63,6 +65,9 @@ public class VeriTransManagerService {
 	
 	@Autowired
 	private AppsTimeService timeService;
+	
+	@Autowired
+	private HttpClientService httpClientService;
 	
 	@Autowired
 	private EmailSender emailSender;
@@ -186,32 +191,41 @@ public class VeriTransManagerService {
 	}
 	
 	@Transactional(rollbackFor={Exception.class})
-	public MidTransVO chargeMidtrans(MidTransVO midTransVO) throws ParkingEngineException,RestClientException {
+	public ResponseVO chargeMidtrans(ObjectMapper mapper,MidTransVO midTransVO,String data) throws ParkingEngineException,Exception {
+		ResponseVO responseVO = new ResponseVO(); 
 		LOG.debug(" chargeMidtrans: "+midTransVO) ;
-		UserData user = userDataMapper.findUserDataByEmail(midTransVO.getCustomerDetails().getEmail());
-		if(user == null){
-			LOG.error("Can't find User with email : " + midTransVO.getCustomerDetails().getEmail());
-			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_FOUND);
-		}
-		if(Constants.BLOCKED == user.getStatus()){
-			LOG.error("User already blocked");
-			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_BLOCKED);
-		}
-		if(Constants.PENDING == user.getStatus()){
-			LOG.error("User not active");
-			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_ACTIVE);
-		}		
-		if(StringUtils.isEmpty(user.getSessionKey())){
-			LOG.error("User Must Login Before make transaction, Parameter email : " + midTransVO.getCustomerDetails().getEmail());
-			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_LOGIN);
-		}
+//		UserData user = userDataMapper.findUserDataByEmail(midTransVO.getCustomerDetails().getEmail());
+//		if(user == null){
+//			LOG.error("Can't find User with email : " + midTransVO.getCustomerDetails().getEmail());
+//			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_FOUND);
+//		}
+//		if(Constants.BLOCKED == user.getStatus()){
+//			LOG.error("User already blocked");
+//			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_BLOCKED);
+//		}
+//		if(Constants.PENDING == user.getStatus()){
+//			LOG.error("User not active");
+//			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_ACTIVE);
+//		}		
+//		if(StringUtils.isEmpty(user.getSessionKey())){
+//			LOG.error("User Must Login Before make transaction, Parameter email : " + midTransVO.getCustomerDetails().getEmail());
+//			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_LOGIN);
+//		}
 //		if(!user.getSessionKey().equals(veriTransVO.getSessionKey())){
 //			LOG.error("Wrong Session Key, Parameter email : " + veriTransVO.getEmail());
 //			throw new ParkingEngineException(ParkingEngineException.ENGINE_SESSION_KEY_DIFFERENT);
 //		}
-		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), midTransVO.getCustomerDetails().getEmail());
+//		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), midTransVO.getCustomerDetails().getEmail());
+		try {
+			String response = httpClientService.sendingPost(data);		
+			LOG.debug("response :"+response);		
+			responseVO = mapper.readValue(response, ResponseVO.class);
+			LOG.debug("responseVO :"+responseVO);	
+		} catch (Exception e) {
+			throw e;
+		}
 		
-		return midTransVO;
+		return responseVO;
 	}
 	
 	

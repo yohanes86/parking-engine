@@ -26,6 +26,11 @@ public class ParkingEngineException extends Exception {
 	public static final int FAILED_SENDING_EMAIL			= 26;
 	public static final int PARAMETER_NOT_COMPLETE			= 27;
 	
+	
+	public static final int NE_ERROR_RESPONSE_HOST			= 28;
+	public static final int NE_INVALID_URI					= 29;
+	
+	
 	private int errorCode;
 	private String[] info;
 	
