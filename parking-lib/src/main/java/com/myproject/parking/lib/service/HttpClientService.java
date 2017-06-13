@@ -111,6 +111,7 @@ public class HttpClientService {
 		try {
 			String str = serverKey+":";
 		    String authString = Base64.getEncoder().encodeToString(str.getBytes());
+//			String authString = Base64.getEncoder().withoutPadding().encodeToString(str.getBytes());
 			httpPost.setHeader("Accept", "application/json");
 		    httpPost.setHeader("Content-type", "application/json");
 		    httpPost.setHeader("Authorization", authString);
@@ -129,14 +130,15 @@ public class HttpClientService {
 			
 			HttpResponse response = closeableHttpClient.execute(httpPost);
 			
-			if (response.getStatusLine().getStatusCode() == 200) {
+			if (response.getStatusLine().getStatusCode() == 201) {
 				String respString = EntityUtils.toString(response.getEntity());
                 LOG.debug("Response: {}", new String[] { respString} );
                 
                 return respString;
 			} else {
 				LOG.warn("Invalid statusCode: {}", new String[] { "" + response.getStatusLine().getStatusCode()} );
-                
+				String respString = EntityUtils.toString(response.getEntity());
+				LOG.debug("Response: {}", new String[] { respString} );
 				throw new ParkingEngineException(ParkingEngineException.NE_ERROR_RESPONSE_HOST);
 			}  // end if statusCode != 200
 		} catch (ParkingEngineException me) {
