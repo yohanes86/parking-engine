@@ -109,8 +109,8 @@ public class HttpClientService {
 	public String sendingPost(String body) throws ParkingEngineException, IOException {
         HttpPost httpPost = new HttpPost(urlMidtrans);
 		try {
-			String str = "Basic "+serverKey+":";
-		    String authString = Base64.getEncoder().encodeToString(str.getBytes());
+			String str = serverKey+":";
+		    String authString = "Basic "+Base64.getEncoder().encodeToString(str.getBytes());
 //			String authString = Base64.getEncoder().withoutPadding().encodeToString(str.getBytes());
 		    httpPost.setHeader("Content-type", "application/json");
 			httpPost.setHeader("Accept", "application/json");		    
