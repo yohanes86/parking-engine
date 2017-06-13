@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myproject.parking.lib.data.ResponseVO;
 import com.myproject.parking.lib.entity.MidTransVO;
 import com.myproject.parking.lib.service.AppsTimeService;
 import com.myproject.parking.lib.service.CheckUserService;
@@ -34,14 +35,16 @@ public class ChargeProcess implements BaseQueryLogic {
 	public String process(HttpServletRequest request,HttpServletResponse response,String data, ObjectMapper mapper, String pathInfo) {
 		LOG.debug("ChargeProcess :"+pathInfo);		
 		String result = "";
+		ResponseVO responseVO = new ResponseVO();
 		try {				
 			MidTransVO midTransVO = new MidTransVO(); 
 			midTransVO = mapper.readValue(data, MidTransVO.class);
-			midTransVO = veriTransManagerService.chargeMidtrans(midTransVO);
+			responseVO = veriTransManagerService.chargeMidtrans(mapper,midTransVO,data);
 			result = MessageUtils.handleSuccess(" Nama : " + midTransVO.getCustomerDetails().getFirstName()+"\r\n "
 					+ "Email : " + midTransVO.getCustomerDetails().getEmail()+"\r\n "
 					+ "No Hp : " + midTransVO.getCustomerDetails().getPhone()+"\r\n "
 					+ "Price : " + midTransVO.getTransactionDetails().getGrossAmount()+"\r\n " , mapper);
+			result = mapper.writeValueAsString(responseVO);
 		} catch (ParkingEngineException e) {
 			result = MessageUtils.handleException(e, "", mapper);
 			LOG.error("ParkingEngineException when processing " + pathInfo + " Error Message " + result);

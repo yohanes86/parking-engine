@@ -42,6 +42,11 @@
 		<property name="connectionPoolSize" value="${connectionPoolSize}" />
 	</bean>
 	
+	<bean id="httpClientService" class="com.myproject.parking.lib.service.HttpClientService" init-method="start"> 
+		<property name="serverKey" value="${serverKey}" />
+		<property name="urlMidtrans" value="${urlMidtrans}" />
+	</bean>
+	
 	<bean id="logicFactory" class="com.myproject.parking.trx.logic.LogicFactory">
 		<property name="logic" >
 		    <map>
@@ -86,7 +91,7 @@
 	
 	<bean id="autoReleaseBookingTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="autoReleaseBookingJob" />
-		<property name="cronExpression" value=" 0 0/1 * * * ? " />
+		<property name="cronExpression" value=" 0 0/15 * * * ? " />
 	</bean>
 	
 	<!-- =========================== Scheduler =========================== -->
