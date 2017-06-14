@@ -19,6 +19,8 @@ public class MidTransVO {
 	private List<ItemDetail> itemDetails = null;
 	@JsonProperty("transaction_details")
 	private TransactionDetails transactionDetails;
+	@JsonProperty("custom_field1")
+	private String sessionKey;
 	
 
 	@JsonProperty("customer_details")
@@ -59,6 +61,16 @@ public class MidTransVO {
 	@JsonProperty("transaction_details")
 	public void setTransactionDetails(TransactionDetails transactionDetails) {
 		this.transactionDetails = transactionDetails;
+	}
+
+	@JsonProperty("custom_field1")
+	public String getSessionKey() {
+		return sessionKey;
+	}
+
+	@JsonProperty("custom_field1")
+	public void setSessionKey(String sessionKey) {
+		this.sessionKey = sessionKey;
 	}
 
 	

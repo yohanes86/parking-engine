@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+@Deprecated
 public class TransactionDetails implements Serializable {
 	private String orderId;
     private Long grossAmount;

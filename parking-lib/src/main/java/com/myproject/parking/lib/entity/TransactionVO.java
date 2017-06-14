@@ -10,57 +10,19 @@ public class TransactionVO implements Serializable {
 
 	private Long id;
 	private String customerFirstName;
-
-	private String customerLastName;
-
-	private String customerEmail;
-
-	private String customerPhone;
-
-	private String billingFirstName;
-
-	private String billingLastName;
-
-	private String billingAddress;
-
-	private String billingCity;
-
-	private String billingPostalCode;
-
-	private String billingPhone;
-
-	private String billingCountryCode;
-
-	private String shippingFirstName;
-
-	private String shippingLastName;
-
-	private String shippingAddress;
-
-	private String shippingCity;
-
-	private String shippingPostalCode;
-
-	private String shippingPhone;
-
-	private String shippingCountryCode;
-
-	private String paymentOrderId;
-
-	private String paymentTransactionId;
-
+	private String nameItem;
 	private Long totalPriceIdr;
-
-	private String paymentMethod;
-
-	private String paymentStatus;
-
-	private String paymentFdsStatus;
-	private String bookingId;
-	private String bookingCode;
+	private String paymentType;
+	private String bank;
+	private String transactionStatus;
+	private String fraudStatus;
+	private String approvalCode;
+	private String transactionId;
+	private String signatureKey;
 	private int emailNotification;
 	private String emailNotificationReason;
-
+	private String orderId;
+	private boolean update;
 	private Date createdOn;
 	private String createdBy;
 	private Date updatedOn;
@@ -87,188 +49,12 @@ public class TransactionVO implements Serializable {
 		this.customerFirstName = customerFirstName;
 	}
 
-	public String getCustomerLastName() {
-		return customerLastName;
-	}
-
-	public void setCustomerLastName(String customerLastName) {
-		this.customerLastName = customerLastName;
-	}
-
-	public String getCustomerEmail() {
-		return customerEmail;
-	}
-
-	public void setCustomerEmail(String customerEmail) {
-		this.customerEmail = customerEmail;
-	}
-
-	public String getCustomerPhone() {
-		return customerPhone;
-	}
-
-	public void setCustomerPhone(String customerPhone) {
-		this.customerPhone = customerPhone;
-	}
-
-	public String getBillingFirstName() {
-		return billingFirstName;
-	}
-
-	public void setBillingFirstName(String billingFirstName) {
-		this.billingFirstName = billingFirstName;
-	}
-
-	public String getBillingLastName() {
-		return billingLastName;
-	}
-
-	public void setBillingLastName(String billingLastName) {
-		this.billingLastName = billingLastName;
-	}
-
-	public String getBillingAddress() {
-		return billingAddress;
-	}
-
-	public void setBillingAddress(String billingAddress) {
-		this.billingAddress = billingAddress;
-	}
-
-	public String getBillingCity() {
-		return billingCity;
-	}
-
-	public void setBillingCity(String billingCity) {
-		this.billingCity = billingCity;
-	}
-
-	public String getBillingPostalCode() {
-		return billingPostalCode;
-	}
-
-	public void setBillingPostalCode(String billingPostalCode) {
-		this.billingPostalCode = billingPostalCode;
-	}
-
-	public String getBillingPhone() {
-		return billingPhone;
-	}
-
-	public void setBillingPhone(String billingPhone) {
-		this.billingPhone = billingPhone;
-	}
-
-	public String getBillingCountryCode() {
-		return billingCountryCode;
-	}
-
-	public void setBillingCountryCode(String billingCountryCode) {
-		this.billingCountryCode = billingCountryCode;
-	}
-
-	public String getShippingFirstName() {
-		return shippingFirstName;
-	}
-
-	public void setShippingFirstName(String shippingFirstName) {
-		this.shippingFirstName = shippingFirstName;
-	}
-
-	public String getShippingLastName() {
-		return shippingLastName;
-	}
-
-	public void setShippingLastName(String shippingLastName) {
-		this.shippingLastName = shippingLastName;
-	}
-
-	public String getShippingAddress() {
-		return shippingAddress;
-	}
-
-	public void setShippingAddress(String shippingAddress) {
-		this.shippingAddress = shippingAddress;
-	}
-
-	public String getShippingCity() {
-		return shippingCity;
-	}
-
-	public void setShippingCity(String shippingCity) {
-		this.shippingCity = shippingCity;
-	}
-
-	public String getShippingPostalCode() {
-		return shippingPostalCode;
-	}
-
-	public void setShippingPostalCode(String shippingPostalCode) {
-		this.shippingPostalCode = shippingPostalCode;
-	}
-
-	public String getShippingPhone() {
-		return shippingPhone;
-	}
-
-	public void setShippingPhone(String shippingPhone) {
-		this.shippingPhone = shippingPhone;
-	}
-
-	public String getShippingCountryCode() {
-		return shippingCountryCode;
-	}
-
-	public void setShippingCountryCode(String shippingCountryCode) {
-		this.shippingCountryCode = shippingCountryCode;
-	}
-
-	public String getPaymentOrderId() {
-		return paymentOrderId;
-	}
-
-	public void setPaymentOrderId(String paymentOrderId) {
-		this.paymentOrderId = paymentOrderId;
-	}
-
-	public String getPaymentTransactionId() {
-		return paymentTransactionId;
-	}
-
-	public void setPaymentTransactionId(String paymentTransactionId) {
-		this.paymentTransactionId = paymentTransactionId;
-	}
-
 	public Long getTotalPriceIdr() {
 		return totalPriceIdr;
 	}
 
 	public void setTotalPriceIdr(Long totalPriceIdr) {
 		this.totalPriceIdr = totalPriceIdr;
-	}
-
-	public String getPaymentMethod() {
-		return paymentMethod;
-	}
-
-	public void setPaymentMethod(String paymentMethod) {
-		this.paymentMethod = paymentMethod;
-	}
-
-	public String getPaymentStatus() {
-		return paymentStatus;
-	}
-
-	public void setPaymentStatus(String paymentStatus) {
-		this.paymentStatus = paymentStatus;
-	}
-
-	public String getPaymentFdsStatus() {
-		return paymentFdsStatus;
-	}
-
-	public void setPaymentFdsStatus(String paymentFdsStatus) {
-		this.paymentFdsStatus = paymentFdsStatus;
 	}
 
 	public Date getCreatedOn() {
@@ -303,22 +89,6 @@ public class TransactionVO implements Serializable {
 		this.updatedBy = updatedBy;
 	}
 
-	public String getBookingId() {
-		return bookingId;
-	}
-
-	public void setBookingId(String bookingId) {
-		this.bookingId = bookingId;
-	}
-
-	public String getBookingCode() {
-		return bookingCode;
-	}
-
-	public void setBookingCode(String bookingCode) {
-		this.bookingCode = bookingCode;
-	}
-
 	public int getEmailNotification() {
 		return emailNotification;
 	}
@@ -333,6 +103,86 @@ public class TransactionVO implements Serializable {
 
 	public void setEmailNotificationReason(String emailNotificationReason) {
 		this.emailNotificationReason = emailNotificationReason;
+	}
+
+	public String getNameItem() {
+		return nameItem;
+	}
+
+	public void setNameItem(String nameItem) {
+		this.nameItem = nameItem;
+	}
+
+	public boolean isUpdate() {
+		return update;
+	}
+
+	public void setUpdate(boolean update) {
+		this.update = update;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public String getPaymentType() {
+		return paymentType;
+	}
+
+	public void setPaymentType(String paymentType) {
+		this.paymentType = paymentType;
+	}
+
+	public String getBank() {
+		return bank;
+	}
+
+	public void setBank(String bank) {
+		this.bank = bank;
+	}
+
+	public String getTransactionStatus() {
+		return transactionStatus;
+	}
+
+	public void setTransactionStatus(String transactionStatus) {
+		this.transactionStatus = transactionStatus;
+	}
+
+	public String getFraudStatus() {
+		return fraudStatus;
+	}
+
+	public void setFraudStatus(String fraudStatus) {
+		this.fraudStatus = fraudStatus;
+	}
+
+	public String getApprovalCode() {
+		return approvalCode;
+	}
+
+	public void setApprovalCode(String approvalCode) {
+		this.approvalCode = approvalCode;
+	}
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
+	public String getSignatureKey() {
+		return signatureKey;
+	}
+
+	public void setSignatureKey(String signatureKey) {
+		this.signatureKey = signatureKey;
 	}
 
 }

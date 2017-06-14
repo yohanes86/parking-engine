@@ -30,12 +30,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myproject.parking.lib.data.CheckStatusVO;
+import com.myproject.parking.lib.data.PaymentNotifVO;
 import com.myproject.parking.lib.data.Product;
 import com.myproject.parking.lib.data.ResponseVO;
 import com.myproject.parking.lib.data.VeriTransVO;
 import com.myproject.parking.lib.entity.Booking;
 import com.myproject.parking.lib.entity.MidTransVO;
-import com.myproject.parking.lib.entity.TransactionDetailVO;
 import com.myproject.parking.lib.entity.TransactionVO;
 import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.mapper.BookingMapper;
@@ -44,6 +45,7 @@ import com.myproject.parking.lib.mapper.TransactionMapper;
 import com.myproject.parking.lib.mapper.UserDataMapper;
 import com.myproject.parking.lib.utils.CommonUtil;
 import com.myproject.parking.lib.utils.Constants;
+import com.myproject.parking.lib.utils.DatabaseAsyncUtil;
 import com.myproject.parking.lib.utils.EmailSender;
 
 @Service
@@ -74,6 +76,9 @@ public class VeriTransManagerService {
 	
 	@Autowired
 	private CheckSessionKeyService checkSessionKeyService;
+	
+	@Autowired
+	private DatabaseAsyncUtil databaseAsyncUtil;
 	
 	private String clientKey;
 	private String serverKey;
@@ -150,22 +155,22 @@ public class VeriTransManagerService {
 		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), veriTransVO.getEmail());
 		try {
 			final CreditCardRequest request = createCreditCardRequest(vtToken,veriTransVO);
-			transactionVO = createTransaction(veriTransVO);
+//			transactionVO = createTransaction(veriTransVO);
 			VtDirect vtDirect = getVtGatewayFactory().vtDirect();			
             final VtResponse vtResponse = vtDirect.charge(request);            
-            transactionVO.setPaymentTransactionId(vtResponse.getTransactionId());
-            transactionVO.setPaymentFdsStatus(vtResponse.getFraudStatus() == null ? null : vtResponse.getFraudStatus().name());
-            transactionVO.setPaymentStatus(vtResponse.getTransactionStatus() == null ? null : vtResponse.getTransactionStatus().name());
+//            transactionVO.setPaymentTransactionId(vtResponse.getTransactionId());
+//            transactionVO.setPaymentFdsStatus(vtResponse.getFraudStatus() == null ? null : vtResponse.getFraudStatus().name());
+//            transactionVO.setPaymentStatus(vtResponse.getTransactionStatus() == null ? null : vtResponse.getTransactionStatus().name());
             
             LOG.debug(" Response veritrans : " +vtResponse.getStatusCode() + " Error Message : " + vtResponse.getStatusMessage() 
             		+ " with token: "+vtToken + " email : " + veriTransVO.getEmail());
             if (!vtResponse.getStatusCode().equals("200")) {
             	throw new ParkingEngineException(ParkingEngineException.VERITRANS_CHARGE_FAILED,vtResponse.getStatusMessage());
             }        
-            transactionMapper.updateTransactionStatus(transactionVO.getPaymentTransactionId(), 
-            		transactionVO.getPaymentFdsStatus(), transactionVO.getPaymentStatus(), transactionVO.getPaymentOrderId());
+//            transactionMapper.updateTransactionStatus(transactionVO.getPaymentTransactionId(), 
+//            		transactionVO.getPaymentFdsStatus(), transactionVO.getPaymentStatus(), transactionVO.getPaymentOrderId());
             Booking booking = bookingMapper.findBookingByBookingId(veriTransVO.getBookingId());
-            transactionVO.setBookingCode(booking.getBookingCode());// get booking code from booking id
+//            transactionVO.setBookingCode(booking.getBookingCode());// get booking code from booking id
             booking.setBookingStatus(Constants.STATUS_ALREADY_PAY);
             bookingMapper.updateBookingStatus(booking);            
 		} catch (RestClientException e) {
@@ -173,54 +178,67 @@ public class VeriTransManagerService {
 		}
 		LOG.debug(" Parameter TransactionVO: "+transactionVO);
 		LOG.debug(" Try send email notification to customer ");
-		try {
-			sendNotificationToCustomerViaEmail(user, transactionVO, veriTransVO);
-			transactionMapper.updateEmailNotification(Constants.EMAIL_NOTIF_SENT,Constants.EMAIL_REASON_SUCCESS, transactionVO.getPaymentOrderId());
-			LOG.debug(" Send email notification success ");
-		} catch (EmailException e) {
-			transactionMapper.updateEmailNotification(Constants.EMAIL_NOTIF_FAILED,e.getMessage(), transactionVO.getPaymentOrderId());
-			LOG.error(" Send email notification failed " + e.getMessage());
-		} catch (IOException e) {
-			transactionMapper.updateEmailNotification(Constants.EMAIL_NOTIF_FAILED,e.getMessage(), transactionVO.getPaymentOrderId());
-			LOG.error(" Send email notification failed " + e.getMessage());
-		} catch (Exception e) {
-			transactionMapper.updateEmailNotification(Constants.EMAIL_NOTIF_FAILED,e.getMessage(), transactionVO.getPaymentOrderId());
-			LOG.error(" Send email notification failed " + e.getMessage());
-		}
+//		try {
+//			sendNotificationToCustomerViaEmail(user, transactionVO, veriTransVO);
+//			transactionMapper.updateEmailNotification(Constants.EMAIL_NOTIF_SENT,Constants.EMAIL_REASON_SUCCESS, transactionVO.getPaymentOrderId());
+//			LOG.debug(" Send email notification success ");
+//		} catch (EmailException e) {
+//			transactionMapper.updateEmailNotification(Constants.EMAIL_NOTIF_FAILED,e.getMessage(), transactionVO.getPaymentOrderId());
+//			LOG.error(" Send email notification failed " + e.getMessage());
+//		} catch (IOException e) {
+//			transactionMapper.updateEmailNotification(Constants.EMAIL_NOTIF_FAILED,e.getMessage(), transactionVO.getPaymentOrderId());
+//			LOG.error(" Send email notification failed " + e.getMessage());
+//		} catch (Exception e) {
+//			transactionMapper.updateEmailNotification(Constants.EMAIL_NOTIF_FAILED,e.getMessage(), transactionVO.getPaymentOrderId());
+//			LOG.error(" Send email notification failed " + e.getMessage());
+//		}
 		return transactionVO;
 	}
 	
-	@Transactional(rollbackFor={Exception.class})
 	public ResponseVO chargeMidtrans(ObjectMapper mapper,MidTransVO midTransVO,String data) throws ParkingEngineException,Exception {
+		Date now = new Date();
 		ResponseVO responseVO = new ResponseVO(); 
 		LOG.debug(" chargeMidtrans: "+midTransVO) ;
-//		UserData user = userDataMapper.findUserDataByEmail(midTransVO.getCustomerDetails().getEmail());
-//		if(user == null){
-//			LOG.error("Can't find User with email : " + midTransVO.getCustomerDetails().getEmail());
-//			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_FOUND);
-//		}
-//		if(Constants.BLOCKED == user.getStatus()){
-//			LOG.error("User already blocked");
-//			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_BLOCKED);
-//		}
-//		if(Constants.PENDING == user.getStatus()){
-//			LOG.error("User not active");
-//			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_ACTIVE);
-//		}		
-//		if(StringUtils.isEmpty(user.getSessionKey())){
-//			LOG.error("User Must Login Before make transaction, Parameter email : " + midTransVO.getCustomerDetails().getEmail());
-//			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_LOGIN);
-//		}
-//		if(!user.getSessionKey().equals(veriTransVO.getSessionKey())){
-//			LOG.error("Wrong Session Key, Parameter email : " + veriTransVO.getEmail());
-//			throw new ParkingEngineException(ParkingEngineException.ENGINE_SESSION_KEY_DIFFERENT);
-//		}
-//		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), midTransVO.getCustomerDetails().getEmail());
+		UserData user = userDataMapper.findUserDataByEmail(midTransVO.getCustomerDetails().getEmail());
+		if(user == null){
+			LOG.error("Can't find User with email : " + midTransVO.getCustomerDetails().getEmail());
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_FOUND);
+		}
+		if(Constants.BLOCKED == user.getStatus()){
+			LOG.error("User already blocked");
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_BLOCKED);
+		}
+		if(Constants.PENDING == user.getStatus()){
+			LOG.error("User not active");
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_ACTIVE);
+		}		
+		if(StringUtils.isEmpty(user.getSessionKey())){
+			LOG.error("User Must Login Before make transaction, Parameter email : " + midTransVO.getCustomerDetails().getEmail());
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_LOGIN);
+		}
+		if(!user.getSessionKey().equals(midTransVO.getSessionKey())){
+			LOG.error("Wrong Session Key, Parameter email : " + midTransVO.getCustomerDetails().getEmail());
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_SESSION_KEY_DIFFERENT);
+		}
+		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), midTransVO.getCustomerDetails().getEmail());
+		// save to database here
+		TransactionVO task = new TransactionVO();
+		task.setCustomerFirstName(midTransVO.getCustomerDetails().getFirstName());
+		task.setOrderId(midTransVO.getTransactionDetails().getOrderId());
+		task.setNameItem(midTransVO.getItemDetails().get(0).getName());
+		task.setTotalPriceIdr(new Long(midTransVO.getItemDetails().get(0).getQuantity()*midTransVO.getItemDetails().get(0).getPrice()));
+		task.setUpdate(false);
+		task.setCreatedBy(midTransVO.getCustomerDetails().getFirstName());
+		task.setCreatedOn(now);
+		task.setUpdatedBy(midTransVO.getCustomerDetails().getFirstName());
+		task.setUpdatedOn(now);
+		databaseAsyncUtil.logTransaction(task);
+		// save to database here
 		try {
-			String response = httpClientService.sendingPost(data);		
-			LOG.debug("response :"+response);		
+			String response = httpClientService.chargeMidtransPost(data);				
 			responseVO = mapper.readValue(response, ResponseVO.class);
-			LOG.debug("responseVO :"+responseVO);	
+			LOG.debug("responseVO :"+responseVO);
+			
 		} catch (Exception e) {
 			throw e;
 		}
@@ -228,57 +246,132 @@ public class VeriTransManagerService {
 		return responseVO;
 	}
 	
-	
-	protected TransactionVO createTransaction(VeriTransVO veriTransVO) {		
-        final TransactionVO ret = new TransactionVO();
-        ret.setBillingAddress(veriTransVO.getCustomerDetail().getBillingAddress().getAddress());
-        ret.setBillingCity(veriTransVO.getCustomerDetail().getBillingAddress().getCity());
-        ret.setBillingCountryCode(veriTransVO.getCustomerDetail().getBillingAddress().getCountryCode());
-        ret.setBillingFirstName(veriTransVO.getCustomerDetail().getBillingAddress().getFirstName());
-        ret.setBillingLastName(veriTransVO.getCustomerDetail().getBillingAddress().getLastName());
-        ret.setBillingPhone(veriTransVO.getCustomerDetail().getBillingAddress().getPhone());
-        ret.setBillingPostalCode(veriTransVO.getCustomerDetail().getBillingAddress().getPostalCode());
-
-        ret.setCustomerEmail(veriTransVO.getCustomerDetail().getEmail());
-        ret.setCustomerFirstName(veriTransVO.getCustomerDetail().getFirstName());
-        ret.setCustomerLastName(veriTransVO.getCustomerDetail().getLastName());
-        ret.setCustomerPhone(veriTransVO.getCustomerDetail().getPhone());
-
-        ret.setShippingAddress(veriTransVO.getCustomerDetail().getShippingAddress().getAddress());
-        ret.setShippingCity(veriTransVO.getCustomerDetail().getShippingAddress().getCity());
-        ret.setShippingCountryCode(veriTransVO.getCustomerDetail().getShippingAddress().getCountryCode());
-        ret.setShippingFirstName(veriTransVO.getCustomerDetail().getShippingAddress().getFirstName());
-        ret.setShippingLastName(veriTransVO.getCustomerDetail().getShippingAddress().getLastName());
-        ret.setShippingPhone(veriTransVO.getCustomerDetail().getShippingAddress().getPhone());
-        ret.setShippingPostalCode(veriTransVO.getCustomerDetail().getShippingAddress().getPostalCode());
-
-        ret.setPaymentFdsStatus(null);
-        ret.setPaymentMethod(veriTransVO.getPaymentMethod());
-        ret.setPaymentOrderId(veriTransVO.getTransactionDetails().getOrderId());
-        ret.setPaymentStatus(null);
-        ret.setPaymentTransactionId(null);
-        ret.setBookingId(veriTransVO.getBookingId());
-
-        ret.setTotalPriceIdr(veriTransVO.getTotalPriceIdr());
-        Date now = timeService.getCurrentTime();
-        ret.setCreatedBy(Constants.SYSTEM);
-        ret.setUpdatedBy(Constants.SYSTEM);
-        ret.setCreatedOn(now);
-        ret.setUpdatedOn(now);
-        // insert ke db TRX HEADER
-        // get id        
-        transactionMapper.createTransaction(ret);
-        for (Product product : veriTransVO.getListProducts()) {
-			TransactionDetailVO transactionDetailVO = new TransactionDetailVO();
-			transactionDetailVO.setPriceEachIdr(product.getPriceIdr());
-			transactionDetailVO.setNameItem(product.getLongName());
-			transactionDetailVO.setTransactionId(ret.getId()); // ambil dari header punya id
-			// insert ke db TRX DETAIL
-			transactionDetailMapper.createTransactionDetail(transactionDetailVO);
+	public ResponseVO checkingPaymentNotif(ObjectMapper mapper,PaymentNotifVO paymentNotifVO) throws ParkingEngineException,Exception {
+		LOG.debug("checkingPaymentNotif :"+paymentNotifVO);
+		Date now = new Date();
+		ResponseVO responseVO = new ResponseVO(); 
+		CheckStatusVO checkStatusVO = new CheckStatusVO();
+		try {
+			String response = httpClientService.getTransactionStatus(paymentNotifVO.getOrderId());				
+			checkStatusVO = mapper.readValue(response, CheckStatusVO.class);
+			LOG.debug("checkStatusVO :"+checkStatusVO);
+			if(checkValidTransaction(paymentNotifVO, checkStatusVO)){
+				// update table booking dengan order id/booking id
+				Booking booking = bookingMapper.findBookingByBookingId(paymentNotifVO.getOrderId());
+	            booking.setBookingStatus(Constants.STATUS_ALREADY_PAY);
+	            bookingMapper.updateBookingStatus(booking);
+	            LOG.debug("updateBookingStatus :"+booking);
+	            // update table transaction
+	            TransactionVO task = new TransactionVO();
+	    		task.setFraudStatus(paymentNotifVO.getFraudStatus());
+	    		task.setTransactionStatus(paymentNotifVO.getTransactionStatus());
+	    		task.setApprovalCode(paymentNotifVO.getApprovalCode());
+	    		task.setTransactionId(paymentNotifVO.getTransactionId());
+	    		task.setSignatureKey(paymentNotifVO.getSignatureKey());
+	    		task.setBank(paymentNotifVO.getBank());
+	    		task.setPaymentType(paymentNotifVO.getPaymentType());
+	    		task.setOrderId(paymentNotifVO.getOrderId());
+	    		task.setUpdatedBy(booking.getName());
+	    		task.setUpdatedOn(now);
+	    		task.setUpdate(true);
+	    		LOG.debug("update transaction :"+task);
+	    		databaseAsyncUtil.logTransaction(task);	         
+			}else{
+				LOG.warn("transaksi tidak valid order id :"+ paymentNotifVO.getOrderId());
+				// transaksi tidak valid
+				// update table transaction
+	            TransactionVO task = new TransactionVO();	
+	            StringBuffer sb = new StringBuffer();
+	            sb.append("Payment Notif Order Id (");
+	            sb.append(paymentNotifVO.getOrderId());
+	            sb.append(")");
+	            sb.append("Check Status Order Id ");
+	            sb.append("(");
+	            sb.append(checkStatusVO.getOrderId());
+	            sb.append(")");
+	            sb.append("\n");
+	            
+	            sb.append("Payment Notif Signature Key (");
+	            sb.append(paymentNotifVO.getSignatureKey());
+	            sb.append(")");
+	            sb.append("Check Status Signature Key ");
+	            sb.append("(");
+	            sb.append(checkStatusVO.getSignatureKey());
+	            sb.append(")");
+	            sb.append("\n");
+	            
+	            sb.append("Payment Notif Transaction Status (");
+	            sb.append(paymentNotifVO.getTransactionStatus());
+	            sb.append(")");
+	            sb.append("Check Status Transaction Status ");
+	            sb.append("(");
+	            sb.append(checkStatusVO.getTransactionStatus());
+	            sb.append(")");
+	            sb.append("\n");
+	            
+	            sb.append("Payment Notif Fraud Status (");
+	            sb.append(paymentNotifVO.getFraudStatus());
+	            sb.append(")");
+	            sb.append("Check Status Fraud Status ");
+	            sb.append("(");
+	            sb.append(checkStatusVO.getFraudStatus());
+	            sb.append(")");
+	            sb.append("\n");
+	    		task.setTransactionStatus(sb.toString());
+	    		task.setOrderId(paymentNotifVO.getOrderId());
+	    		task.setUpdatedBy("SYS");
+	    		task.setUpdatedOn(now);
+	    		task.setUpdate(true);
+	    		LOG.debug("update transaction :"+task);
+	    		databaseAsyncUtil.logTransaction(task);
+			}
+			
+		} catch (Exception e) {
+			throw e;
 		}
-        LOG.debug(" Save Payment Transaction to DB: "+ ret);
-        return ret;
-    }
+		
+		return responseVO;
+	}
+	
+	private boolean checkValidTransaction(PaymentNotifVO paymentNotifVO,CheckStatusVO checkStatusVO){
+		boolean result = true;
+		if(!paymentNotifVO.getOrderId().equals(checkStatusVO.getOrderId())){
+			result = false;
+			return result;
+		}
+		Booking booking = bookingMapper.findBookingByBookingId(paymentNotifVO.getOrderId());
+		if(booking == null){
+			result = false;
+			return result;
+		}
+		// fraud status
+		if(!paymentNotifVO.getFraudStatus().equals(checkStatusVO.getFraudStatus())){
+			result = false;
+			return result;
+		}
+		if(Constants.FRAUD_STATUS_DENY.equals(paymentNotifVO.getFraudStatus())||Constants.FRAUD_STATUS_CHALLENGE.equals(paymentNotifVO.getFraudStatus())){
+			result = false;
+			return result;
+		}
+		// fraud status
+		
+		//transaction status
+		if(!paymentNotifVO.getTransactionStatus().equals(checkStatusVO.getTransactionStatus())){
+			result = false;
+			return result;
+		}
+		if(!Constants.TRANSACTION_STATUS_CAPTURE.equals(paymentNotifVO.getTransactionStatus())){
+			result = false;
+			return result;
+		}
+		//transaction status
+		
+		if(!paymentNotifVO.getSignatureKey().equals(checkStatusVO.getSignatureKey())){
+			result = false;
+			return result;
+		}
+		return result;
+	}
 	
 	protected void setVtRequestParam(final AbstractVtRequest vtRequest,VeriTransVO veriTransVO) {
         vtRequest.setCustomerDetails(toCustomerDetails(veriTransVO));
@@ -437,10 +530,10 @@ public class VeriTransManagerService {
 				+ "										<b>Nama customer</b> 			: " + user.getName()
 				+ "									</td> "
 				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
-				+ "										<b>Booking Id</b>				: " + transactionVO.getBookingId()
+				+ "										<b>Booking Id</b>				: " + transactionVO.getOrderId()
 				+ "									</td> "
 				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
-				+ "										<b>Booking Code</b>			: " + transactionVO.getBookingCode()
+				+ "										<b>Booking Code</b>			: " + transactionVO.getOrderId()
 				+ "									</td> "
 				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
 				+ "										<b>Mall Name</b>				: " + veriTransVO.getListProducts().get(0).getShortName()

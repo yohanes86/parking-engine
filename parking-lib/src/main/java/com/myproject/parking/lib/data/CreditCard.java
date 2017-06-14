@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+@Deprecated
 public class CreditCard implements Serializable {
 	private static final long serialVersionUID = 1L;
 

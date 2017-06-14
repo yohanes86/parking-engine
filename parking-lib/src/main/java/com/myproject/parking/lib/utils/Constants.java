@@ -15,18 +15,28 @@ public class Constants {
 	public static final int STATUS_AUTO_RELEASE_AFTER_PAY					= 4	;
 	public static final int STATUS_ALREADY_CHECK_OUT						= 5	;
 	
-	public static final String BOOKING_ALREADY_PAY_VALUE				= "Complete";
-	public static final String BOOKING_VALUE				= "Suspect";
 	
-	public static final String ADMIN				= "admin";
-	public static final String STAFF				= "staff";
-	public static final String USER				= "user";
+	public static final String FRAUD_STATUS_ACCEPT							= "accept"	;
+	public static final String FRAUD_STATUS_DENY							= "deny"	;
+	public static final String FRAUD_STATUS_CHALLENGE						= "challenge"	;
+	/*accept 	Transaction is not considered as fraud.
+	deny 	Transaction is considered as fraud.
+	challenge 	We cannot determine the transaction. Merchant should take action to accept or deny.*/
 	
-	public static final String BRANCH_MALL_ALL				= "ALL";
+	public static final String TRANSACTION_STATUS_CAPTURE					= "capture"	;
 	
-	public static final int EMAIL_NOTIF_SENT						= 1	;
-	public static final int EMAIL_NOTIF_FAILED						= 0	;
-	public static final String EMAIL_REASON_SUCCESS						= "Success"	;
+	public static final String BOOKING_ALREADY_PAY_VALUE					= "Complete";
+	public static final String BOOKING_VALUE								= "Suspect";
+	
+	public static final String ADMIN										= "admin";
+	public static final String STAFF										= "staff";
+	public static final String USER											= "user";
+	
+	public static final String BRANCH_MALL_ALL								= "ALL";
+	
+	public static final int EMAIL_NOTIF_SENT								= 1	;
+	public static final int EMAIL_NOTIF_FAILED								= 0	;
+	public static final String EMAIL_REASON_SUCCESS							= "Success"	;
 
 	
 	public static final String CACHE_MALL = "cache_mall";
