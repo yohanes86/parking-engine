@@ -50,32 +50,20 @@ CREATE INDEX idx_phone_no ON UserData (phone_no)
 
 CREATE TABLE Transaction
 (
-  id Int NOT NULL AUTO_INCREMENT,
+  id Bigint NOT NULL AUTO_INCREMENT,
   customer_first_name Varchar(128) NOT NULL,
-  customer_last_name Varchar(128),
-  customer_email Varchar(64),
-  customer_phone Varchar(64) NOT NULL,
-  billing_first_name Varchar(128) NOT NULL,
-  billing_last_name Varchar(128) NOT NULL,
-  billing_address Varchar(128),
-  billing_city Varchar(64),
-  billing_postal_code Varchar(32),
-  billing_country_code Varchar(128),
-  billing_phone Varchar(128),
-  shipping_first_name Varchar(128),
-  shipping_last_name Varchar(128),
-  shipping_address Varchar(128),
-  shipping_city Varchar(128),
-  shipping_postal_code Varchar(128),
-  shipping_phone Varchar(128),
-  shipping_country_code Varchar(128),
-  payment_order_id Varchar(128),
-  payment_transaction_id Varchar(128),
+  name_item Varchar(128) NOT NULL,
   total_price_idr Bigint,
-  payment_method Varchar(128),
-  payment_status Varchar(128),
-  payment_fds_status Varchar(128),
-  booking_id Varchar(128),
+  payment_type Varchar(128),
+  bank Varchar(128),
+  transaction_status Varchar(128),
+  fraud_status Varchar(128),
+  approval_code Varchar(128),
+  transaction_id Varchar(128),
+  signature_key Varchar(128),
+  email_notification int,
+  email_notification_reason Varchar(128),
+  order_id Varchar(128)NOT NULL,
   created_on Datetime NOT NULL,
   created_by Varchar(50) NOT NULL,
   updated_on Timestamp NOT NULL,
@@ -84,22 +72,7 @@ CREATE TABLE Transaction
 )
 ;
 
-CREATE UNIQUE INDEX idx_orderId_paymentId ON Transaction (payment_order_id,payment_transaction_id)
-;
-
--- Table TransactionDetail
-
-CREATE TABLE TransactionDetail
-(
-  id Int NOT NULL AUTO_INCREMENT,
-  transaction_id Int NOT NULL,
-  name_item Varchar(128),
-  price_each_idr Bigint,
- PRIMARY KEY (id)
-)
-;
-
-CREATE UNIQUE INDEX idx_transactionId ON TransactionDetail (transaction_id)
+CREATE UNIQUE INDEX order_id ON Transaction (order_id)
 ;
 
 -- Table Mall
