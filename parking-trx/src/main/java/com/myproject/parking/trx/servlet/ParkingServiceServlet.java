@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,8 +76,8 @@ public class ParkingServiceServlet extends HttpServlet {
 			line = reader.readLine();
 		}
 		reader.close();
-		String data = sb.toString();
-		if(!"/charge".equalsIgnoreCase(pathInfo)){
+		String data = sb.toString();		
+		if(!"/charge".equalsIgnoreCase(pathInfo)&&!"/payment_notif".equalsIgnoreCase(pathInfo)){
 			data = CipherUtil.decryptTripleDES(data, CipherUtil.PASSWORD);
 		}		
 		LOG.debug("RequestData: {}", new String[] { data });	

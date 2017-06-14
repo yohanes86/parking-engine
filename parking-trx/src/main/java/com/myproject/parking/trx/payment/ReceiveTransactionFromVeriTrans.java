@@ -44,7 +44,7 @@ public class ReceiveTransactionFromVeriTrans implements BaseQueryLogic {
 					+ "No Hp : " + veriTransVO.getCustomerDetail().getPhone()+"\r\n "
 					+ "Price : " + transaction.getTotalPriceIdr()+"\r\n " 				
 					+ "Area Parkir : " + veriTransVO.getListProducts().get(0).getLongName()+"\r\n "
-					+ "Booking Code : " + transaction.getBookingCode(), mapper);
+					+ "Booking Code : " + transaction.getOrderId(), mapper);
 		} catch (ParkingEngineException e) {
 			result = MessageUtils.handleException(e, "", mapper);
 			LOG.error("ParkingEngineException when processing " + pathInfo + " Error Message " + result);

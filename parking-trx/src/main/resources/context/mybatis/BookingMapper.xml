@@ -59,8 +59,8 @@
     
      <select id="findBookingNotPay" resultType="Booking">
         select <include refid="_sqlBooking"/>  
-        from booking m left join transaction t on m.booking_id = t.booking_id 
-        where t.booking_id IS NULL
+        from booking m left join transaction t on m.booking_id = t.order_id 
+        where t.transaction_status IS NULL
         and m.booking_status = 0
     </select>
     

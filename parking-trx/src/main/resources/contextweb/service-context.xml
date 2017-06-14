@@ -45,7 +45,12 @@
 	<bean id="httpClientService" class="com.myproject.parking.lib.service.HttpClientService" init-method="start"> 
 		<property name="serverKey" value="${serverKey}" />
 		<property name="urlMidtrans" value="${urlMidtrans}" />
+		<property name="baseurlMidtransAPI" value="${baseurlMidtransAPI}" />
 	</bean>
+	
+	<bean id="transactionLogFacade" class="com.myproject.parking.lib.log.TransactionLogFacade"/>
+	
+	<bean id="databaseAsyncUtil" class="com.myproject.parking.lib.utils.DatabaseAsyncUtil" init-method="start" destroy-method="stop" />
 	
 	<bean id="logicFactory" class="com.myproject.parking.trx.logic.LogicFactory">
 		<property name="logic" >

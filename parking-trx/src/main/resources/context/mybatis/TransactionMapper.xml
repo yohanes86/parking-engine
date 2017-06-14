@@ -17,21 +17,21 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-
 <mapper namespace="com.myproject.parking.lib.mapper.TransactionMapper">
      <insert id="createTransaction" parameterType="TransactionVO" useGeneratedKeys="true" keyProperty="id">      
-    	insert into transaction(customer_first_name,customer_last_name,customer_email,customer_phone,billing_first_name,billing_last_name,billing_address,billing_city
-  			,billing_postal_code,billing_country_code,billing_phone,shipping_first_name,shipping_last_name,shipping_address,shipping_city,shipping_postal_code,shipping_phone
-  			,shipping_country_code,payment_order_id,payment_transaction_id,total_price_idr,payment_method,payment_status,payment_fds_status,booking_id,email_notification,email_notification_reason,created_on,created_by,updated_on,updated_by)
-    		values(#{customerFirstName}, #{customerLastName}, #{customerEmail}, #{customerPhone}, #{billingFirstName}, #{billingLastName}, #{billingAddress}, #{billingCity},
-    		#{billingPostalCode}, #{billingPhone}, #{billingCountryCode}, #{shippingFirstName}, #{shippingLastName}, #{shippingAddress}, #{shippingCity}, #{shippingPostalCode},
-    		#{shippingPhone}, #{shippingCountryCode}, #{paymentOrderId}, #{paymentTransactionId}, #{totalPriceIdr}, #{paymentMethod}, #{paymentStatus}, #{paymentFdsStatus},#{bookingId},#{emailNotification},#{emailNotificationReason},
-    		#{createdOn}, #{createdBy}, #{updatedOn}, #{updatedBy})  	
+    	insert into transaction(customer_first_name,name_item,total_price_idr,payment_type,
+    	bank,transaction_status,fraud_status,approval_code,transaction_id,signature_key,
+    	email_notification,email_notification_reason,order_id,created_on,created_by,updated_on,updated_by)
+    		values(#{customerFirstName}, #{nameItem}, #{totalPriceIdr}, #{paymentType},
+    		 #{bank}, #{transactionStatus},#{fraudStatus},#{approvalCode},#{transactionId},#{signatureKey},#{emailNotification}, 
+    		 #{emailNotificationReason}, #{orderId}, #{createdOn}, #{createdBy}, #{updatedOn}, #{updatedBy})  	
      </insert>
-     
+ 
      <update id="updateTransactionStatus" parameterType="java.util.Map" >
-    	UPDATE transaction SET payment_status = #{PaymentStatus},payment_fds_status = #{PaymentFdsStatus},payment_transaction_id = #{PaymentTransactionId} 
-    	WHERE payment_order_id = #{orderId} 	    	
+    	UPDATE transaction SET transaction_status = #{transactionStatus},fraud_status = #{fraudStatus},approval_code = #{approvalCode},
+    	transaction_id = #{transactionId},signature_key = #{signatureKey},bank = #{bank},payment_type = #{paymentType},updated_on = #{updatedOn}, 
+    	updated_by = #{updatedBy} 
+    	WHERE order_id = #{orderId} 	    	
      </update>
      
      <update id="updateEmailNotification" parameterType="java.util.Map" >
