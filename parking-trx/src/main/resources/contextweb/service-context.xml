@@ -49,6 +49,7 @@
 	</bean>
 	
 	<bean id="transactionLogFacade" class="com.myproject.parking.lib.log.TransactionLogFacade"/>
+	<bean id="transactionNotifLogFacade" class="com.myproject.parking.lib.log.TransactionNotifLogFacade"/>
 	
 	<bean id="databaseAsyncUtil" class="com.myproject.parking.lib.utils.DatabaseAsyncUtil" init-method="start" destroy-method="stop" />
 	

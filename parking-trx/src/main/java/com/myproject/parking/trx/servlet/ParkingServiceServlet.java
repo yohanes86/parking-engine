@@ -91,8 +91,10 @@ public class ParkingServiceServlet extends HttpServlet {
 		}
 		if("/userActivate".equalsIgnoreCase(pathInfo)){
 //			response.setContentType("text/html;charset=UTF-8");	
-		    request.setAttribute("message", respData);
-		    request.getRequestDispatcher("/response_activated.jsp").forward(request, response);
+//		    request.setAttribute("message", respData);
+//		    request.getRequestDispatcher("/response_activated.jsp").forward(request, response);			
+			response.getWriter().write(respData);
+			response.getWriter().flush();
 		}else{
 			response.setContentType("application/json");
 			response.setContentLength(respData.length());

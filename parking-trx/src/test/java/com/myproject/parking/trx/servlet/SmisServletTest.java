@@ -96,7 +96,7 @@ public class SmisServletTest {
 			userData.setPassword("admin");
 			userData.setEmail("agusdk2011@gmail.com");
 			userData.setPhoneNo("085693938630");
-			userData.setLicenseNo("B 999 ROI");
+//			userData.setLicenseNo("B 999 ROI");
 			
 			String s = mapper.writeValueAsString(userData);
 			s = CipherUtil.encryptTripleDES(s, CipherUtil.PASSWORD);
