@@ -50,19 +50,19 @@ CREATE INDEX idx_phone_no ON UserData (phone_no)
 CREATE TABLE Transaction
 (
   id Bigint NOT NULL AUTO_INCREMENT,
+  order_id Varchar(128)NOT NULL,
+  transaction_status Varchar(128),
+  fraud_status Varchar(128),
+  transaction_id Varchar(128),
   customer_first_name Varchar(128) NOT NULL,
   name_item Varchar(128) NOT NULL,
   total_price_idr Bigint,
   payment_type Varchar(128),
-  bank Varchar(128),
-  transaction_status Varchar(128),
-  fraud_status Varchar(128),
-  approval_code Varchar(128),
-  transaction_id Varchar(128),
+  bank Varchar(128),  
+  approval_code Varchar(128),  
   signature_key Varchar(128),
   email_notification int,
-  email_notification_reason Varchar(128),
-  order_id Varchar(128)NOT NULL,
+  email_notification_reason Varchar(128),  
   created_on Datetime NOT NULL,
   created_by Varchar(50) NOT NULL,
   updated_on Timestamp NOT NULL,
@@ -79,20 +79,20 @@ CREATE UNIQUE INDEX order_id ON Transaction (order_id)
 CREATE TABLE Transaction_Notif
 (
   id Bigint NOT NULL AUTO_INCREMENT,
-  customer_first_name Varchar(128) NOT NULL,
-  name_item Varchar(128) NOT NULL,
-  total_price_idr Bigint,
-  payment_type Varchar(128),
-  bank Varchar(128),
+  order_id Varchar(128)NOT NULL,
   transaction_status Varchar(128),
   transaction_description Varchar(128),
   fraud_status Varchar(128),
-  approval_code Varchar(128),
   transaction_id Varchar(128),
+  customer_first_name Varchar(128) ,
+  name_item Varchar(128) ,
+  total_price_idr Bigint,
+  payment_type Varchar(128),
+  bank Varchar(128),  
+  approval_code Varchar(128),  
   signature_key Varchar(128),
   email_notification int,
-  email_notification_reason Varchar(128),
-  order_id Varchar(128)NOT NULL,
+  email_notification_reason Varchar(128),  
   created_on Datetime NOT NULL,
   created_by Varchar(50) NOT NULL,
   updated_on Timestamp NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE Transaction_Notif
 )
 ;
 
-CREATE UNIQUE INDEX order_id ON Transaction (order_id)
+CREATE UNIQUE INDEX transaction_id ON Transaction_Notif (transaction_id)
 ;
 
 -- Table Mall
