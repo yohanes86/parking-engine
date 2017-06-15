@@ -68,6 +68,7 @@
 		        <entry key="/receiveTrxFromVeriTrans" value-ref="receiveTrxFromVeriTrans"></entry>
 		        <entry key="/charge" value-ref="charge"></entry>
 		        <entry key="/payment_notif" value-ref="payment_notif"></entry>
+		        <entry key="/confirm" value-ref="confirm"></entry>
 		        <!-- Transaction Module -->
 		        <entry key="/listMall" value-ref="listMall"></entry>
 		        <entry key="/refreshCacheMall" value-ref="refreshCacheMall"></entry>
