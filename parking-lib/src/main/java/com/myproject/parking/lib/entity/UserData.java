@@ -12,7 +12,6 @@ public class UserData implements java.io.Serializable {
 	private String password;
 	private String phoneNo;
 	private String email;
-	private String licenseNo;
 	private String activateKey;
 	private String sessionKey;
 	private int status;
@@ -52,12 +51,6 @@ public class UserData implements java.io.Serializable {
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	public String getLicenseNo() {
-		return licenseNo;
-	}
-	public void setLicenseNo(String licenseNo) {
-		this.licenseNo = licenseNo;
 	}
 	public String getSessionKey() {
 		return sessionKey;

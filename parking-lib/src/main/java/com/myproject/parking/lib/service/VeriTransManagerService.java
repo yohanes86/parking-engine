@@ -37,6 +37,7 @@ import com.myproject.parking.lib.data.ResponseVO;
 import com.myproject.parking.lib.data.VeriTransVO;
 import com.myproject.parking.lib.entity.Booking;
 import com.myproject.parking.lib.entity.MidTransVO;
+import com.myproject.parking.lib.entity.TransactionNotifVO;
 import com.myproject.parking.lib.entity.TransactionVO;
 import com.myproject.parking.lib.entity.UserData;
 import com.myproject.parking.lib.mapper.BookingMapper;
@@ -84,6 +85,7 @@ public class VeriTransManagerService {
 	private String serverKey;
 	private String environment;
     private int connectionPoolSize;
+    private String differentField;
 
 	public String getClientKey() {
 		return clientKey;
@@ -250,80 +252,47 @@ public class VeriTransManagerService {
 		LOG.debug("checkingPaymentNotif :"+paymentNotifVO);
 		Date now = new Date();
 		ResponseVO responseVO = new ResponseVO(); 
-		CheckStatusVO checkStatusVO = new CheckStatusVO();
+		CheckStatusVO checkStatusVO = new CheckStatusVO();	
+		differentField = "";
 		try {
 			String response = httpClientService.getTransactionStatus(paymentNotifVO.getOrderId());				
 			checkStatusVO = mapper.readValue(response, CheckStatusVO.class);
 			LOG.debug("checkStatusVO :"+checkStatusVO);
 			if(checkValidTransaction(paymentNotifVO, checkStatusVO)){
-				// update table booking dengan order id/booking id
-				Booking booking = bookingMapper.findBookingByBookingId(paymentNotifVO.getOrderId());
-	            booking.setBookingStatus(Constants.STATUS_ALREADY_PAY);
-	            bookingMapper.updateBookingStatus(booking);
-	            LOG.debug("updateBookingStatus :"+booking);
-	            // update table transaction
-	            TransactionVO task = new TransactionVO();
+	            // create table transaction notif
+	            TransactionNotifVO task = new TransactionNotifVO();
 	    		task.setFraudStatus(paymentNotifVO.getFraudStatus());
 	    		task.setTransactionStatus(paymentNotifVO.getTransactionStatus());
+	    		task.setTransactionDescription(paymentNotifVO.getTransactionStatus());
 	    		task.setApprovalCode(paymentNotifVO.getApprovalCode());
 	    		task.setTransactionId(paymentNotifVO.getTransactionId());
 	    		task.setSignatureKey(paymentNotifVO.getSignatureKey());
 	    		task.setBank(paymentNotifVO.getBank());
 	    		task.setPaymentType(paymentNotifVO.getPaymentType());
 	    		task.setOrderId(paymentNotifVO.getOrderId());
-	    		task.setUpdatedBy(booking.getName());
+	    		task.setUpdatedBy(Constants.SYSTEM);
 	    		task.setUpdatedOn(now);
 	    		task.setUpdate(true);
-	    		LOG.debug("update transaction :"+task);
-	    		databaseAsyncUtil.logTransaction(task);	         
+	    		LOG.debug("create transaction notif :"+task);
+	    		databaseAsyncUtil.logTransactionNotif(task);	         
 			}else{
 				LOG.warn("transaksi tidak valid order id :"+ paymentNotifVO.getOrderId());
-				// transaksi tidak valid
-				// update table transaction
-	            TransactionVO task = new TransactionVO();	
-	            StringBuffer sb = new StringBuffer();
-	            sb.append("Payment Notif Order Id (");
-	            sb.append(paymentNotifVO.getOrderId());
-	            sb.append(")");
-	            sb.append("Check Status Order Id ");
-	            sb.append("(");
-	            sb.append(checkStatusVO.getOrderId());
-	            sb.append(")");
-	            sb.append("\n");
-	            
-	            sb.append("Payment Notif Signature Key (");
-	            sb.append(paymentNotifVO.getSignatureKey());
-	            sb.append(")");
-	            sb.append("Check Status Signature Key ");
-	            sb.append("(");
-	            sb.append(checkStatusVO.getSignatureKey());
-	            sb.append(")");
-	            sb.append("\n");
-	            
-	            sb.append("Payment Notif Transaction Status (");
-	            sb.append(paymentNotifVO.getTransactionStatus());
-	            sb.append(")");
-	            sb.append("Check Status Transaction Status ");
-	            sb.append("(");
-	            sb.append(checkStatusVO.getTransactionStatus());
-	            sb.append(")");
-	            sb.append("\n");
-	            
-	            sb.append("Payment Notif Fraud Status (");
-	            sb.append(paymentNotifVO.getFraudStatus());
-	            sb.append(")");
-	            sb.append("Check Status Fraud Status ");
-	            sb.append("(");
-	            sb.append(checkStatusVO.getFraudStatus());
-	            sb.append(")");
-	            sb.append("\n");
-	    		task.setTransactionStatus(sb.toString());
+				// create table transaction notif
+				TransactionNotifVO task = new TransactionNotifVO();	
+				task.setFraudStatus(paymentNotifVO.getFraudStatus());
+	    		task.setTransactionStatus(Constants.SUSPECT);
+	    		task.setTransactionDescription(differentField);
+	    		task.setApprovalCode(paymentNotifVO.getApprovalCode());
+	    		task.setTransactionId(paymentNotifVO.getTransactionId());
+	    		task.setSignatureKey(paymentNotifVO.getSignatureKey());
+	    		task.setBank(paymentNotifVO.getBank());
+	    		task.setPaymentType(paymentNotifVO.getPaymentType());
 	    		task.setOrderId(paymentNotifVO.getOrderId());
-	    		task.setUpdatedBy("SYS");
+	    		task.setUpdatedBy(Constants.SYSTEM);
 	    		task.setUpdatedOn(now);
 	    		task.setUpdate(true);
-	    		LOG.debug("update transaction :"+task);
-	    		databaseAsyncUtil.logTransaction(task);
+	    		LOG.debug("create transaction notif :"+task);
+	    		databaseAsyncUtil.logTransactionNotif(task);
 			}
 			
 		} catch (Exception e) {
@@ -337,20 +306,24 @@ public class VeriTransManagerService {
 		boolean result = true;
 		if(!paymentNotifVO.getOrderId().equals(checkStatusVO.getOrderId())){
 			result = false;
+			differentField = "Order id different";
 			return result;
 		}
 		Booking booking = bookingMapper.findBookingByBookingId(paymentNotifVO.getOrderId());
 		if(booking == null){
 			result = false;
+			differentField = "Order id not valid";
 			return result;
 		}
 		// fraud status
 		if(!paymentNotifVO.getFraudStatus().equals(checkStatusVO.getFraudStatus())){
 			result = false;
+			differentField = "Fraud status different";
 			return result;
 		}
 		if(Constants.FRAUD_STATUS_DENY.equals(paymentNotifVO.getFraudStatus())||Constants.FRAUD_STATUS_CHALLENGE.equals(paymentNotifVO.getFraudStatus())){
 			result = false;
+			differentField = "Fraud status deny or challange";
 			return result;
 		}
 		// fraud status
@@ -358,16 +331,19 @@ public class VeriTransManagerService {
 		//transaction status
 		if(!paymentNotifVO.getTransactionStatus().equals(checkStatusVO.getTransactionStatus())){
 			result = false;
+			differentField = "Transaction status different";
 			return result;
 		}
 		if(!Constants.TRANSACTION_STATUS_CAPTURE.equals(paymentNotifVO.getTransactionStatus())){
 			result = false;
+			differentField = "Transaction status failed";
 			return result;
 		}
 		//transaction status
 		
 		if(!paymentNotifVO.getSignatureKey().equals(checkStatusVO.getSignatureKey())){
 			result = false;
+			differentField = "Transaction status signature key different";
 			return result;
 		}
 		return result;
@@ -569,5 +545,15 @@ public class VeriTransManagerService {
 				emailSubject, html, txtMessage, null);
 
 	}
+
+	public String getDifferentField() {
+		return differentField;
+	}
+
+	public void setDifferentField(String differentField) {
+		this.differentField = differentField;
+	}
+
+	
 	
 }
