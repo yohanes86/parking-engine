@@ -31,6 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myproject.parking.lib.data.CheckStatusVO;
+import com.myproject.parking.lib.data.ConfirmVO;
+import com.myproject.parking.lib.data.MessageVO;
 import com.myproject.parking.lib.data.PaymentNotifVO;
 import com.myproject.parking.lib.data.Product;
 import com.myproject.parking.lib.data.ResponseVO;
@@ -348,6 +350,89 @@ public class VeriTransManagerService {
 			differentField = "Transaction status signature key different";
 			return result;
 		}
+		return result;
+	}
+	
+	public void confirmTrx(ObjectMapper mapper,ConfirmVO confirmVO) throws ParkingEngineException,Exception {
+		LOG.debug("confirmTrx :"+confirmVO);
+		Date now = new Date();		
+		UserData user = userDataMapper.findUserDataByEmail(confirmVO.getEmail());
+		if(user == null){
+			LOG.error("Can't find User with email : " + confirmVO.getEmail());
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_FOUND);
+		}
+		if(Constants.BLOCKED == user.getStatus()){
+			LOG.error("User already blocked");
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_BLOCKED);
+		}
+		if(Constants.PENDING == user.getStatus()){
+			LOG.error("User not active");
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_ACTIVE);
+		}		
+		if(StringUtils.isEmpty(user.getSessionKey())){
+			LOG.error("User Must Login Before make transaction, Parameter email : " + confirmVO.getEmail());
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_USER_NOT_LOGIN);
+		}
+		if(!user.getSessionKey().equals(confirmVO.getSessionKey())){
+			LOG.error("Wrong Session Key, Parameter email : " + confirmVO.getEmail());
+			throw new ParkingEngineException(ParkingEngineException.ENGINE_SESSION_KEY_DIFFERENT);
+		}
+		checkSessionKeyService.checkSessionKey(user.getTimeGenSessionKey(), confirmVO.getEmail());
+		try {
+			if(checkValidTransaction(confirmVO)){
+				// update booking menjadi payed
+				Booking booking = bookingMapper.findBookingByBookingId(confirmVO.getOrderId());
+				updateStatusBooking(booking, Constants.STATUS_ALREADY_PAY);
+				
+	            // update table transaction
+	            TransactionVO task = new TransactionVO();
+	    		task.setFraudStatus(confirmVO.getFraudStatus());
+	    		task.setTransactionStatus(confirmVO.getTransactionStatus());
+	    		task.setApprovalCode(confirmVO.getApprovalCode());
+	    		task.setTransactionId(confirmVO.getTransactionId());
+	    		task.setSignatureKey(confirmVO.getSignatureKey());
+	    		task.setBank(confirmVO.getBank());
+	    		task.setPaymentType(confirmVO.getPaymentType());
+	    		task.setOrderId(confirmVO.getOrderId());
+	    		task.setUpdatedBy(confirmVO.getName());
+	    		task.setUpdatedOn(now);
+	    		task.setCreatedBy(confirmVO.getName());
+	    		task.setCreatedOn(now);
+	    		task.setUpdate(true);
+	    		LOG.debug("update table transaction :"+task);
+	    		databaseAsyncUtil.logTransaction(task);	 
+			}else{
+				// no need action karena belum bayar
+			}
+			
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	@Transactional(rollbackFor={Exception.class})
+	private void updateStatusBooking(Booking booking,int status){
+		booking.setBookingStatus(status);
+		bookingMapper.updateBookingStatus(booking);
+	}
+	
+	private boolean checkValidTransaction(ConfirmVO confirmVO){
+		boolean result = true;
+		// fraud status
+		if(!Constants.FRAUD_STATUS_ACCEPT.equals(confirmVO.getFraudStatus())){
+			result = false;
+			differentField = "Fraud status deny or challange";
+			return result;
+		}
+		// fraud status
+		
+		//transaction status
+		if(!Constants.TRANSACTION_STATUS_CAPTURE.equals(confirmVO.getTransactionStatus())){
+			result = false;
+			differentField = "Transaction status failed";
+			return result;
+		}
+		//transaction status
 		return result;
 	}
 	
