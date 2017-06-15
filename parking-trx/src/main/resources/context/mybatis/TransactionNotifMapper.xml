@@ -19,11 +19,15 @@
 -->
 <mapper namespace="com.myproject.parking.lib.mapper.TransactionNotifMapper">
      <insert id="createTransactionNotif" parameterType="TransactionNotifVO" useGeneratedKeys="true" keyProperty="id">      
-    	insert into transaction(customer_first_name,name_item,total_price_idr,payment_type,
+    	insert into transaction_notif(customer_first_name,name_item,total_price_idr,payment_type,
     	bank,transaction_status,transaction_description,fraud_status,approval_code,transaction_id,signature_key,
     	email_notification,email_notification_reason,order_id,created_on,created_by,updated_on,updated_by)
     		values(#{customerFirstName}, #{nameItem}, #{totalPriceIdr}, #{paymentType},
     		 #{bank}, #{transactionStatus},#{transactionDescription},#{fraudStatus},#{approvalCode},#{transactionId},#{signatureKey},#{emailNotification}, 
     		 #{emailNotificationReason}, #{orderId}, #{createdOn}, #{createdBy}, #{updatedOn}, #{updatedBy})  	
      </insert>
+     
+     <select id="findTransactionNotifByOrderId" parameterType="java.util.Map" resultType="java.lang.String">
+        select order_id from transaction_notif where order_id = #{orderId}
+    </select>
 </mapper>
