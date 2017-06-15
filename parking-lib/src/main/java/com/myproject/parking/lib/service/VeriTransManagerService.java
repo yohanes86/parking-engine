@@ -272,7 +272,8 @@ public class VeriTransManagerService {
 	    		task.setOrderId(paymentNotifVO.getOrderId());
 	    		task.setUpdatedBy(Constants.SYSTEM);
 	    		task.setUpdatedOn(now);
-	    		task.setUpdate(true);
+	    		task.setCreatedBy(Constants.SYSTEM);
+	    		task.setCreatedOn(now);
 	    		LOG.debug("create transaction notif :"+task);
 	    		databaseAsyncUtil.logTransactionNotif(task);	         
 			}else{
@@ -290,7 +291,8 @@ public class VeriTransManagerService {
 	    		task.setOrderId(paymentNotifVO.getOrderId());
 	    		task.setUpdatedBy(Constants.SYSTEM);
 	    		task.setUpdatedOn(now);
-	    		task.setUpdate(true);
+	    		task.setCreatedBy(Constants.SYSTEM);
+	    		task.setCreatedOn(now);
 	    		LOG.debug("create transaction notif :"+task);
 	    		databaseAsyncUtil.logTransactionNotif(task);
 			}

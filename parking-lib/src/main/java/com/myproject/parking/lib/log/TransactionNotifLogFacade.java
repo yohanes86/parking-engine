@@ -20,8 +20,14 @@ public class TransactionNotifLogFacade {
 	
 	@Transactional(rollbackFor=Exception.class)
 	public void createLog(TransactionNotifVO task) throws Exception {
-		LOG.info("[#{}] createLog: {}", task.getOrderId(), task);
-		transactionNotifMapper.createTransactionNotif(task);
+//		// cek dlu kalo sudah ada gak usah insert lagi
+//		String orderId = transactionNotifMapper.findTransactionNotifByOrderId(task.getOrderId());
+//		if(StringUtils.isEmpty(orderId)){
+			LOG.info("[#{}] createLog: {}", task.getOrderId(), task);
+			transactionNotifMapper.createTransactionNotif(task);
+//		}else{
+//			LOG.info("[#{}] log already insert (order id): {}", task.getOrderId(), task);
+//		}		
 	}
 	
 }
