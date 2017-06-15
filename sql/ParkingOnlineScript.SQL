@@ -18,7 +18,6 @@ CREATE TABLE UserData
   password Varchar(80),
   phone_no Varchar(16) NOT NULL,
   email Varchar(50) NOT NULL,
-  license_no Varchar(12) NOT NULL,
   activate_key Varchar(35),
   session_key Varchar(50),
   status Int NOT NULL,
@@ -57,6 +56,36 @@ CREATE TABLE Transaction
   payment_type Varchar(128),
   bank Varchar(128),
   transaction_status Varchar(128),
+  fraud_status Varchar(128),
+  approval_code Varchar(128),
+  transaction_id Varchar(128),
+  signature_key Varchar(128),
+  email_notification int,
+  email_notification_reason Varchar(128),
+  order_id Varchar(128)NOT NULL,
+  created_on Datetime NOT NULL,
+  created_by Varchar(50) NOT NULL,
+  updated_on Timestamp NOT NULL,
+  updated_by Varchar(50) NOT NULL,
+ PRIMARY KEY (id)
+)
+;
+
+CREATE UNIQUE INDEX order_id ON Transaction (order_id)
+;
+
+-- Table Transaction_Notif
+
+CREATE TABLE Transaction_Notif
+(
+  id Bigint NOT NULL AUTO_INCREMENT,
+  customer_first_name Varchar(128) NOT NULL,
+  name_item Varchar(128) NOT NULL,
+  total_price_idr Bigint,
+  payment_type Varchar(128),
+  bank Varchar(128),
+  transaction_status Varchar(128),
+  transaction_description Varchar(128),
   fraud_status Varchar(128),
   approval_code Varchar(128),
   transaction_id Varchar(128),
