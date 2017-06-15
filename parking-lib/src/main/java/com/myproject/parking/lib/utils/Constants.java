@@ -26,7 +26,7 @@ public class Constants {
 	
 	public static final String TRANSACTION_STATUS_CAPTURE					= "capture"	;
 	
-	public static final String SUSPECT										= "Suspect";
+	public static final String SUSPECT										= "suspect";
 	
 	public static final String BOOKING_ALREADY_PAY_VALUE					= "Complete";
 	public static final String BOOKING_VALUE								= "Suspect";

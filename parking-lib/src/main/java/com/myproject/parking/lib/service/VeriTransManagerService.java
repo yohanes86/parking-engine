@@ -310,24 +310,24 @@ public class VeriTransManagerService {
 		boolean result = true;
 		if(!paymentNotifVO.getOrderId().equals(checkStatusVO.getOrderId())){
 			result = false;
-			differentField = "Order id different";
+			differentField = "order id different";
 			return result;
 		}
 		Booking booking = bookingMapper.findBookingByBookingId(paymentNotifVO.getOrderId());
 		if(booking == null){
 			result = false;
-			differentField = "Order id not valid";
+			differentField = "order id not valid";
 			return result;
 		}
 		// fraud status
 		if(!paymentNotifVO.getFraudStatus().equals(checkStatusVO.getFraudStatus())){
 			result = false;
-			differentField = "Fraud status different";
+			differentField = "fraud status different";
 			return result;
 		}
 		if(Constants.FRAUD_STATUS_DENY.equals(paymentNotifVO.getFraudStatus())||Constants.FRAUD_STATUS_CHALLENGE.equals(paymentNotifVO.getFraudStatus())){
 			result = false;
-			differentField = "Fraud status deny or challange";
+			differentField = "fraud status deny or challange";
 			return result;
 		}
 		// fraud status
@@ -335,19 +335,19 @@ public class VeriTransManagerService {
 		//transaction status
 		if(!paymentNotifVO.getTransactionStatus().equals(checkStatusVO.getTransactionStatus())){
 			result = false;
-			differentField = "Transaction status different";
+			differentField = "transaction status different";
 			return result;
 		}
 		if(!Constants.TRANSACTION_STATUS_CAPTURE.equals(paymentNotifVO.getTransactionStatus())){
 			result = false;
-			differentField = "Transaction status failed";
+			differentField = "transaction status failed";
 			return result;
 		}
 		//transaction status
 		
 		if(!paymentNotifVO.getSignatureKey().equals(checkStatusVO.getSignatureKey())){
 			result = false;
-			differentField = "Transaction status signature key different";
+			differentField = "transaction status signature key different";
 			return result;
 		}
 		return result;
