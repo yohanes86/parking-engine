@@ -28,7 +28,9 @@ public class TransactionLogFacade {
 	public void updateLog(TransactionVO task) throws Exception {
 		LOG.info("[#{}] updateLog: {}", task.getOrderId(), task);
 		transactionMapper.updateTransactionStatus(task.getFraudStatus(),task.getTransactionStatus(), task.getApprovalCode(), task.getTransactionId()
-				, task.getSignatureKey(),task.getBank(),task.getPaymentType(),task.getOrderId(),task.getUpdatedBy(),task.getUpdatedOn());
+				, task.getSignatureKey(),task.getBank(),task.getPaymentType(),task.getOrderId()
+				, task.getEmailNotification(), task.getEmailNotificationReason()
+				, task.getUpdatedBy(),task.getUpdatedOn());
 	}
 	
 }

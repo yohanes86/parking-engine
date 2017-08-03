@@ -12,6 +12,7 @@ public class Booking implements Serializable {
 	private String phoneNo;
 	private String email;
 	private String mallName;
+	private String slotName;
 	private int idSlot;
 	private String bookingId;
 	private String bookingCode;
@@ -131,6 +132,16 @@ public class Booking implements Serializable {
 
 	public void setBookingStatus(int bookingStatus) {
 		this.bookingStatus = bookingStatus;
+	}
+
+
+	public String getSlotName() {
+		return slotName;
+	}
+
+
+	public void setSlotName(String slotName) {
+		this.slotName = slotName;
 	}
 
 

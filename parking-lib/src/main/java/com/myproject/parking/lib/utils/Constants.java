@@ -4,9 +4,10 @@ public class Constants {
 	
 	
 	public static final String APP_NAME				= "Premium Parking Solution";
-	public static final String ENVIRONMENT_DEV				= "http://parking.sablonbalon.com:6555/parking-trx";
+	public static final String ENVIRONMENT_DEV		= "http://parking.sablonbalon.com:6555/parking-trx";
 //	public static final String ENVIRONMENT_LIVE = "http://ec2-52-3-21-158.compute-1.amazonaws.com:8080/parking-trx/trx";
-	public static final String ENVIRONMENT_LIVE = "http://parking.sablonbalon.com:6555/parking-trx";
+	public static final String ENVIRONMENT_LIVE = "http://192.168.0.145:8080/parking-trx";//"http://parking.sablonbalon.com:6555/parking-trx";
+//	public static final String ENVIRONMENT_LIVE = "http://parking.sablonbalon.com:6555/parking-trx";
 	public static final long TIMEOUT_IN_MINUTES								= 30; // minutes 30
 	public static final long EXPIRED_PAY_IN_MINUTES							= 15; // minutes 15
 	public static final long EXPIRED_BOOKING_CODE_IN_HOURS					= 2; // hours 2

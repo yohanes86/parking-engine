@@ -11,8 +11,9 @@ public interface TransactionMapper {
 	public void updateTransactionStatus(@Param("fraudStatus") String fraudStatus,@Param("transactionStatus") String transactionStatus
 			,@Param("approvalCode") String approvalCode
 			,@Param("transactionId") String transactionId,@Param("signatureKey") String signatureKey,@Param("bank") String bank
-			,@Param("paymentType") String paymentType,@Param("orderId") String orderId,@Param("updatedBy") String updatedBy
-			,@Param("updatedOn") Date updatedOn);
+			,@Param("paymentType") String paymentType,@Param("orderId") String orderId
+			,@Param("emailNotification") int emailNotification,@Param("emailNotificationReason") String emailNotificationReason
+			,@Param("updatedBy") String updatedBy,@Param("updatedOn") Date updatedOn);
 	public void updateEmailNotification(@Param("emailNotification") int emailNotification,@Param("emailNotificationReason") String emailNotificationReason,
 			@Param("orderId") String orderId);
     

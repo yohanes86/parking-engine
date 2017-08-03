@@ -76,6 +76,7 @@ public class SlotsParkingService {
 			booking.setName(user.getName());
 			booking.setEmail(user.getEmail());
 			booking.setMallName(slotsAvailable.getMallName());
+			booking.setSlotName(slotsAvailable.getSlotsName());
 			booking.setIdSlot(slotsAvailable.getIdSlot());
 			booking.setPhoneNo(user.getPhoneNo());	
 			booking.setBookingCode(bookingService.generateBookingCode(user.getPhoneNo()));

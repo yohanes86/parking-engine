@@ -1,20 +1,5 @@
 package com.myproject.parking.lib.service;
 
-import id.co.veritrans.mdk.v1.VtGatewayConfig;
-import id.co.veritrans.mdk.v1.VtGatewayConfigBuilder;
-import id.co.veritrans.mdk.v1.VtGatewayFactory;
-import id.co.veritrans.mdk.v1.config.EnvironmentType;
-import id.co.veritrans.mdk.v1.exception.RestClientException;
-import id.co.veritrans.mdk.v1.gateway.VtDirect;
-import id.co.veritrans.mdk.v1.gateway.model.AbstractVtRequest;
-import id.co.veritrans.mdk.v1.gateway.model.Address;
-import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
-import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
-import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
-import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
-import id.co.veritrans.mdk.v1.gateway.model.builder.CreditCardBuilder;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardRequest;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myproject.parking.lib.data.CheckStatusVO;
 import com.myproject.parking.lib.data.ConfirmVO;
-import com.myproject.parking.lib.data.MessageVO;
 import com.myproject.parking.lib.data.PaymentNotifVO;
 import com.myproject.parking.lib.data.Product;
 import com.myproject.parking.lib.data.ResponseVO;
@@ -50,6 +34,21 @@ import com.myproject.parking.lib.utils.CommonUtil;
 import com.myproject.parking.lib.utils.Constants;
 import com.myproject.parking.lib.utils.DatabaseAsyncUtil;
 import com.myproject.parking.lib.utils.EmailSender;
+
+import id.co.veritrans.mdk.v1.VtGatewayConfig;
+import id.co.veritrans.mdk.v1.VtGatewayConfigBuilder;
+import id.co.veritrans.mdk.v1.VtGatewayFactory;
+import id.co.veritrans.mdk.v1.config.EnvironmentType;
+import id.co.veritrans.mdk.v1.exception.RestClientException;
+import id.co.veritrans.mdk.v1.gateway.VtDirect;
+import id.co.veritrans.mdk.v1.gateway.model.AbstractVtRequest;
+import id.co.veritrans.mdk.v1.gateway.model.Address;
+import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
+import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
+import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
+import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
+import id.co.veritrans.mdk.v1.gateway.model.builder.CreditCardBuilder;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardRequest;
 
 @Service
 public class VeriTransManagerService {
@@ -392,15 +391,42 @@ public class VeriTransManagerService {
 	    		task.setTransactionId(confirmVO.getTransactionId());
 	    		task.setSignatureKey(confirmVO.getSignatureKey());
 	    		task.setBank(confirmVO.getBank());
+	    		task.setTotalPriceIdr(Math.round(Double.parseDouble(confirmVO.getGrossAmount())));
 	    		task.setPaymentType(confirmVO.getPaymentType());
 	    		task.setOrderId(confirmVO.getOrderId());
-	    		task.setUpdatedBy(confirmVO.getName());
+	    		task.setUpdatedBy(user.getName());
 	    		task.setUpdatedOn(now);
-	    		task.setCreatedBy(confirmVO.getName());
+	    		task.setCreatedBy(user.getName());
 	    		task.setCreatedOn(now);
 	    		task.setUpdate(true);
-	    		LOG.debug("update table transaction :"+task);
+	    		
+	    		LOG.debug(" Try send email notification to customer ");
+	    		try {
+	    			sendNotificationToCustomerViaEmail(user, task, booking);
+	    			task.setEmailNotification(Constants.EMAIL_NOTIF_SENT);
+	    			task.setEmailNotificationReason(Constants.EMAIL_REASON_SUCCESS);
+//	    			transactionMapper.updateEmailNotification(Constants.EMAIL_NOTIF_SENT,Constants.EMAIL_REASON_SUCCESS, task.getOrderId());
+	    			LOG.debug(" Send email notification success ");
+	    		} catch (EmailException e) {
+	    			task.setEmailNotification(Constants.EMAIL_NOTIF_FAILED);
+	    			task.setEmailNotificationReason(e.getMessage());
+//	    			transactionMapper.updateEmailNotification(Constants.EMAIL_NOTIF_FAILED,e.getMessage(), task.getOrderId());
+	    			LOG.error(" Send email notification failed " + e.getMessage());
+	    		} catch (IOException e) {
+	    			task.setEmailNotification(Constants.EMAIL_NOTIF_FAILED);
+	    			task.setEmailNotificationReason(e.getMessage());
+//	    			transactionMapper.updateEmailNotification(Constants.EMAIL_NOTIF_FAILED,e.getMessage(), task.getOrderId());
+	    			LOG.error(" Send email notification failed " + e.getMessage());
+	    		} catch (Exception e) {
+	    			task.setEmailNotification(Constants.EMAIL_NOTIF_FAILED);
+	    			task.setEmailNotificationReason(e.getMessage());
+//	    			transactionMapper.updateEmailNotification(Constants.EMAIL_NOTIF_FAILED,e.getMessage(), task.getOrderId());
+	    			LOG.error(" Send email notification failed " + e.getMessage());
+	    		}
+	    		
+	    		LOG.debug("Update Table Transaction: "+task);
 	    		databaseAsyncUtil.logTransaction(task);	 
+	    		
 			}else{
 				// no need action karena belum bayar
 			}
@@ -409,6 +435,7 @@ public class VeriTransManagerService {
 			throw e;
 		}
 	}
+	
 	
 	@Transactional(rollbackFor={Exception.class})
 	private void updateStatusBooking(Booking booking,int status){
@@ -500,6 +527,138 @@ public class VeriTransManagerService {
         ret.getCreditCard().setCardToken(vtToken);
         return ret;
     }
+	
+	private void sendNotificationToCustomerViaEmail(UserData user, TransactionVO transactionVO, Booking booking)throws EmailException, IOException {
+		String emailTo = user.getEmail();
+		String emailSubject = Constants.APP_NAME+" : Informasi Pesanan Anda";
+		String txtMessage = "";
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("Dear Mr/Mrs ").append(user.getName()).append(",");
+		sb.append("\n").append("\n");
+		sb.append("Regards,");
+		sb.append("\n").append("\n");
+		sb.append("Administrator");
+		txtMessage = sb.toString();
+
+		String html = ""
+				+ "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"> "
+				+ "<html xmlns=\"http://www.w3.org/1999/xhtml\" style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> "
+				+ "<head> "
+				+ "<meta name=\"viewport\" content=\"width=device-width\" /> "
+				+ "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /> "
+				+ "<title>Informasi Pesanan Anda</title> "
+				+ " "
+				+ " "
+				+ "<style type=\"text/css\"> "
+				+ "img "
+				+ "{max-width: 100%; "
+				+ "} "
+				+ "body "
+				+ "{-webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; "
+				+ "} "
+				+ "body "
+				+ "{background-color: #f6f6f6; "
+				+ "} "
+				+ "@media only screen and (max-width: 640px) "
+				+ "{  body { "
+				+ "    padding: 0 !important; "
+				+ "  } "
+				+ "  h1 "
+				+ "{    font-weight: 800 !important; margin: 20px 0 5px !important; "
+				+ "  } "
+				+ "  h2 "
+				+ "{    font-weight: 800 !important; margin: 20px 0 5px !important; "
+				+ "  } "
+				+ "  h3 "
+				+ "{    font-weight: 800 !important; margin: 20px 0 5px !important; "
+				+ "  } "
+				+ "  h4 "
+				+ "{    font-weight: 800 !important; margin: 20px 0 5px !important; "
+				+ "  } "
+				+ "  h1 "
+				+ "{    font-size: 22px !important; "
+				+ "  } "
+				+ "  h2 "
+				+ "{    font-size: 18px !important; "
+				+ "  } "
+				+ "  h3 "
+				+ "{    font-size: 16px !important; "
+				+ "  } "
+				+ "  .container "
+				+ "{    padding: 0 !important; width: 100% !important; "
+				+ "  } "
+				+ "  .content "
+				+ "{    padding: 0 !important; "
+				+ "  } "
+				+ "  .content-wrap "
+				+ "{    padding: 10px !important; "
+				+ "  } "
+				+ "  .invoice "
+				+ "{    width: 100% !important; "
+				+ "  } "
+				+ "} "
+				+ "</style> "
+				+ "</head> "
+				+ " "
+				+ "<body itemscope itemtype=\"http://schema.org/EmailMessage\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; background-color: #f6f6f6; margin: 0;\" bgcolor=\"#f6f6f6\"> "
+				+ " "
+				+ "<table class=\"body-wrap\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;\" bgcolor=\"#f6f6f6\"><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;\" valign=\"top\"></td> "
+				+ "		<td class=\"container\" width=\"600\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;\" valign=\"top\"> "
+				+ "			<div class=\"content\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;\"> "
+				+ "				<table class=\"main\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" itemprop=\"action\" itemscope itemtype=\"http://schema.org/ConfirmAction\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;\" bgcolor=\"#fff\"><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-wrap\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;\" valign=\"top\"> "
+				+ "							<meta itemprop=\"name\" content=\"Confirm Email\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" /><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 0px;\" valign=\"top\"> "
+				+ "										Yth Bapak/Ibu " + user.getName()
+				+ "									</td> "
+				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
+				+ "										Terima kasih telah menggunakan Premium Parkir Solution untuk memesan valet parkir "
+				+ "									</td> "
+				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
+				+ "										Berikut adalah informasi pemesanan anda: "
+				+ "									</td> "
+				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
+				+ "										<b>Nama customer</b> 			: " + user.getName()
+				+ "									</td> "
+				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
+				+ "										<b>Booking Id</b>				: " + transactionVO.getOrderId()
+				+ "									</td> "
+				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
+				+ "										<b>Booking Code</b>			: " + transactionVO.getOrderId()
+				+ "									</td> "
+				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
+				+ "										<b>Mall Name</b>				: " + booking.getMallName()
+				+ "									</td> "
+				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
+				+ "										<b>Area Parkir</b>				: " + booking.getSlotName()
+				+ "									</td> "
+				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
+				+ "										<b>Waktu Transaksi</b>			: " + CommonUtil.displayDateTime(transactionVO.getUpdatedOn())
+				+ "									</td> "
+				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
+				+ "										<b>Jumlah Belanja</b>			: " + transactionVO.getTotalPriceIdr()
+				+ "									</td> "
+				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
+				+ "										<b>Status Pembayaran</b> 		: Berhasil"
+				+ "									</td> "
+				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
+				+ "										Jika anda tidak melakukan transaksi di atas, harap melaporkan email ini ke agusdk2011@gmail.com "
+				+ "									</td> "
+				+ "								</tr></table></td> "
+				+ "					</tr></table><div class=\"footer\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;\"> "
+				+ "					<table width=\"100%\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"aligncenter content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; color: #999; text-align: center; margin: 0; padding: 0 0 20px;\" align=\"center\" valign=\"top\">Follow <a href=\"http://google.com\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;\">@premium_parking_solution</a> on Twitter.</td> "
+				+ "						</tr></table></div></div> "
+				+ "		</td> "
+				+ "		<td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;\" valign=\"top\"></td> "
+				+ "	</tr></table></body> "
+				+ "</html>";
+
+
+		LOG.debug(" html Msg: "+ html);
+		emailSender.sendHTMLMailNew("", "",
+				new String[] { emailTo }, new String[] { user.getName() },
+				emailSubject, html, txtMessage, null);
+
+	}
 	
 	private void sendNotificationToCustomerViaEmail(UserData user, TransactionVO transactionVO,VeriTransVO veriTransVO)throws EmailException, IOException {
 		String emailTo = user.getEmail();
