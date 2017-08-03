@@ -47,9 +47,9 @@ public class ChargeProcess implements BaseQueryLogic {
 		String result = "";
 		ResponseVO responseVO = new ResponseVO();
 		try {	
-			if(StringUtils.isEmpty(data)){
-				data = getDataMockup(data,mapper);
-			}
+//			if(StringUtils.isEmpty(data)){
+//				data = getDataMockup(data,mapper);
+//			}
 			MidTransVO midTransVO = new MidTransVO(); 
 			midTransVO = mapper.readValue(data, MidTransVO.class);
 			responseVO = veriTransManagerService.chargeMidtrans(mapper,midTransVO,data);

@@ -1,11 +1,8 @@
 package com.myproject.parking.trx.payment;
 
-import id.co.veritrans.mdk.v1.exception.RestClientException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,15 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myproject.parking.lib.data.ConfirmVO;
-import com.myproject.parking.lib.data.MessageVO;
-import com.myproject.parking.lib.data.PaymentNotifVO;
-import com.myproject.parking.lib.data.ResponseVO;
 import com.myproject.parking.lib.service.AppsTimeService;
 import com.myproject.parking.lib.service.CheckUserService;
 import com.myproject.parking.lib.service.ParkingEngineException;
 import com.myproject.parking.lib.service.VeriTransManagerService;
 import com.myproject.parking.lib.utils.MessageUtils;
 import com.myproject.parking.trx.logic.BaseQueryLogic;
+
+import id.co.veritrans.mdk.v1.exception.RestClientException;
 
 public class ConfirmProcess implements BaseQueryLogic {
 	private static final Logger LOG = LoggerFactory.getLogger(ConfirmProcess.class);

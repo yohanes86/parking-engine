@@ -20,8 +20,8 @@
 
 <mapper namespace="com.myproject.parking.lib.mapper.BookingMapper">
      <insert id="createBooking" parameterType="booking" useGeneratedKeys="true" keyProperty="id">      	
-    	INSERT INTO booking(name,phone_no,email,booking_id,booking_code,booking_date,mall_name,id_slot,booking_status) 
-    	VALUES (#{name},#{phoneNo},#{email},#{bookingId},#{bookingCode},#{bookingDate},#{mallName},#{idSlot},#{bookingStatus})	
+    	INSERT INTO booking(name,phone_no,email,booking_id,booking_code,booking_date,mall_name,slot_name,id_slot,booking_status) 
+    	VALUES (#{name},#{phoneNo},#{email},#{bookingId},#{bookingCode},#{bookingDate},#{mallName},#{slotName},#{idSlot},#{bookingStatus})	
      </insert>
      
      <sql id="_sqlBooking">
@@ -29,6 +29,7 @@
 	    m.phone_no as phoneNo,m.email as email,
 	    m.booking_id as bookingId,
 	    m.mall_name as mallName,
+	    m.slot_name as slotName,
 	    m.id_slot as idSlot,
 	    m.booking_status as bookingStatus,
 		m.booking_code as bookingCode,m.booking_date as bookingDate

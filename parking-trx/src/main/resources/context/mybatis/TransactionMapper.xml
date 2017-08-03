@@ -29,7 +29,9 @@
  
      <update id="updateTransactionStatus" parameterType="java.util.Map" >
     	UPDATE transaction SET transaction_status = #{transactionStatus},fraud_status = #{fraudStatus},approval_code = #{approvalCode},
-    	transaction_id = #{transactionId},signature_key = #{signatureKey},bank = #{bank},payment_type = #{paymentType},updated_on = #{updatedOn}, 
+    	transaction_id = #{transactionId},signature_key = #{signatureKey},bank = #{bank},
+    	email_notification = #{emailNotification}, email_notification_reason = #{emailNotificationReason},
+    	payment_type = #{paymentType},updated_on = #{updatedOn}, 
     	updated_by = #{updatedBy} 
     	WHERE order_id = #{orderId} 	    	
      </update>
