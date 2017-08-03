@@ -26,6 +26,7 @@ public class SlotsParkingVO extends LoginData implements Serializable {
 	private Long slotsPrice;
 	private int slotsStatus;
 	private String bookingId;
+	private String bookingCode;
 	
 	
 	@Override
@@ -111,6 +112,14 @@ public class SlotsParkingVO extends LoginData implements Serializable {
 
 	public void setBookingId(String bookingId) {
 		this.bookingId = bookingId;
+	}
+
+	public String getBookingCode() {
+		return bookingCode;
+	}
+
+	public void setBookingCode(String bookingCode) {
+		this.bookingCode = bookingCode;
 	}
 
 	

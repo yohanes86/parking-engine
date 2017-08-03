@@ -84,6 +84,7 @@ public class SlotsParkingService {
 			booking.setBookingDate(timeService.getCurrentTime());
 			bookingService.saveBooking(booking,slotsAvailable.getIdSlot());
 			slotsAvailable.setBookingId(booking.getBookingId());
+			slotsAvailable.setBookingCode(booking.getBookingCode());
 		LOG.debug("process find Slots By Mall DONE with param slotsAvailable : " + slotsAvailable);
 		return slotsAvailable;
 	}

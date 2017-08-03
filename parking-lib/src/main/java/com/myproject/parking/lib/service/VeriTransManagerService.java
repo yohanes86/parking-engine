@@ -623,7 +623,7 @@ public class VeriTransManagerService {
 				+ "										<b>Booking Id</b>				: " + transactionVO.getOrderId()
 				+ "									</td> "
 				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
-				+ "										<b>Booking Code</b>			: " + transactionVO.getOrderId()
+				+ "										<b>Booking Code</b>			: " + booking.getBookingCode()
 				+ "									</td> "
 				+ "								</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> "
 				+ "										<b>Mall Name</b>				: " + booking.getMallName()
